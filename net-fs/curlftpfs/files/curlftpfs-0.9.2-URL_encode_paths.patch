@@ -1,0 +1,83 @@
+From da20298fd0d0dcefc7d6d69ffecbc5544e783cfe Mon Sep 17 00:00:00 2001
+From: jomat <jomat@copete.de>
+Date: Sun, 16 Oct 2011 16:39:45 +0000
+Subject: [PATCH] URL encode paths for curlftpfs
+
+If a directory name on the ftp server starts with a # curl will list just
+the directory before the #, resulting in an endless loop.
+---
+ path_utils.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/path_utils.c b/path_utils.c
+index db3d7e4..ab4a839 100644
+--- a/path_utils.c
++++ b/path_utils.c
+@@ -10,10 +10,33 @@
+ #include "charset_utils.h"
+ #include "ftpfs.h"
+ 
++#include <ctype.h>
+ #include <string.h>
+ #include <stdlib.h>
+ #include <glib.h>
+ 
++/* Converts an integer value to its hex character*/
++char to_hex(char code) {
++  static char hex[] = "0123456789abcdef";
++  return hex[code & 15];
++}
++
++/* Returns a url-encoded version of str */
++/* IMPORTANT: be sure to free() the returned string after use */
++char *url_encode(char *str) {
++  char *pstr = str, *buf = malloc(strlen(str) * 3 + 1), *pbuf = buf;
++  while (*pstr) {
++    if (isalnum(*pstr) || *pstr == '-' || *pstr == '_' || *pstr == '.' || *pstr == '~'
++      || *pstr == ':' || *pstr == '/')
++      *pbuf++ = *pstr;
++    else 
++      *pbuf++ = '%', *pbuf++ = to_hex(*pstr >> 4), *pbuf++ = to_hex(*pstr & 15);
++    pstr++;
++  }
++  *pbuf = '\0';
++  return buf;
++}
++
+ char* get_file_name(const char* path) {
+   const char* filename = strrchr(path, '/');
+   if (filename == NULL) filename = path;
+@@ -24,6 +47,7 @@ char* get_file_name(const char* path) {
+     convert_charsets(ftpfs.iocharset, ftpfs.codepage, &ret);
+   }
+   
++  ret=url_encode(ret);
+   return ret;
+ }
+ 
+@@ -43,6 +67,7 @@ char* get_full_path(const char* path) {
+ 
+   free(converted_path);
+ 
++  ret=url_encode(ret);
+   return ret;
+ }
+ 
+@@ -62,6 +87,7 @@ char* get_fulldir_path(const char* path) {
+ 
+   free(converted_path);
+ 
++  ret=url_encode(ret);
+   return ret;
+ }
+ 
+@@ -90,5 +116,6 @@ char* get_dir_path(const char* path) {
+ 
+   free(converted_path);
+ 
++  ret=url_encode(ret);
+   return ret;
+ }
+-- 
+1.7.10
+

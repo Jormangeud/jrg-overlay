@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>jrg-overlay</herd>
+<longdescription lang="en">
+	Suomi-malaga is a description of Finnish morphology written in Malaga.
+</longdescription>
+<longdescription lang="fi">
+	Suomi-malaga on malagalla tehty suomen kielen muoto-opin kuvaus.
+</longdescription>
+<upstream>
+	<doc lang="en">http://voikko.sourceforge.net/</doc>
+	<bugs-to>https://github.com/voikko/corevoikko/wiki/BugReporting</bugs-to>
+</upstream>
+<use>
+	<flag name="extra_atk">Lyhenteitä</flag>
+	<flag name="extra_linux">Linux-jakeluihin liittyvää erikoissanastoa, lähinnä nimiä</flag>
+	<flag name="extra_po">Merkkijonoja ja sanoja, jotka voi hyväksyä oikoluettaessa po-tiedostoa pofilterin avulla</flag>
+	<flag name="extra_science">Matemaattis-luonnontieteellisiä erikoissanoja</flag>
+	<flag name="style_dialect">Puhekieltä tai murretta olevat sanat</flag>
+	<flag name="style_foreignloan">Sitaattilainat</flag>
+	<flag name="style_foreign">Vieraskieliset sanat</flag>
+	<flag name="style_inappropriate">Mahdollisesti loukkaavat ja alatyyliset sanat</flag>
+	<flag name="style_incorrect">Tyypilliset kielivirheet</flag>
+	<flag name="style_international">Sivistyssanat</flag>
+	<flag name="style_old">Vanhaa kieltä olevat sanat</flag>
+	<flag name="usage_education">Kasvatustieteiden sanasto</flag>
+	<flag name="usage_it">ATK-sanasto</flag>
+	<flag name="usage_medicine">Lääketieteen sanasto</flag>
+	<flag name="usage_orgname">Organisaatiot ja tuotemerkit</flag>
+	<flag name="usage_science">Luonnontieteiden sanasto</flag>
+</use>
+</pkgmetadata>

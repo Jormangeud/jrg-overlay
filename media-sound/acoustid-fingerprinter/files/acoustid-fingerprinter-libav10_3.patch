@@ -1,0 +1,47 @@
+From 9c55826aaa16f5ab904364be1e0039ef91cc21f0 Mon Sep 17 00:00:00 2001
+From: Anton Khirnov <anton@khirnov.net>
+Date: Thu, 9 Jan 2014 11:31:41 +0100
+Subject: [PATCH] decoder: only use AVCODEC_MAX_AUDIO_FRAME_SIZE if the lavc
+ audio conversion API is used
+
+It is deprecated/removed in newer libav versions.
+---
+ decoder.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/decoder.h b/decoder.h
+index e61602e..310fe2d 100644
+--- a/decoder.h
++++ b/decoder.h
+@@ -69,7 +69,6 @@ public:
+     static void initialize();
+ 
+ private:
+-	static const int BUFFER_SIZE = AVCODEC_MAX_AUDIO_FRAME_SIZE * 2;
+ 	uint8_t *m_buffer2;
+ 	std::string m_file_name;
+ 	std::string m_error;
+@@ -116,7 +115,9 @@ inline Decoder::Decoder(const std::string &file_name)
+ 	, m_convert_ctx(0)
+ #endif
+ {
+-	m_buffer2 = (uint8_t *)av_malloc(BUFFER_SIZE + 16);
++#ifdef HAVE_AV_AUDIO_CONVERT
++	m_buffer2 = (uint8_t *)av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE * 2 + 16);
++#endif
+ 
+ #if NEW_AVFRAME_API
+     m_frame = av_frame_alloc();
+@@ -138,8 +139,8 @@ inline Decoder::~Decoder()
+ 	if (m_convert_ctx) {
+ 		av_audio_convert_free(m_convert_ctx);
+ 	}
+-#endif
+ 	av_free(m_buffer2);
++#endif
+ 
+ #if NEW_AVFRAME_API
+     av_frame_free(&m_frame);
+-- 
+1.8.5.2
+

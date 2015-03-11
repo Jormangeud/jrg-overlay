@@ -1,0 +1,11 @@
+--- src/utils/lib/CryptoPP.cc	2012-04-04 23:20:54.000000000 +0300
++++ src/utils/lib/CryptoPP.cc	2013-02-23 00:58:31.000000000 +0200
+@@ -1700,7 +1700,7 @@
+ template <class T>
+ CPP_TYPENAME AllocatorBase<T>::pointer AlignedAllocator<T>::allocate(size_type n, const void *)
+ {
+-	CheckSize(n);
++	this->CheckSize(n);
+ 	if (n == 0)
+ 		return NULL;
+ 	if (n >= 4)

@@ -1,0 +1,43 @@
+--- RT2870_LinuxSTA_V2.3.0.0.ORIG/Makefile	2009-08-13 09:36:46.000000000 +0300
++++ RT2870_LinuxSTA_V2.3.0.0/Makefile	2009-09-23 22:28:03.000000000 +0300
+@@ -83,7 +83,7 @@
+
+ ifeq ($(PLATFORM),PC)
+ # Linux 2.6
+-LINUX_SRC = /lib/modules/$(shell uname -r)/build
++LINUX_SRC = /usr/src/linux
+ # Linux 2.4 Change to your local setting
+ #LINUX_SRC = /usr/src/linux-2.4
+ LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
+--- RT2870_LinuxSTA_V2.3.0.0.ORIG/os/linux/config.mk	2009-08-13 10:54:04.000000000 +0300
++++ RT2870_LinuxSTA_V2.3.0.0/os/linux/config.mk	2009-09-23 22:26:01.000000000 +0300
+@@ -8,10 +8,10 @@
+ HAS_XLINK=n
+
+ # Support Wpa_Supplicant
+-HAS_WPA_SUPPLICANT=n
++HAS_WPA_SUPPLICANT=y
+
+ # Support Native WpaSupplicant for Network Maganger
+-HAS_NATIVE_WPA_SUPPLICANT_SUPPORT=n
++HAS_NATIVE_WPA_SUPPLICANT_SUPPORT=y
+
+ #Support Net interface block while Tx-Sw queue full
+ HAS_BLOCK_NET_IF=n
+--- RT2870_LinuxSTA_V2.3.0.0.ORIG/common/rtusb_dev_id.c	2009-08-13 09:34:22.000000000 +0300
++++ RT2870_LinuxSTA_V2.3.0.0/common/rtusb_dev_id.c	2009-09-23 22:29:58.000000000 +0300
+@@ -101,12 +101,13 @@
+ 	{USB_DEVICE(0x7392,0x7717)},
+ 	{USB_DEVICE(0x1737,0x0070)}, /* Linksys WUSB100 */
+ 	{USB_DEVICE(0x1737,0x0071)}, /* Linksys WUSB600N */
++	{USB_DEVICE(0x1737,0x0077)}, /* Linksys WUSB54GC */
+ 	{USB_DEVICE(0x0411,0x00e8)}, /* Buffalo WLI-UC-G300N*/
+ 	{USB_DEVICE(0x050d,0x815c)}, /* Belkin F5D8053 */
+ 	{USB_DEVICE(0x100D,0x9031)}, /* Motorola 2770 */
+ 	{USB_DEVICE(0x0DB0,0x6899)},
+ #endif // RT2870 //
+-	{ }/* Terminating entry */
++	{NULL}/* Terminating entry */
+ };
+
+ INT const rtusb_usb_id_len = sizeof(rtusb_dev_id) / sizeof(USB_DEVICE_ID);

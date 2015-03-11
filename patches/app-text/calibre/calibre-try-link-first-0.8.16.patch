@@ -1,0 +1,49 @@
+--- calibre/src/calibre/library/database2.py	2011-08-26 19:36:51.000000000 +0300
++++ calibre/src/calibre/library/database2.py	2011-09-01 20:34:22.000000000 +0300
+@@ -1220,12 +1220,15 @@
+                 candidates = []
+             if format and candidates and os.path.exists(candidates[0]):
+                 try:
+-                    shutil.copyfile(candidates[0], fmt_path)
++                    os.link(candidates[0], fmt_path)
+                 except:
+-                    # This can happen if candidates[0] or fmt_path is too long,
+-                    # which can happen if the user copied the library from a
+-                    # non windows machine to a windows machine.
+-                    return None
++                    try:
++                        shutil.copyfile(candidates[0], fmt_path)
++                    except:
++                        # This can happen if candidates[0] or fmt_path is too long,
++                        # which can happen if the user copied the library from a
++                        # non windows machine to a windows machine.
++                        return None
+                 return fmt_path
+ 
+     def copy_format_to(self, index, fmt, dest, index_is_id=False):
+@@ -1319,8 +1322,11 @@
+             os.makedirs(pdir)
+         if not getattr(stream, 'name', False) or \
+                 os.path.abspath(dest) != os.path.abspath(stream.name):
+-            with lopen(dest, 'wb') as f:
+-                shutil.copyfileobj(stream, f)
++            try:
++                os.link(stream.name, dest)
++            except:
++                with lopen(dest, 'wb') as f:
++                    shutil.copyfileobj(stream, f)
+         stream.seek(0, 2)
+         size=stream.tell()
+         self.conn.execute('INSERT INTO data (book,format,uncompressed_size,name) VALUES (?,?,?,?)',
+@@ -3309,7 +3315,10 @@
+             else:
+                 if os.path.exists(dest):
+                     os.remove(dest)
+-                shutil.copyfile(src, dest)
++                try:
++                    os.link(src, dest)
++                except:
++                    shutil.copyfile(src, dest)
+             x = path_map[x]
+             if not isinstance(x, unicode):
+                 x = x.decode(filesystem_encoding, 'replace')

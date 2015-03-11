@@ -1,0 +1,80 @@
+diff -Naur festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/finnish_mv_phrase.scm festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/finnish_mv_phrase.scm
+--- festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/finnish_mv_phrase.scm	2004-10-22 14:43:17.000000000 +0300
++++ festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/finnish_mv_phrase.scm	2009-03-18 00:00:00.000000000 +0200
+@@ -351,7 +351,7 @@
+   "(initial_doubling WORD)
+ Checks wheter the current WORD can triggers initial doubling on the
+ next word or not."
+-  (let ((name (downcase (item.name WORD))))
++  (let ((name (if WORD (downcase (item.name WORD) nil))))
+     (if (and (item.next WORD) 
+ 	     (not (word_has_break? WORD))
+ 	     ;; (not suopuhe) ;; suopuhe-mode deal this personally ???
+diff -Naur festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/hy_fi_mv_diphone.scm festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/hy_fi_mv_diphone.scm
+--- festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/hy_fi_mv_diphone.scm	2005-12-04 12:13:05.000000000 +0200
++++ festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/hy_fi_mv_diphone.scm	2009-03-18 00:00:00.000000000 +0200
+@@ -65,21 +65,11 @@
+ ;; The location is stored in variable hy_fi_mv_dir.
+ ;; If it isn't present, the voice is not loaded!
+ (cond 
+- ;; 0th: use my absolute path in my www demo
+- ((probe_file "/home/nvolk/public_html/cgi-bin/festival/lib/voices/finnish/hy_fi_mv_diphone/festvox/hy_fi_mv_diphone.scm")
+-  (defvar hy_fi_mv_dir "/home/nvolk/public_html/cgi-bin/festival/lib/voices/finnish/hy_fi_mv_diphone/")
+-  ;; this one is for my www demo
+-  (set! suopuhe_output_file_prefix "/home/nvolk/public_html/cgi-bin/lavennin/tmp/"))
+  ;; 1st: try default place in the Festival hierarchy:
+  ((assoc 'hy_fi_mv_diphone voice-locations)
+   (defvar hy_fi_mv_dir
+     (cdr (assoc 'hy_fi_mv_diphone voice-locations))))
+- ;; 2nd: use (my) absolute path in www demo
+- ((probe_file "/home/n/v/nvolk/festival/lib/voices/finnish/hy_fi_mv_diphone/festvox/hy_fi_mv_diphone.scm")
+-  (defvar hy_fi_mv_dir "/home/n/v/nvolk/festival/lib/voices/finnish/hy_fi_mv_diphone/"))
+- (t
+-  (format stderr "The location of (hy_fi_mv_diphone) could not be determined!\n")
+-  ))
++  )
+ 
+ 
+ 
+@@ -91,12 +81,7 @@
+  ((assoc 'suo_fi_lj_diphone voice-locations)
+   (defvar suo_fi_lj_dir
+     (cdr (assoc 'suo_fi_lj_diphone voice-locations))))
+- ;; 2nd: use (my) absolute path
+- ((probe_file "/home/n/v/nvolk/festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/suo_fi_lj_diphone.scm")
+-  (defvar hy_fi_mv_dir "/home/n/v/nvolk/festival/lib/voices/finnish/suo_fi_lj_diphone/"))
+- (t
+-  (format stderr "The location of (suo_fi_lj_diphone) could not be determined!\n")
+-  ))
++  )
+ 
+ 
+ 
+@@ -202,7 +187,7 @@
+       (voice_hy_fi_mv_diphone)))
+ 
+ (if (boundp 'suo_fi_lj_dir)
+-    (define (voice_suo_fi_lj_diphone)
++    (define (suo_fi_lj_diphone)
+       "(suo_fi_lj_diphone)
+ Switch to the Finnish female voice.
+ Suopuhe's support for Festival's in-build voice-locating mechanism."
+diff -Naur festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/suopuhe_mode.scm festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/suopuhe_mode.scm
+--- festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/suopuhe_mode.scm	2005-12-04 12:13:05.000000000 +0200
++++ festival/lib/voices/finnish/suo_fi_lj_diphone/festvox/suopuhe_mode.scm	2009-03-18 00:00:00.000000000 +0200
+@@ -450,7 +450,7 @@
+ 	    (suopuhe_setup)
+ 	    (tts_file file 'suopuhe))
+ 	  (tts_file file (tts_find_text_mode file auto-text-mode-alist))))
+-  (audio_mode 'sync) ;; Hmm this is probably bad
++  ; (audio_mode 'sync) ;; Hmm this is probably bad
+   )
+ ;; korvaava versio tts-viritelmiin...
+ ;(define (utt.play utt)
+@@ -631,4 +631,4 @@
+   (utt.features utt 'Syllable '(name stress)))
+ 
+ 
+-(provide 'suopuhe_mode)
+\ Ei rivinvaihtoa tiedoston lopussa
++(provide 'suopuhe_mode)

@@ -1,0 +1,11 @@
+--- RT2870_LinuxSTA_V2.3.0.0.ORIG/os/linux/config.mk	2009-08-13 10:54:04.000000000 +0300
++++ RT2870_LinuxSTA_V2.3.0.0/os/linux/config.mk	2009-09-23 22:23:13.000000000 +0300
+@@ -81,7 +81,7 @@
+ # config for STA mode
+
+ ifeq ($(RT28xx_MODE),STA)
+-WFLAGS += -DCONFIG_STA_SUPPORT -DDBG
++WFLAGS += -DCONFIG_STA_SUPPORT
+
+ ifeq ($(HAS_XLINK),y)
+ WFLAGS += -DXLINK_SUPPORT

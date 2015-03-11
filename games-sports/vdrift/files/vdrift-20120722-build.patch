@@ -1,0 +1,19 @@
+--- SConstruct	2012-07-21 18:03:21.000000000 +0300
++++ SConstruct	2012-10-14 14:20:26.187397465 +0300
+@@ -380,7 +381,7 @@
+ if env['release']:
+     # release build, debugging off, optimizations on
+     if (sys.platform != 'freebsd6') and (sys.platform != 'freebsd7') and (sys.platform != 'freebsd8') and (sys.platform != 'freebsd9') and (sys.platform != 'win32') and (sys.platform != 'cygwin'):
+-        env.Append(CCFLAGS = ['-O1', '-pipe'])
++        env.Append(CCFLAGS = ['-pipe'])
+ else:
+     # debug build, lots of debugging, no optimizations
+     env.Append(CCFLAGS = ['-g3'])
+@@ -399,7 +400,6 @@
+     env.Append(CCFLAGS = ['-pg'])
+     env.Append(LINKFLAGS = ['-pg'])
+     env.Append(CCFLAGS = ['-g3'])
+-    env.Append(CCFLAGS = ['-O1'])
+ 
+ #------------------------------------#
+ # compile-time efficiency assessment #

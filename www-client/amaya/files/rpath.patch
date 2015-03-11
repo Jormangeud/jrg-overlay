@@ -1,0 +1,20 @@
+--- Amaya/configure.orig	2006-03-14 22:16:34.000000000 +0100
++++ Amaya/configure	2006-03-14 22:21:28.000000000 +0100
+@@ -13652,7 +13652,7 @@
+   # this is the flags used to build amaya with OpenGL
+   GL_OPTIONS="-D_GL"
+   GL_INCLUDES="-I${GL_BUILDDIR}/include"
+-  GL_LIBRARIES="-Wl,-rpath,${GL_BUILDDIR}/lib -L${GL_BUILDDIR}/lib -lGL -lGLU"
++  GL_LIBRARIES="-L${GL_BUILDDIR}/lib -lGL -lGLU"
+ 
+ 
+ 
+@@ -13713,7 +13713,7 @@
+     #   --enable-unicode        compile wxString with Unicode support
+     #   --with-gtk              use GTK+
+     #   --with-opengl           use OpenGL (or Mesa)
+-    WXCONFIGURE_OPTION="--with-opengl --with-gtk --enable-gtk2 --enable-unicode --enable-ipc --disable-shared  --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin $WXCONFIGURE_TUNNING_OPTION"
++    WXCONFIGURE_OPTION="--with-opengl --with-gtk --enable-gtk2 --enable-unicode --enable-ipc --disable-shared  --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin $WXCONFIGURE_TUNNING_OPTION --disable-rpath"
+   fi
+   if test "$AMAYAOS" = "MACOSX" ; then
+     # MACOSX
