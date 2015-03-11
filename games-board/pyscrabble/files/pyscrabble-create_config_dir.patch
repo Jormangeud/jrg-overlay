@@ -1,0 +1,20 @@
+--- pyscrabble/dist.py.old	2006-12-21 22:34:30.000000000 +0100
++++ pyscrabble/dist.py	2006-12-21 22:35:28.000000000 +0100
+@@ -31,8 +31,6 @@
+     RESOURCE_PREFIX = 'resources'
+ 
+ CONFIG_DIR = get_app_data_dir()
+-if not os.path.exists(CONFIG_DIR):
+-    CONFIG_DIR = os.path.join(RESOURCE_PREFIX, 'config')
+ 
+ def getLocaleDirs(dir, domain):
+     l = []
+@@ -180,4 +178,6 @@
+         @param value:
+         '''
+         self.data[item] = value
+-        
+\ Pas de fin de ligne à la fin du fichier.
++       
++if not os.path.exists(CONFIG_DIR):
++    ensure_config_dir(CONFIG_DIR)

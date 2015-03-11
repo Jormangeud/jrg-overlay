@@ -1,0 +1,46 @@
+--- wmc2d.c.orig	2011-04-29 18:14:12.000000000 +0300
++++ wmc2d.c	2014-08-07 00:00:00.000000000 +0300
+@@ -798,13 +798,13 @@
+ {
+     int n;
+     int i;
+-    static char temp[] = "/sys/devices/platform/coretemp.0/temp1_input";
++    static char temp[] = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp2_input";
+ 
+     switch (Cpus) {
+ 	case 4:
+ 	    for (i = 0; i < 4; ++i) {
+-		temp[strlen("/sys/devices/platform/coretemp.")] =
+-		    '0' + StartCpu + (i << JoinCpusTemp);
++		temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++		    '2' + StartCpu + (i << JoinCpusTemp);
+ 		n = ReadNumber(temp);
+ 		DrawLcdNumber(n / 100, 2 + 2, 2 + i * 12 + 2);
+ 	    }
+@@ -827,12 +827,13 @@
+ 
+ 	case 2:
+ 	default:
+-	    temp[strlen("/sys/devices/platform/coretemp.")] =
+-		'0' + StartCpu + 0;
++	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++		'2' + StartCpu + 0;
+ 	    n = ReadNumber(temp);
+ 	    DrawLcdNumber(n / 100, 3 + 29 + 2, 3 + 2);
+-	    temp[strlen("/sys/devices/platform/coretemp.")] =
+-		'0' + StartCpu + 1;
++	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++		'2' + StartCpu + 1;
++	    n = ReadNumber(temp);
+ 	    DrawLcdNumber(n / 100, 3 + 29 + 2, 3 + 15 + 2);
+ 
+ 	    // temperature zones
+@@ -1083,7 +1084,7 @@
+ 	"\t-c n\tfirst CPU to use (to monitor more than 4 cores)\n"
+ 	"\t-n n\tnumber of CPU to display (2 or 4)\n"
+ 	"\t-r rate\trefresh rate (in milliseconds, default 1500 ms)\n"
+-	"\t-t f\tturbo boost frequency in Mhz (f.e. 1734000 for 1.73 Ghz)\n"
++	"\t-t f\tturbo boost frequency in Hz (f.e. 1734000 for 1.73 GHz)\n"
+ 	"\t-z n\tnumber of thermal zones (0, 1 or 2)\n"
+ 	"Only idiots print usage on stderr!\n");
+ }

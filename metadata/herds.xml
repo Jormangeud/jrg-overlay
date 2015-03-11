@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE herds SYSTEM "http://www.gentoo.org/dtd/herds.dtd">
+<?xml-stylesheet href="/xsl/herds.xsl" type="text/xsl" ?>
+<?xml-stylesheet href="/xsl/guide.xsl" type="text/xsl" ?>
+<herds>
+  <herd>
+    <name>jrg-overlay</name>
+    <email>jormangeud@gmail.com</email>
+    <description>Jormangeud's ebuilds.</description>
+  <maintainer>
+    <email>jormangeud@gmail.com</email>
+    <name>Jaakko Perttilä</name>
+  </maintainer>
+  </herd>
+</herds>

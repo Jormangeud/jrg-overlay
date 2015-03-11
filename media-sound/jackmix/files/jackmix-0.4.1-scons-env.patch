@@ -1,0 +1,30 @@
+--- SConstruct	2008-02-26 23:07:33.000000000 +0200
++++ SConstruct	2010-01-13 20:48:18.000000000 +0200
+@@ -10,13 +10,25 @@
+ env.Replace( LIBS="" )
+ env.Replace( LIBPATH="" )
+ 
+-env['CXXFLAGS']+="-Wall -Werror -g -fpic"
+-
+ tests = { }
+ tests.update( env['PKGCONFIG_TESTS'] )
+ 
+ conf = Configure( env, custom_tests=tests, conf_dir='cache', log_file='cache/config.log' )
+ 
++# ---- check for environment variables
++import os
++if 'CXX' in os.environ:
++    conf.env.Replace(CXX = os.environ['CXX'])
++    print(">> Using compiler " + os.environ['CXX'])
++
++if 'CXXFLAGS' in os.environ:
++    conf.env.Append(CCFLAGS = os.environ['CXXFLAGS'])
++    print(">> Appending custom build flags : " + os.environ['CXXFLAGS'])
++
++if 'LDFLAGS' in os.environ:
++    conf.env.Append(LINKFLAGS = os.environ['LDFLAGS'])
++    print(">> Appending custom link flags : " + os.environ['LDFLAGS'])
++
+ if not conf.CheckHeader( 'stdio.h', language="C" ):
+ 	Exit( 1 )
+ if not conf.CheckHeader( "iostream", language="C++" ):

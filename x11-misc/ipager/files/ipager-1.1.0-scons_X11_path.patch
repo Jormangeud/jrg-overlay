@@ -1,0 +1,13 @@
+--- SConstruct.old	2012-02-17 02:35:28.994913031 +0200
++++ SConstruct	2012-02-17 02:38:25.553705742 +0200
+@@ -42,8 +42,8 @@
+ 
+ ipager_env.Append(
+         CPPFLAGS = [ '-Wall' ],
+-        CPPPATH = [ '/usr/X11R6/include' ],
+-        LIBPATH = ['/usr/X11R6/lib']
++        CPPPATH = [ '/usr/include/X11' ],
++        LIBPATH = ['/usr/lib/X11']
+ 	)
+ 
+ ipager_options.Update(ipager_env)

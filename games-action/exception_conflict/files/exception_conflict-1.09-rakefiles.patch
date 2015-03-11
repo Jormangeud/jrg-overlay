@@ -1,0 +1,44 @@
+--- Rakefile.old	2012-07-14 23:28:13.000000000 +0300
++++ Rakefile	2012-07-15 01:46:33.915942517 +0300
+@@ -2,10 +2,10 @@
+ 
+ 
+ 
+-CFLAGS = "-O2 -I ./ -I lib #{`freetype-config --cflags`} #{`sdl-config --cflags`}".gsub(/\n/, '')
++CFLAGS = (ENV["CFLAGS"] || "-O2") + " -I ./ -I lib #{`freetype-config --cflags`} #{`sdl-config --cflags`}".gsub(/\n/, '')
+ LFLAGS = ''
+ LIBS = "-L lib/ist -L lib/sgui -lsgui -list -lboost_regex-mt -lboost_date_time-mt -lboost_system-mt -lboost_thread-mt -lz -lpng -lGL -lGLU -lGLEW -lftgl #{`sdl-config --libs`} -lSDL_mixer #{`freetype-config --libs`}".gsub(/\n/, '')
+-CC = 'g++'
++CC = ENV["CC"] || 'g++'
+ 
+ SRCS = Dir.glob("{.,character}/*.cc")
+ OBJS = SRCS.dup.collect {|s| s.sub('.cc', '.o')}
+
+--- lib/ist/Rakefile.old	2012-07-15 01:53:10.255942517 +0300
++++ lib/ist/Rakefile	2012-07-15 01:53:13.659942516 +0300
+@@ -1,6 +1,6 @@
+-CFLAGS = '-O2'
++CFLAGS = ENV["CFLAGS"] || '-O2'
+ LFLAGS = ''
+-CC = 'g++'
++CC = ENV["CC"] || 'g++'
+ AR = 'ar'
+ RANLIB = 'ranlib'
+ 
+
+--- lib/sgui/Rakefile.old	2012-07-15 01:54:56.121942524 +0300
++++ lib/sgui/Rakefile	2012-07-15 01:54:58.710942516 +0300
+@@ -13,11 +13,11 @@
+ end
+ 
+ 
+-CFLAGS = "-O2 -D SG_BUILD_STATIC -I ../ #{`freetype-config --cflags`} #{`sdl-config --cflags`}".gsub(/\n/, '')
++CFLAGS = (ENV["CFLAGS"] || "-O2") + " -D SG_BUILD_STATIC -I ../ #{`freetype-config --cflags`} #{`sdl-config --cflags`}".gsub(/\n/, '')
+ LFLAGS = ''
+ LIBS = "-L ../ist -L . -lsgui -list -lz -lpng -ljpeg -lGL -lGLU -lftgl #{`sdl-config --libs`} #{`freetype-config --libs`}".gsub(/\n/, '')
+ AR = 'ar'
+-CC = 'g++'
++CC = ENV["CC"] || 'g++'
+ 
+ 
+ task "default" => "libsgui.a"
