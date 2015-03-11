@@ -4,7 +4,7 @@
 
 inherit eutils python games
 
-DESCRIPTION="A online multiplayer Scrabble game. It supports English, French, German and Serbian languages and games."
+DESCRIPTION="An online multiplayer Scrabble game. It supports English, French, German and Serbian languages and games."
 HOMEPAGE="http://pyscrabble.sourceforge.net"
 SRC_URI="mirror://sourceforge/${PN}/${P}-src.zip"
 

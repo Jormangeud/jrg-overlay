@@ -1,6 +1,0 @@
-MD5 0b2621d0e1e44c01303306df6570bf88 files/digest-wmfire-1.2.3 235
-RMD160 d3e25e0eb7fee71ae4219068f401bb1b14f89b4e files/digest-wmfire-1.2.3 235
-SHA256 100ada8b57f6063f65e5fa242794121bfb2c19fede0f8eb4b971dbe8fa3034e2 files/digest-wmfire-1.2.3 235
-MD5 47c32e30178719f0e7045dc84b3be58c wmfire-1.2.3.ebuild 963
-RMD160 d23e13f08c81882eabae5a73b82acf04cc1ce69a wmfire-1.2.3.ebuild 963
-SHA256 10bc9775534d29037e79909aed321a74910804eb7bc2dfad547fb239f32243f3 wmfire-1.2.3.ebuild 963
