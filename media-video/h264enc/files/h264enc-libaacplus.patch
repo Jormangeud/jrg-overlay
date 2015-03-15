@@ -1,0 +1,20 @@
+--- h264enc	2012-02-13 07:35:12.097687869 +0200
++++ h264enc	2012-02-20 00:01:31.594842088 +0200
+@@ -6638,7 +6638,7 @@
+ FIFO="test -p \"$TEMPDIR/audio.wav\" || mkfifo \"$TEMPDIR/audio.wav\""
+ MPL="$MPLAYER \"$OUTPUT\" $MPLAYEROPTS -really-quiet -vc null -vo null -nocache ${channels[1]} -ao pcm:fast:file=\"$TEMPDIR/audio.wav\""
+ NERO="$NEROAACENC -ignorelength ${neroaacbr[1]} -if \"$TEMPDIR/audio.wav\" -of \"$TEMPDIR/audio.aac\" &"
+-AACPLUS="$AACPLUSENC \"$TEMPDIR/audio.wav\" \"$TEMPDIR/audio.aac\" ${aacplusbr[1]} &"
++AACPLUS="$AACPLUSENC \"$TEMPDIR/audio.wav\" \"$TEMPDIR/audio.aac\" ${aacplusbr[1]}000 s &"
+ OGG="$OGGENC ${vorbq[1]} \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio.ogg\" &"
+ FLACENC="$FLAC ${flacq[1]} \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio.flac\" &"
+ FAACENC="$FAAC -w --mpeg-vers 4 ${br[1]} ${tns[1]} $faacparams \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio.aac\" &"
+@@ -6721,7 +6721,7 @@
+ 		esac
+ 		AUDIOENC[$i]="$TEMPDIR/audioenc$i"
+ 		NERO[$i]="$NEROAACENC -ignorelength ${neroaacbr[$i]} -if \"$TEMPDIR/audio.wav\" -of \"$TEMPDIR/audio$i.aac\" &"
+-		AACPLUS[$i]="$AACPLUSENC \"$TEMPDIR/audio.wav\" \"$TEMPDIR/audio$i.aac\" ${aacplusbr[$i]} &"
++		AACPLUS[$i]="$AACPLUSENC \"$TEMPDIR/audio.wav\" \"$TEMPDIR/audio$i.aac\" ${aacplusbr[$i]}000 s &"
+ 		OGG[$i]="$OGGENC ${vorbq[$i]} \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio$i.ogg\" &"
+ 		FLACENC[$i]="$FLAC ${flacq[$i]} \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio$i.flac\" &"
+ 		FAACENC[$i]="$FAAC -w --mpeg-vers 4 ${br[$i]} ${tns[$i]} ${faacparams[$i]} \"$TEMPDIR/audio.wav\" -o \"$TEMPDIR/audio$i.aac\" &"
