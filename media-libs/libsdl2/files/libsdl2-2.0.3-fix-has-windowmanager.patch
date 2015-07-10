@@ -1,0 +1,15 @@
+--- a/src/video/x11/SDL_x11window.c	Thu Jul 02 20:11:40 2015 +0200
++++ b/src/video/x11/SDL_x11window.c	Fri Jul 03 09:17:24 2015 -0700
+@@ -899,6 +917,12 @@
+         X11_XIfEvent(display, &event, &isMapNotify, (XPointer)&data->xwindow);
+         X11_XFlush(display);
+     }
++
++    if (SDL_TRUE != data->videodata->net_wm) {
++        /* no WM means no FocusIn event, which confuses us. Force it. */
++        X11_XSetInputFocus(display, data->xwindow, RevertToNone, CurrentTime);
++        X11_XFlush(display);
++    }
+ }
+ 
+ void
