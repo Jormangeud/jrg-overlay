@@ -10,8 +10,6 @@ CMAKE_REMOVE_MODULES_LIST="FindALSA FindBoost FindGettext FindTiff FindZ"
 
 inherit eutils base cmake-utils games ${GIT}
 
-MY_PN=Performous
-MY_P=${MY_PN}-${PV}
 SONGS_PN=ultrastar-songs
 
 DESCRIPTION="SingStar GPL clone"
@@ -23,16 +21,24 @@ SRC_URI="songs? (
 		mirror://sourceforge/performous/${SONGS_PN}-shearer-1.zip
 	)"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-20130811-gentoo.patch
+	"${FILESDIR}"/${PN}-20140927-libav.patch
+	"${FILESDIR}"/${PN}-20140927-linguas.patch
+)
+
 if [ "$PV" != "9999" ]; then
-    SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2
-    $SRC_URI"
+    SRC_URI="https://github.com/performous/performous/archive/${PV}.tar.gz -> ${P}.tar.gz $SRC_URI"
+	PATCHES=(
+		$PATCHES
+		"${FILESDIR}"/${PN}-20140927-cmake.patch
+	)
 else
-#    EGIT_REPO_URI="git://performous.git.sourceforge.net/gitroot/performous/performous"
     EGIT_REPO_URI="git://github.com/performous/performous.git"
-    # git-2 default branch is master
-    #EGIT_BRANCH="master"
-    # use performous_LIVE_BRANCH env var to install another branch (for example
-    # legacy or torrent)
+	PATCHES=(
+		$PATCHES
+		"${FILESDIR}"/${PN}-20150719-cmake.patch
+	)
 fi
 
 LICENSE="GPL-2
@@ -69,13 +75,6 @@ DEPEND="${RDEPEND}
 	media-libs/glew
 	sys-apps/help2man
 	sys-devel/gettext"
-
-PATCHES=(
-	"${FILESDIR}"/${PN}-20130811-gentoo.patch
-	"${FILESDIR}"/${PN}-20140927-libav.patch
-	"${FILESDIR}"/${PN}-20140927-linguas.patch
-	"${FILESDIR}"/${PN}-20150719-cmake.patch
-)
 
 src_prepare() {
 	base_src_prepare
