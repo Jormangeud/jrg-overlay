@@ -6,7 +6,7 @@ EAPI=5
 [[ ${PV} = 9999 ]] && GIT="git-2"
 
 CMAKE_REMOVE_MODULES="yes"
-CMAKE_REMOVE_MODULES_LIST="FindALSA FindBoost FindGettext FindJpeg FindPng FindTiff FindZ"
+CMAKE_REMOVE_MODULES_LIST="FindALSA FindBoost FindGettext FindTiff FindZ"
 
 inherit eutils base cmake-utils games ${GIT}
 
@@ -74,7 +74,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-20130811-gentoo.patch
 	"${FILESDIR}"/${PN}-20140927-libav.patch
 	"${FILESDIR}"/${PN}-20140927-linguas.patch
-	"${FILESDIR}"/${PN}-20140927-cmake.patch
+	"${FILESDIR}"/${PN}-20150719-cmake.patch
 )
 
 src_prepare() {
