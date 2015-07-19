@@ -1,0 +1,83 @@
+--- a/CMakeLists.txt	2015-07-19 13:26:45.000000000 +0300
++++ b/CMakeLists.txt	2015-07-19 13:33:09.274913227 +0300
+@@ -61,7 +61,7 @@
+ 
+ find_package(Gettext)
+ find_package(Msgfmt)
+-if(Gettext_FOUND AND Msgfmt_FOUND)
++if(GETTEXT_FOUND AND Msgfmt_FOUND)
+ 	message(STATUS "Localization enabled: Building and installing .mo files")
+ 	add_subdirectory(lang)
+ else()
+--- a/game/CMakeLists.txt	2015-07-19 13:26:46.000000000 +0300
++++ b/game/CMakeLists.txt	2015-07-19 13:35:14.793886448 +0300
+@@ -65,7 +65,7 @@
+ list(APPEND LIBS ${Boost_LIBRARIES})
+ 
+ # Find all the libs that don't require extra parameters
+-foreach(lib ${OUR_LIBS} SDL2 PangoCairo LibRSVG LibXML++ LibEpoxy AVFormat AVResample SWScale Z Jpeg Png PortAudio Fontconfig)
++foreach(lib ${OUR_LIBS} SDL2 PangoCairo LibRSVG LibXML++ LibEpoxy AVFormat AVResample SWScale ZLIB Jpeg Png PortAudio Fontconfig)
+ 	find_package(${lib} REQUIRED)
+ 	message(STATUS "${lib} includes: ${${lib}_INCLUDE_DIRS}")
+ 	include_directories(${${lib}_INCLUDE_DIRS})
+@@ -74,7 +74,7 @@
+ endforeach(lib)
+ 
+ find_package(Gettext)
+-if(Gettext_FOUND)
++if(GETTEXT_FOUND)
+ 	include_directories(${Gettext_INCLUDE_DIRS})
+ 	list(APPEND LIBS ${Gettext_LIBRARIES})
+ 	add_definitions("-DUSE_GETTEXT")
+--- a/tools/CMakeLists.txt	2015-07-19 13:26:46.000000000 +0300
++++ b/tools/CMakeLists.txt	2015-07-19 13:38:14.924146608 +0300
+@@ -7,7 +7,7 @@
+ 
+ # Find all the libs that don't require extra parameters
+ 
+-foreach(lib LibXML++ Z Jpeg Png Z)
++foreach(lib LibXML++ ZLIB Jpeg Png ZLIB)
+ find_package(${lib})
+ 	if (${lib}_FOUND)
+ 		include_directories(${${lib}_INCLUDE_DIRS})
+@@ -15,33 +15,33 @@
+ 	endif (${lib}_FOUND)
+ endforeach(lib)
+ 
+-if (Z_FOUND)
++if (ZLIB_FOUND)
+ 	if (LibXML++_FOUND)
+ 		add_executable(ss_extract ss_extract.cc pak.cc ipu_conv.cc ss_cover.cc ../common/image.cc)
+-		target_link_libraries(ss_extract ${LibXML++_LIBRARIES} ${Boost_LIBRARIES} ${Z_LIBRARIES} ${Jpeg_LIBRARIES} ${Png_LIBRARIES})
++		target_link_libraries(ss_extract ${LibXML++_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} ${Jpeg_LIBRARIES} ${Png_LIBRARIES})
+ 		set(targets ${targets} ss_extract)
+ 
+ 		add_executable(ss_cover_conv cover_conv.cc pak.cc ss_cover.cc ../common/image.cc)
+-		target_link_libraries(ss_cover_conv ${LibXML++_LIBRARIES} ${Boost_LIBRARIES} ${Z_LIBRARIES} ${Jpeg_LIBRARIES} ${Png_LIBRARIES})
++		target_link_libraries(ss_cover_conv ${LibXML++_LIBRARIES} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} ${Jpeg_LIBRARIES} ${Png_LIBRARIES})
+ 		set(targets ${targets} ss_cover_conv)
+ 	else (LibXML++_FOUND)
+ 		message("No LibXML++ found, not building ss_extract nor ss_cover_conv")
+ 	endif (LibXML++_FOUND)
+ 
+ 	add_executable(ss_pak_extract pak_extract.cc pak.cc)
+-	target_link_libraries(ss_pak_extract ${Boost_LIBRARIES} ${Z_LIBRARIES})
++	target_link_libraries(ss_pak_extract ${Boost_LIBRARIES} ${ZLIB_LIBRARIES})
+ 	set(targets ${targets} ss_pak_extract)
+ 
+ 	add_executable(itg_pck itg_pck.cc)
+-	target_link_libraries(itg_pck ${Boost_LIBRARIES} ${Z_LIBRARIES})
++	target_link_libraries(itg_pck ${Boost_LIBRARIES} ${ZLIB_LIBRARIES})
+ 	set(targets ${targets} itg_pck)
+ 
+ 	add_executable(ss_chc_decode ss_chc_decode.cc)
+-	target_link_libraries(ss_chc_decode ${Boost_LIBRARIES} ${Z_LIBRARIES})
++	target_link_libraries(ss_chc_decode ${Boost_LIBRARIES} ${ZLIB_LIBRARIES})
+ 	set(targets ${targets} ss_chc_decode)
+ 
+ 	add_executable(ss_adpcm_decode adpcm_decode.cc pak.cc)
+-	target_link_libraries(ss_adpcm_decode ${Z_LIBRARIES})
++	target_link_libraries(ss_adpcm_decode ${ZLIB_LIBRARIES})
+ 	set(targets ${targets} ss_adpcm_decode)
+ endif()
+ 
