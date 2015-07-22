@@ -4,7 +4,7 @@
  env.Replace( LIBS="" )
  env.Replace( LIBPATH="" )
  
--env['CXXFLAGS']+="-Wall -Werror -g -fpic"
+-env.MergeFlags( ['-Wall', '-Werror', '-g', '-fpic'] )
 -
  tests = { }
  tests.update( env['PKGCONFIG_TESTS'] )
