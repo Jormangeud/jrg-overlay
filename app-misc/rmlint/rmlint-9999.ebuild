@@ -38,6 +38,9 @@ LICENSE="GPL-3"
 
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-SConstruct.patch"
+	if ! use doc ; then
+		sed -i -e "/SConscript('docs\/SConscript')/d" SConstruct || die "couldn't disable docs"
+	fi
 }
 
 src_compile() {
