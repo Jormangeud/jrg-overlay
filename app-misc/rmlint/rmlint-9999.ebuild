@@ -1,18 +1,49 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
-inherit eutils git-2 prefix
+EAPI=5
 
-DESCRIPTION="Tool to remove duplicates and other lint, being much faster than fdupes"
-EGIT_REPO_URI="git://github.com/sahib/rmlint.git"
-SRC_URI=""
-HOMEPAGE="https://github.com/sahib/rmlint"
+inherit multilib scons-utils toolchain-funcs eutils
 
-RDEPEND="sys-libs/glibc"
-DEPEND="${RDEPEND}"
+if [[ ${PV} = *9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/sahib/rmlint.git"
+	KEYWORDS=""
+else
+	SRC_URI="https://github.com/PhotoBackup/server-flask/archive/${TAG}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/sahib/rmlint/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
+fi
+
+DESCRIPTION="rmlint finds space waste and other broken things on your filesystem and offers to remove it"
+
+HOMEPAGE="https://github.com/sahib/rmlint/ http://rmlint.readthedocs.org/"
+
+IUSE="doc nls"
+
+RDEPEND="
+	sys-libs/glibc
+	>=dev-libs/glib-2.31
+	dev-libs/json-glib
+	sys-apps/util-linux
+	dev-libs/elfutils
+"
+DEPEND="${RDEPEND}
+	nls? ( sys-devel/gettext )
+        doc? ( dev-python/sphinx )"
 
 SLOT="0"
 LICENSE="GPL-3"
-KEYWORDS="~x86 ~amd64"
+
+src_prepare() {
+	epatch "${FILESDIR}/${PN}-SConstruct.patch"
+}
+
+src_compile() {
+	escons CC="$(tc-getCC)" --prefix=${D}/usr --actual-prefix=/usr --libdir=/usr/$(get_libdir)
+}
+
+src_install() {
+	escons --prefix=${D}/usr --actual-prefix=/usr --libdir=/usr/$(get_libdir) install
+}
