@@ -3,12 +3,30 @@
 # $Header: $
 
 EAPI=5
-[[ ${PV} = 9999 ]] && GIT="git-2"
 
 CMAKE_REMOVE_MODULES="yes"
 CMAKE_REMOVE_MODULES_LIST="FindALSA FindBoost FindGettext FindTiff FindZ"
 
-inherit eutils base cmake-utils games ${GIT}
+inherit eutils base cmake-utils games
+
+KEYWORDS="~amd64 ~x86"
+
+if [[ ${PV} = *9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="git://github.com/performous/performous.git"
+	PATCHES=(
+		$PATCHES
+		"${FILESDIR}"/${PN}-20150719-cmake.patch
+	)
+	KEYWORDS=""
+else
+	SRC_URI="https://github.com/performous/performous/archive/${PV}.tar.gz -> ${P}.tar.gz $SRC_URI"
+	PATCHES=(
+		$PATCHES
+		"${FILESDIR}"/${PN}-20140927-cmake.patch
+	)
+fi
+
 
 SONGS_PN=ultrastar-songs
 
@@ -27,19 +45,6 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-20140927-linguas.patch
 )
 
-if [ "$PV" != "9999" ]; then
-    SRC_URI="https://github.com/performous/performous/archive/${PV}.tar.gz -> ${P}.tar.gz $SRC_URI"
-	PATCHES=(
-		$PATCHES
-		"${FILESDIR}"/${PN}-20140927-cmake.patch
-	)
-else
-    EGIT_REPO_URI="git://github.com/performous/performous.git"
-	PATCHES=(
-		$PATCHES
-		"${FILESDIR}"/${PN}-20150719-cmake.patch
-	)
-fi
 
 LICENSE="GPL-2
 	songs? (
@@ -47,7 +52,6 @@ LICENSE="GPL-2
 		CCPL-Attribution-NonCommercial-NoDerivs-2.5
 	)"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="midi songs tools webcam"
 
 RDEPEND="dev-cpp/glibmm
