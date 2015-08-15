@@ -1,15 +1,12 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
-PYTHON_DEPEND="2"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+PYTHON_COMPAT=( python{2_6,2_7} )
 
-
-inherit distutils
+inherit distutils-r1
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -33,9 +30,10 @@ DEPEND="dev-libs/chmlib
 	dev-python/pychm
 	dev-python/beautifulsoup
 	"
+src_prepare() {
+	echo "${PV}" > RELEASE-VERSION
+}
 
 src_install() {
-	distutils_src_install
-	dodoc INSTALL
-
+	distutils-r1_src_install
 }
