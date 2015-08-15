@@ -1,0 +1,18 @@
+diff --git a/QScintilla-gpl-2.9/Qt4Qt5/qscintilla.pro b/QScintilla-gpl-2.9/Qt4Qt5/qscintilla.pro
+index 9cbf38b..98e010f 100644
+--- a/QScintilla-gpl-2.9/Qt4Qt5/qscintilla.pro
++++ b/QScintilla-gpl-2.9/Qt4Qt5/qscintilla.pro
+@@ -78,7 +78,12 @@ isEmpty(qsci.path) {
+ INSTALLS += header trans qsci target
+ 
+ greaterThan(QT_MAJOR_VERSION, 3) {
+-    features.path = $$[QT_INSTALL_DATA]/mkspecs/features
++    greaterThan(QT_MAJOR_VERSION, 4) {
++        features.path = $$[QT_INSTALL_ARCHDATA]/mkspecs/features
++    }
++    else {
++        features.path = $$[QT_INSTALL_DATA]/mkspecs/features
++    }
+     features.files = $$PWD/features/qscintilla2.prf
+     INSTALLS += features
+ }
