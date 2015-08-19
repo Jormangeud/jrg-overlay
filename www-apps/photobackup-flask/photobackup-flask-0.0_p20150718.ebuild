@@ -15,10 +15,10 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/PhotoBackup/server-flask.git"
+	EGIT_REPO_URI="https://github.com/PhotoBackup/${MY_PN}.git"
 	KEYWORDS=""
 else
-	SRC_URI="https://github.com/PhotoBackup/server-flask/archive/${TAG}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/PhotoBackup/${MY_PN}/archive/${TAG}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 	S=${WORKDIR}/${MY_PN}-${TAG}
 fi
@@ -27,11 +27,11 @@ DESCRIPTION="A simple PhotoBackup server, made with Flask"
 HOMEPAGE="http://photobackup.github.io/"
 
 LICENSE="GPL-3"
-IUSE="+python_single_target_python3_3"
 
 RDEPEND="
 	>=dev-python/flask-0.8[${PYTHON_USEDEP}]
 	dev-python/logbook[${PYTHON_USEDEP}]
+	${PYTHON_DEPS}
 "
 
 DEPEND="${RDEPEND}"
