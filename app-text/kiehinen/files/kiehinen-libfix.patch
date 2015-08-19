@@ -1,0 +1,11 @@
+--- kiehinen.old	2015-08-18 01:00:30.000000000 +0300
++++ kiehinen	2015-08-18 01:03:53.380398250 +0300
+@@ -23,7 +23,7 @@
+ 
+ 
+ # Our own stuff
+-import kindle
++import kiehinen.kindle
+ 
+ 
+ def LOG(n, s):
