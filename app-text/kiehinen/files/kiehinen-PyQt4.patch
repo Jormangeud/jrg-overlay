@@ -1,0 +1,15 @@
+--- kiehinen.old	2015-08-18 00:10:33.115220313 +0300
++++ kiehinen	2015-08-18 00:19:44.480214669 +0300
+@@ -18,10 +18,8 @@
+ # Standard & 3rd party libraries
+ import sys
+ from optparse import OptionParser
+-from PySide.QtGui import *
+-from PySide.QtCore import *
+-#from PyQt4.QtGui import *
+-#from PyQt4.QtCore import *
++from PyQt4.QtGui import *
++from PyQt4.QtCore import *
+ 
+ 
+ # Our own stuff
