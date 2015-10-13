@@ -27,7 +27,7 @@ DEPEND="dev-python/pycrypto
 	 
 RDEPEND="${DEPEND}"
 
-S=${WORKDIR}/aajanki-yle-dl-35d7930
+S=${WORKDIR}/aajanki-yle-dl-6daffd4
 #: ${PREFIX:=/usr}
 
 src_unpack() {
