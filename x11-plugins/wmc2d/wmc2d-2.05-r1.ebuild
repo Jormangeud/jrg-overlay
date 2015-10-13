@@ -18,7 +18,7 @@ RDEPEND="x11-libs/libxcb
 	>=x11-libs/xcb-util-wm-0.3.8"
 
 DEPEND="${RDEPEND}
-	dev-util/pkgconfig"
+	virtual/pkgconfig"
 
 src_prepare() {
 	epatch ${FILESDIR}/${P}_linux_3.15_coretemp.patch
