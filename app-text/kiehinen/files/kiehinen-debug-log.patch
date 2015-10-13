@@ -1,0 +1,15 @@
+--- debug.py.old	2015-08-18 01:06:21.000000000 +0300
++++ debug.py	2015-09-02 12:33:41.587708258 +0300
+@@ -8,7 +8,11 @@
+ def xxx(s):
+     pass
+ 
+-logging.basicConfig(level=cp.getint('debug', 'level'))
++try:
++    logging.basicConfig(level=cp.getint('debug', 'level'))
++except:
++    logging.basicConfig(level=0)
++
+ LEVELS = ("ERROR", "WARN", "NOTICE", "INFO", "DEBUG", "XXX")
+ facilities = (
+         logging.error,    # 0

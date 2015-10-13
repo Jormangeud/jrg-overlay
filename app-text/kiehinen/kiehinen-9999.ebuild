@@ -41,6 +41,7 @@ DEPEND=${RDEPEND}
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-PyQt4.patch"
 	epatch "${FILESDIR}/${PN}-libfix.patch"
+	epatch "${FILESDIR}/${PN}-debug-log.patch"
 }
 
 src_compile() {
