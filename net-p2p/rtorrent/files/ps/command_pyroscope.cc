@@ -128,13 +128,7 @@ std::string get_active_tracker_domain(torrent::Download* item) {
             view_sort_current = active,"compare=----,d.is_open=,d.get_complete=,d.get_up_rate=,d.get_down_rate="
             schedule = filter_active,12,20,"view_filter = active,\"or={d.get_up_rate=,d.get_down_rate=,not=$d.get_complete=}\" ;view_sort=active"
 */
-#if defined(CMD2_ANY)
 torrent::Object apply_compare(rpc::target_type target, const torrent::Object::list_type& args) {
-#else
-torrent::Object apply_compare(rpc::target_type target, const torrent::Object& rawArgs) {
-    const torrent::Object::list_type& args = rawArgs.as_list();
-#endif
-
     if (!rpc::is_target_pair(target))
         throw torrent::input_error("Can only compare a target pair.");
 
@@ -184,7 +178,7 @@ torrent::Object apply_compare(rpc::target_type target, const torrent::Object& ra
 }
 
 
-static std::map<char, std::string> bound_commands[ui::DownloadList::DISPLAY_MAX_SIZE];
+static std::map<int, std::string> bound_commands[ui::DownloadList::DISPLAY_MAX_SIZE];
 
 /*  @DOC
     ui.bind_key=display,key,"command1=[,...]"
@@ -198,11 +192,7 @@ static std::map<char, std::string> bound_commands[ui::DownloadList::DISPLAY_MAX_
             # VIEW: Bind view #7 to the "rtcontrol" result
             schedule = bind_7,1,0,"ui.bind_key=download_list,7,ui.current_view.set=rtcontrol"
 */
-#if defined(CMD2_ANY)
 torrent::Object apply_ui_bind_key(rpc::target_type target, const torrent::Object& rawArgs) {
-#else
-torrent::Object apply_ui_bind_key(const torrent::Object& rawArgs) {
-#endif
     const torrent::Object::list_type& args = rawArgs.as_list();
 
     if (args.size() != 3)
@@ -215,10 +205,15 @@ torrent::Object apply_ui_bind_key(const torrent::Object& rawArgs) {
     const std::string& commands = (itr++)->as_string();
 
     // Get key index from definition
-    if (keydef.empty() || keydef.size() > (keydef[0] == '^' ? 2 : 1))
+    if (keydef.empty() || keydef.size() > (keydef[0] == '0' ? 4 : keydef[0] == '^' ? 2 : 1))
         throw torrent::input_error("Bad key definition.");
-    char key = keydef[0];
+    int key = keydef[0];
     if (key == '^' && keydef.size() > 1) key = keydef[1] & 31;
+    if (key == '0' && keydef.size() != 1) {
+        if (keydef.size() != 4)
+            throw torrent::input_error("Bad key definition (expected 4 digit octal code).");
+        key = (int) strtol(keydef.c_str(), (char **) NULL, 8);
+    }
 
     // Look up display
     ui::DownloadList::Display displayType = ui::DownloadList::DISPLAY_MAX_SIZE;
@@ -262,6 +257,70 @@ torrent::Object apply_ui_bind_key(const torrent::Object& rawArgs) {
 }
 
 
+torrent::Object cmd_ui_focus_home() {
+    ui::DownloadList* dl_list = control->ui()->download_list();
+    core::View* dl_view = dl_list->current_view();
+
+    if (!dl_view->empty_visible()) {
+        dl_view->set_focus(dl_view->begin_visible());
+        dl_view->set_last_changed();
+    }
+
+    return torrent::Object();
+}
+
+
+torrent::Object cmd_ui_focus_end() {
+    ui::DownloadList* dl_list = control->ui()->download_list();
+    core::View* dl_view = dl_list->current_view();
+
+    if (!dl_view->empty_visible()) {
+        dl_view->set_focus(dl_view->end_visible() - 1);
+        dl_view->set_last_changed();
+    }
+
+    return torrent::Object();
+}
+
+
+torrent::Object cmd_ui_focus_pgup() {
+    ui::DownloadList* dl_list = control->ui()->download_list();
+    core::View* dl_view = dl_list->current_view();
+
+    int skip = rpc::call_command_value("ui.focus.page_size");
+    if (!dl_view->empty_visible()) {
+        if (dl_view->focus() == dl_view->end_visible())
+            dl_view->set_focus(dl_view->end_visible() - 1);
+        else if (dl_view->focus() - dl_view->begin_visible() >= skip)
+            dl_view->set_focus(dl_view->focus() - skip);
+        else
+            dl_view->set_focus(dl_view->begin_visible());
+        dl_view->set_last_changed();
+    }
+
+    return torrent::Object();
+}
+
+
+torrent::Object cmd_ui_focus_pgdn() {
+    ui::DownloadList* dl_list = control->ui()->download_list();
+    core::View* dl_view = dl_list->current_view();
+
+    int skip = rpc::call_command_value("ui.focus.page_size");
+    if (!dl_view->empty_visible()) {
+        if (dl_view->focus() == dl_view->end_visible())
+            dl_view->set_focus(dl_view->begin_visible());
+        else if (dl_view->end_visible() - dl_view->focus() > skip)
+            dl_view->set_focus(dl_view->focus() + skip);
+        else
+            dl_view->set_focus(dl_view->end_visible() - 1);
+        dl_view->set_last_changed();
+    }
+
+    return torrent::Object();
+}
+
+
 torrent::Object cmd_d_tracker_domain(core::Download* download) {
     return get_active_tracker_domain(download->download());
 }
@@ -272,8 +331,6 @@ torrent::Object cmd_ui_current_view() {
 }
 
 
-#if defined(CMD2_ANY)
-// 0.8.9+ only
 torrent::Object cmd_log_messages(const torrent::Object::string_type& arg) {
     if (arg.empty()) {
         control->core()->push_log_std("Closing message log file.");
@@ -296,7 +353,6 @@ torrent::Object cmd_log_messages(const torrent::Object::string_type& arg) {
 
     return torrent::Object();
 }
-#endif
 
 
 #if (API_VERSION < 3)
@@ -347,18 +403,14 @@ void initialize_command_pyroscope() {
     //CMD2_TRACKER("t.failed_time_next",   _cxxstd_::bind(&torrent::Tracker::failed_time_next, _cxxstd_::placeholders::_1));
 #endif
 
-#if defined(CMD2_ANY)
-    // 0.8.9+
     CMD2_ANY_LIST("compare", &apply_compare);
     CMD2_ANY("ui.bind_key", &apply_ui_bind_key);
     CMD2_DL("d.tracker_domain", _cxxstd_::bind(&cmd_d_tracker_domain, _cxxstd_::placeholders::_1));
     CMD2_ANY_STRING("log.messages", _cxxstd_::bind(&cmd_log_messages, _cxxstd_::placeholders::_2));
     CMD2_ANY("ui.current_view", _cxxstd_::bind(&cmd_ui_current_view));
-#else
-    // 0.8.6
-    ADD_ANY_LIST("compare", rak::ptr_fn(&apply_compare));
-    ADD_COMMAND_LIST("ui.bind_key", rak::ptr_fn(&apply_ui_bind_key));
-    CMD_D_VOID("d.tracker_domain", &cmd_d_tracker_domain);
-    ADD_COMMAND_VOID("ui.current_view", rak::ptr_fun(&cmd_ui_current_view));
-#endif
+    CMD2_ANY("ui.focus.home", _cxxstd_::bind(&cmd_ui_focus_home));
+    CMD2_ANY("ui.focus.end", _cxxstd_::bind(&cmd_ui_focus_end));
+    CMD2_ANY("ui.focus.pgup", _cxxstd_::bind(&cmd_ui_focus_pgup));
+    CMD2_ANY("ui.focus.pgdn", _cxxstd_::bind(&cmd_ui_focus_pgdn));
+    CMD2_VAR_VALUE("ui.focus.page_size", 50);
 }
