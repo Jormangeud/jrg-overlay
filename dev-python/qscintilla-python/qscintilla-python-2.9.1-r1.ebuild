@@ -10,7 +10,7 @@ inherit python-r1 qmake-utils
 MY_P=QScintilla-gpl-${PV}
 
 DESCRIPTION="Python bindings for Qscintilla"
-HOMEPAGE="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+HOMEPAGE="http://www.riverbankcomputing.com/software/qscintilla/intro"
 SRC_URI="mirror://sourceforge/pyqt/${MY_P}.tar.gz"
 
 LICENSE="|| ( GPL-2 GPL-3 )"
