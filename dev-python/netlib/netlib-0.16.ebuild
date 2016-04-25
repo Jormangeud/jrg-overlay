@@ -17,7 +17,7 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
-	=dev-python/backports-ssl-match-hostname-3.5[${PYTHON_USEDEP}]
+	=dev-python/backports-ssl-match-hostname-3.5*[${PYTHON_USEDEP}]
 	>=dev-python/certifi-2015.11.20.1[${PYTHON_USEDEP}]
 	=dev-python/cryptography-1.2*[${PYTHON_USEDEP}]
         =dev-python/hpack-2*[${PYTHON_USEDEP}]
