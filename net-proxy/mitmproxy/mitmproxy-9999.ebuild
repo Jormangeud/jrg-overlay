@@ -46,7 +46,7 @@ RDEPEND="
         >=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
 	!>dev-python/html2text-2016.4.2[${PYTHON_USEDEP}]
         >=dev-python/hyperframe-3.2.0[${PYTHON_USEDEP}]
-        !>=dev-python/hyperframe-4[${PYTHON_USEDEP}]
+        !>=dev-python/hyperframe-4.1[${PYTHON_USEDEP}]
 	>=dev-python/ipaddress-1.0.15[${PYTHON_USEDEP}]
 	!>=dev-python/ipaddress-1.1[${PYTHON_USEDEP}]
 	>=dev-python/lxml-3.5.0[${PYTHON_USEDEP}]
