@@ -17,8 +17,6 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
-	>=dev-python/enum34-1.0.4[${PYTHON_USEDEP}]
-	!>=dev-python/enum34-2[${PYTHON_USEDEP}]
 	>=dev-python/hyperframe-3.1[${PYTHON_USEDEP}]
 	!=dev-python/hyperframe-4.0.0
 	!>=dev-python/hyperframe-5
