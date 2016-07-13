@@ -1,0 +1,30 @@
+From 9be727bcf6fe5c5f053e09697946b8d69204753b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Moses=20Palm=C3=A9r?= <mosespalmer@gmail.com>
+Date: Thu, 16 Jul 2015 20:31:09 +0200
+Subject: [PATCH] Always set slimit.parser.*tab to strings
+
+These values are expected by ply to be module names, not module
+instances. ply 3.6 will crash if actual modules are passed.
+---
+ src/slimit/parser.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/slimit/parser.py b/src/slimit/parser.py
+index d892166..8adacf0 100644
+--- a/src/slimit/parser.py
++++ b/src/slimit/parser.py
+@@ -29,10 +29,10 @@
+ from slimit import ast
+ from slimit.lexer import Lexer
+ 
+-try:
+-    from slimit import lextab, yacctab
+-except ImportError:
+-    lextab, yacctab = 'lextab', 'yacctab'
++# The default values for the `Parser` constructor, passed on to ply; they must
++# be strings
++lextab = '%s.lextab' % __package__
++yacctab = '%s.yacctab' % __package__
+ 
+ 
+ class Parser(object):
