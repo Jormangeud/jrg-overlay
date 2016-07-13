@@ -16,4 +16,6 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
+PATCHES=( "${FILESDIR}/${P}-ply-3.6.patch" )
+
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
