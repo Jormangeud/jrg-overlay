@@ -1,0 +1,82 @@
+diff --git a/src/slimit/tests/test_minifier.py b/src/slimit/tests/test_minifier.py
+index e999335..6fd9faf 100644
+--- a/src/slimit/tests/test_minifier.py
++++ b/src/slimit/tests/test_minifier.py
+@@ -398,6 +398,14 @@ def assertMinified(self, source, expected):
+          """,
+          "(function($){$.hello='world';}(jQuery));"),
+ 
++        # function call on immediate number
++        ('((25)).toString()', '(25).toString();'),
++        ('((25))["toString"]()', '(25).toString();'),
++
++        # attribute access on immediate number
++        ('((25)).attr', '(25).attr;'),
++        ('((25))["attr"]', '(25).attr;'),
++
+         # function call in FOR init
+         ('for(o(); i < 3; i++) {}', 'for(o();i<3;i++){}'),
+ 
+diff --git a/src/slimit/visitors/ecmavisitor.py b/src/slimit/visitors/ecmavisitor.py
+index 1c98598..c2e798c 100644
+--- a/src/slimit/visitors/ecmavisitor.py
++++ b/src/slimit/visitors/ecmavisitor.py
+@@ -354,7 +354,10 @@ def visit_DotAccessor(self, node):
+             template = '(%s.%s)'
+         else:
+             template = '%s.%s'
+-        s = template % (self.visit(node.node), self.visit(node.identifier))
++        left = self.visit(node.node)
++        if isinstance(node.node, ast.Number):
++            left = '(%s)' % left
++        s = template % (left, self.visit(node.identifier))
+         return s
+ 
+     def visit_BracketAccessor(self, node):
+diff --git a/src/slimit/visitors/minvisitor.py b/src/slimit/visitors/minvisitor.py
+index 1c6fd15..9846493 100644
+--- a/src/slimit/visitors/minvisitor.py
++++ b/src/slimit/visitors/minvisitor.py
+@@ -34,4 +34,5 @@
+ def _is_identifier(value):
+     return _HAS_ID_MATCH(value) and value not in Lexer.keywords_dict
+ 
++specials = re.compile(r'[`\\~!@#%\^&*(){}\[\]\-+=/|<>,.:;?]+')
+ 
+@@ -388,20 +388,27 @@ def visit_DotAccessor(self, node):
+             template = '(%s.%s)'
+         else:
+             template = '%s.%s'
+-        s = template % (self.visit(node.node), self.visit(node.identifier))
++        left = self.visit(node.node)
++        if isinstance(node.node, ast.Number):
++            left = '(%s)' % left
++        s = template % (left, self.visit(node.identifier))
+         return s
+ 
+     def visit_BracketAccessor(self, node):
+         if isinstance(node.expr, ast.String):
+             value = node.expr.value
+-            # remove single or double quotes around the value, but not both
+-            if value.startswith("'"):
+-                value = value.strip("'")
+-            elif value.startswith('"'):
+-                value = value.strip('"')
+-            if _is_identifier(value):
+-                s = '%s.%s' % (self.visit(node.node), value)
+-                return s
++            if not specials.search(value):
++                # remove single or double quotes around the value, but not both
++                if value.startswith("'"):
++                    value = value.strip("'")
++                elif value.startswith('"'):
++                    value = value.strip('"')
++                if _is_identifier(value):
++                    left = self.visit(node.node)
++                    if isinstance(node.node, ast.Number):
++                        left = '(%s)' % left
++                    s = '%s.%s' % (left, value)
++                    return s
+ 
+         s = '%s[%s]' % (self.visit(node.node), self.visit(node.expr))
+         return s
