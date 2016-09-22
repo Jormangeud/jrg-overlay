@@ -16,6 +16,11 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-PATCHES=( "${FILESDIR}/${P}-ply-3.6.patch" )
+PATCHES=(
+	"${FILESDIR}/${P}-pull-48+60.patch"
+	"${FILESDIR}/${P}-pull-71.patch"
+	"${FILESDIR}/${P}-pull-79.patch"
+	"${FILESDIR}/${P}-pull-83.patch"
+	 )
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
