@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python2_7 )
 
 inherit distutils-r1
 
-DESCRIPTION=""
+DESCRIPTION="Collection of network utility classes used by pathod and mitmproxy"
 HOMEPAGE="http://mitmproxy.org/"
 SRC_URI="https://github.com/mitmproxy/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
