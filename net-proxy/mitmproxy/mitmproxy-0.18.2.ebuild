@@ -3,7 +3,7 @@
 # $Id$
 
 EAPI=6
-PYTHON_COMPAT=( python3_5 )
+PYTHON_COMPAT=( python2_7 python3_5 )
 
 inherit distutils-r1 versionator
 
@@ -22,9 +22,11 @@ HOMEPAGE="http://mitmproxy.org/"
 
 LICENSE="MIT"
 SLOT="0"
-IUSE="doc examples test"
+IUSE="doc examples"
 
 RDEPEND="
+	!www-servers/pathod
+	!dev-python/netlib
 	>=dev-python/backports-ssl-match-hostname-3.5.0.1[${PYTHON_USEDEP}]
 	!>=dev-python/backports-ssl-match-hostname-3.6[${PYTHON_USEDEP}]
 	>=dev-python/blinker-1.4[${PYTHON_USEDEP}]
@@ -42,8 +44,8 @@ RDEPEND="
 	!>=dev-python/cssutils-1.1[${PYTHON_USEDEP}]
         >=dev-python/flask-0.10.1[${PYTHON_USEDEP}]
         !>=dev-python/flask-0.12[${PYTHON_USEDEP}]
-        >=dev-python/h2-2.5.0[${PYTHON_USEDEP}]
-	!>=dev-python/h2-3[${PYTHON_USEDEP}]
+        >=dev-python/h2-2.4.1[${PYTHON_USEDEP}]
+	!>=dev-python/h2-2.5[${PYTHON_USEDEP}]
         >=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
 	!>dev-python/html2text-2016.9.19[${PYTHON_USEDEP}]
         >=dev-python/hyperframe-4.0.1[${PYTHON_USEDEP}]
@@ -66,22 +68,27 @@ RDEPEND="
         >=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
         !>=dev-python/pyperclip-1.6[${PYTHON_USEDEP}]
         >=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
-        !>=dev-python/requests-3[${PYTHON_USEDEP}]
-	>=dev-py/sortedcontainers-1.5.4[${PYTHON_USEDEP}]
-	!>=dev-py/sortedcontainers-1.6[${PYTHON_USEDEP}]
+        !>=dev-python/requests-2.12[${PYTHON_USEDEP}]
+        >=dev-python/six-1.10[${PYTHON_USEDEP}]
+        !>=dev-python/six-1.11[${PYTHON_USEDEP}]
         >=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
         !>=dev-python/urwid-1.4[${PYTHON_USEDEP}]
         >=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
         !>=dev-python/watchdog-0.9[${PYTHON_USEDEP}]
         >=www-servers/tornado-4.3[${PYTHON_USEDEP}]
         !>=www-servers/tornado-4.5[${PYTHON_USEDEP}]
+	$(python_gen_cond_dep '>=dev-python/enum34-1.0.4[${PYTHON_USEDEP}]' 'python2*')
+	$(python_gen_cond_dep '!>=dev-python/enum34-2[${PYTHON_USEDEP}]' 'python2*')
+	$(python_gen_cond_dep '>=dev-python/ipaddress-1.0.15[${PYTHON_USEDEP}]' 'python2*')
+	$(python_gen_cond_dep '!>=dev-python/ipaddress-1.1[${PYTHON_USEDEP}]' 'python2*')
+	$(python_gen_cond_dep '=dev-python/typing-3.5.2.2[${PYTHON_USEDEP}]' 'python2*')
 "
 DEPEND="${RDEPEND}"
 
 python_prepare_all() {
 	distutils-r1_python_prepare_all
-}
 
+}
 
 python_install_all() {
 	local DOCS=( CHANGELOG CONTRIBUTORS )
