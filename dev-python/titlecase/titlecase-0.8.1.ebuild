@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
-PYTHON_COMPAT=( python{2_6,2_7,3_3,3_4} )
+PYTHON_COMPAT=( python{2_6,2_7,3_3,3_4,3_5} )
 
 MY_PN="python-$PN"
 
@@ -15,7 +15,8 @@ if [[ ${PV} = *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/ppannuto/${MY_PN}.git"
 	KEYWORDS=""
 else
-	SRC_URI="https://github.com/ppannuto/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
+
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -31,4 +32,9 @@ IUSE=""
 
 DEPEND=""
 
-S="${WORKDIR}/${MY_PN}-${PV}"
+python_prepare_all() {
+	# Disable test
+	sed -i -e "/setup_requires=\['nose>=1.0'\],/d" setup.py || die
+
+	distutils-r1_python_prepare_all
+}
