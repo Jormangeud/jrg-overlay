@@ -68,7 +68,7 @@ RDEPEND="
         >=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
         !>=dev-python/pyperclip-1.6[${PYTHON_USEDEP}]
         >=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
-        !>=dev-python/requests-2.12[${PYTHON_USEDEP}]
+        !>=dev-python/requests-3[${PYTHON_USEDEP}]
         >=dev-python/six-1.10[${PYTHON_USEDEP}]
         !>=dev-python/six-1.11[${PYTHON_USEDEP}]
         >=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
@@ -86,6 +86,10 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 python_prepare_all() {
+
+	# Disable test
+        sed -i -e "s/\(requests>=2.9.1, \)<2.12/\1<3/" setup.py || die
+
 	distutils-r1_python_prepare_all
 
 }
