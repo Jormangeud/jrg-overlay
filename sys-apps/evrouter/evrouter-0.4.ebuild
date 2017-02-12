@@ -7,7 +7,7 @@ EAPI="2"
 inherit autotools
 
 DESCRIPTION="An input event router"
-HOMEPAGE="http://www.bedroomlan.org/~alexios/coding_evrouter.html"
+HOMEPAGE="https://www.bedroomlan.org/projects/evrouter"
 
 SRC_URI="http://debian.bedroomlan.org/debian/pool/main/e/${PN}/${PN}_${PV}.tar.gz"
 
