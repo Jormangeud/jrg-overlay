@@ -4,7 +4,7 @@
 
 EAPI=5
 
-PYTHON_COMPAT=( python{2_7,3_3,3_4} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 PYTHON_REQ_USE="sqlite,xml"
 PLOCALES="cs de en es fr it pt ru tr zh_CN"
 
@@ -20,7 +20,7 @@ MY_P=${PN}${SLOT}-${MY_PV}
 BASE_URI="mirror://sourceforge/eric-ide/${PN}${SLOT}/stable/${MY_PV}"
 SRC_URI="${BASE_URI}/${MY_P}.tar.gz"
 for L in ${PLOCALES}; do
-	SRC_URI+=" linguas_${L}? ( ${BASE_URI}/${PN}${SLOT}-i18n-${L/zh_CN/zh_CN.GB2312}-${MY_PV}.tar.gz )"
+	SRC_URI+=" linguas_${L}? ( ${BASE_URI}/${PN}${SLOT}-i18n-${L}-${MY_PV}.tar.gz )"
 done
 unset L
 
@@ -30,9 +30,9 @@ IUSE=""
 
 DEPEND="
 	${PYTHON_DEPS}
-	>=dev-python/sip-4.14.3[${PYTHON_USEDEP}]
+	>=dev-python/sip-4.19[${PYTHON_USEDEP}]
 	>=dev-python/PyQt5-5.4.0[${PYTHON_USEDEP},gui,help,sql,svg,webkit]
-	>=dev-python/qscintilla-python-2.7.1[${PYTHON_USEDEP}]
+	>=dev-python/qscintilla-python-2.8.0[qt5]
 "
 RDEPEND="${DEPEND}
 	>=dev-python/chardet-2.2.1[${PYTHON_USEDEP}]
