@@ -1,18 +1,12 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=5
-#PYTHON_DEPEND="2"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
-
-PYTHON_COMPAT=( python{2_6,2_7} )
-
+EAPI=6
+PYTHON_COMPAT=( python2_7 )
 SNAPSHOT="yes"
 
-
-inherit distutils eutils
+inherit distutils-r1 eutils
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -38,13 +32,14 @@ DEPEND="dev-python/PyQt4"
 
 src_prepare() {
 	sed -i -e "s/subprocess.check_call(['make'])//" setup.py
+	distutils-r1_src_prepare
 }
 
 src_compile() {
 	emake
-	distutils_src_compile
+	distutils-r1_src_compile
 }
 
 src_install() {
-	distutils_src_install
+	distutils-r1_src_install
 }
