@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-mobilephone/wammu/wammu-0.36-r1.ebuild,v 1.1 2015/02/11 09:29:08 idella4 Exp $
+# $Id$
 
 EAPI=5
 
@@ -14,11 +14,12 @@ SRC_URI="http://dl.cihar.com/wammu/v0/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ~x86"
 IUSE="bluetooth gnome"
 
-RDEPEND=">=app-mobilephone/gammu-1.25.0[python]
-	>=dev-python/wxpython-2.8[${PYTHON_USEDEP}]
+RDEPEND="|| ( ( >=app-mobilephone/gammu-1.36 dev-python/python-gammu )
+		>=app-mobilephone/gammu-1.25.0[python] )
+	>=dev-python/wxpython-2.8:*[${PYTHON_USEDEP}]
 	bluetooth? ( dev-python/pybluez[${PYTHON_USEDEP}]
 		gnome? ( net-wireless/gnome-bluetooth )
 	)"
@@ -26,7 +27,7 @@ DEPEND="${RDEPEND}"
 
 # Supported languages and translated documentation
 # Be sure all languages are prefixed with a single space!
-MY_AVAILABLE_LINGUAS=" af bg ca cs da de el es et fi fr gl he hu id it ko nl pl pt_BR ru sk sv zh_CN zh_TW"
+MY_AVAILABLE_LINGUAS=" af ar bg bn ca cs da de el en_GB es et fi fr gl he hu id it ko nl pl pt_BR ro ru sk sv sw tr uk zh_CN zh_TW"
 IUSE="${IUSE} ${MY_AVAILABLE_LINGUAS// / linguas_}"
 
 # Required to source locale content out of the box
@@ -59,6 +60,5 @@ src_compile() {
 }
 
 src_install() {
-#	local DOCS="AUTHORS FAQ"
 	SKIPWXCHECK=yes distutils-r1_src_install
 }
