@@ -1,17 +1,14 @@
-EAPI="3"
-PYTHON_DEPEND="2"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
 
-inherit versionator distutils
-#MY_TAG="7be914714750"
-#MY_PN=${PN/-/_}
-#MY_PKG="Mekk-${MY_PN}-${MY_TAG}"
+EAPI=6
+PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 
-#MY_PV=$(replace_all_version_separators '-')
+inherit versionator distutils-r1
+
 DESCRIPTION="Helper scripts for Calibre ebook management"
 HOMEPAGE="http://pypi.python.org/pypi/mekk.calibre/"
-#SRC_URI="http://bitbucket.org/Mekk/${MY_PN}/get/${PV}.tar.bz2 -> ${P}.tar.bz2"
 SRC_URI="https://pypi.python.org/packages/source/m/mekk.calibre/mekk.calibre-${PV}.tar.gz -> ${P}.tar.gz"
 
 RESTRICT="mirror"
@@ -33,6 +30,6 @@ RDEPEND=">=app-text/calibre-0.7
 S="${WORKDIR}/mekk.calibre-${PV}"
 
 src_install() {
-	distutils_src_install
+	distutils-r1_src_install
 	dodoc README.txt
 }
