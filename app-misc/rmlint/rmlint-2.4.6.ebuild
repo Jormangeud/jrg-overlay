@@ -68,6 +68,9 @@ src_compile() {
 
 src_install() {
 	escons --prefix=${D}/usr --actual-prefix=/usr --libdir=/usr/$(get_libdir) install
+	if use gui; then
+		python_foreach_impl python_newscript gui/shredder/__main__.py shredder
+	fi
 }
 
 pkg_preinst() {
