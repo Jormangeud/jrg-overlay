@@ -1,19 +1,26 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 PYTHON_COMPAT=( python2_7 )
 
 inherit python-single-r1
 
+if [[ ${PV} = *9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/aajanki/${PN}.git"
+	KEYWORDS=""
+else
+	SRC_URI="https://github.com/aajanki/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~ppc ~x86"
+fi
+
 DESCRIPTION="Download media files from Yle Areena"
 HOMEPAGE="http://aajanki.github.io/yle-dl/"
-SRC_URI="https://github.com/aajanki/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~x86"
 
 IUSE="+php +youtube-dl"
 
@@ -30,7 +37,9 @@ DEPEND="
 	youtube-dl? ( net-misc/youtube-dl[python_targets_python2_7] )
 "
 
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	virtual/ffmpeg[encode]
+"
 
 src_prepare() {
 	python_fix_shebang .
