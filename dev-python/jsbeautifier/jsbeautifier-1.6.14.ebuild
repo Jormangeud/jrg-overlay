@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
@@ -17,7 +16,6 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
-RDEPEND="
-	>=dev-python/six-1.6.1[${PYTHON_USEDEP}]
-	>=dev-python/editorconfig-0.12.0[${PYTHON_USEDEP}]
+RDEPEND=">=dev-python/six-1.6.1[${PYTHON_USEDEP}]
+	>=dev-python/editorconfig-core-py-0.12.0[${PYTHON_USEDEP}]
 "
