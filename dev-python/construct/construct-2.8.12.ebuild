@@ -15,7 +15,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="test"
 
-DEPEND="test? (
+DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
+	test? (
 		dev-python/numpy[${PYTHON_USEDEP}]
 		dev-python/pytest[${PYTHON_USEDEP}]
 		dev-python/pytest-cov[${PYTHON_USEDEP}]

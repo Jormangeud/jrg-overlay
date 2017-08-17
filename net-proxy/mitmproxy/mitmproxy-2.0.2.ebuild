@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
+
 
 EAPI=6
 PYTHON_COMPAT=( python3_{5,6} )
@@ -50,7 +50,9 @@ RDEPEND="
         >=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
         >=www-servers/tornado-4.3[${PYTHON_USEDEP}]
 "
-DEPEND="${RDEPEND}"
+DEPEND=">=dev-python/setuptools-11.3[${PYTHON_USEDEP}]
+	${RDEPEND}
+"
 
 python_prepare_all() {
 
