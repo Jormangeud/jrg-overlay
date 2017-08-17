@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI=6
 
@@ -10,6 +9,7 @@ inherit distutils-r1
 
 MY_PN="ruamel.base"
 MY_P="${MY_PN}-${PV}"
+MODNAME="ruamel"
 
 DESCRIPTION="common routines for ruamel packages"
 HOMEPAGE="https://pypi.python.org/pypi/ruamel.base"
@@ -21,11 +21,18 @@ KEYWORDS="~amd64"
 IUSE="test"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-DEPEND=""
-RDEPEND=""
+DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
+	${PYTHON_DEPS}"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${MY_P}"
 
 python_install() {
+	cat > "${S}"/${MODNAME}/__init__.py <<-EOF || die
+		__import__('pkg_resources').declare_namespace(__name__)
+	EOF
+	python_foreach_impl python_domodule ${MODNAME}
+
 	distutils-r1_python_install --single-version-externally-managed
+	find "${ED}" -name '*.pth' -delete || die
 }
