@@ -1,11 +1,14 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+
 
 EAPI=6
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} pypy{,3} )
 
 inherit distutils-r1
+
+MY_TAG="f29921d2048e"
+S="${WORKDIR}/${PN}-${MY_TAG}"
 
 DESCRIPTION="YAML parser/emitter that supports roundtrip comment preservation"
 HOMEPAGE="https://pypi.python.org/pypi/ruamel.yaml https://bitbucket.org/ruamel/yaml"
@@ -38,6 +41,7 @@ python_configure_all() {
 
 python_install() {
 	distutils-r1_python_install --single-version-externally-managed
+	find "${ED}" -name '*.pth' -delete || die
 }
 
 python_test() {

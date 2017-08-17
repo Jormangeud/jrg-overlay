@@ -39,3 +39,8 @@ python_prepare_all() {
 python_test() {
 	py.test -vvx test || die
 }
+
+python_install_all() {
+	distutils-r1_python_install_all
+	find "${ED}" -name '*.pth' -delete || die
+}
