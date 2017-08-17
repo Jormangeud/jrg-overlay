@@ -1,6 +1,5 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 PYTHON_COMPAT=( python2_7 python3_5 )
@@ -57,7 +56,9 @@ RDEPEND="
 	$(python_gen_cond_dep '>=dev-python/ipaddress-1.0.15[${PYTHON_USEDEP}]' 'python2*')
 	$(python_gen_cond_dep '=dev-python/typing-3.5.2.2[${PYTHON_USEDEP}]' 'python2*')
 "
-DEPEND="${RDEPEND}"
+DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
+	${RDEPEND}
+"
 
 python_prepare_all() {
 
