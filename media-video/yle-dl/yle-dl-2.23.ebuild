@@ -4,7 +4,9 @@
 EAPI=6
 PYTHON_COMPAT=( python2_7 )
 
-inherit python-single-r1
+DISTUTILS_SINGLE_IMPL=1
+inherit distutils-r1
+
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -30,7 +32,9 @@ REQUIRED_USE="
 
 DEPEND="
 	dev-python/setuptools[${PYTHON_USEDEP}]
+	dev-python/progress[${PYTHON_USEDEP}]
 	dev-python/pycrypto[${PYTHON_USEDEP}]
+	dev-python/requests[${PYTHON_USEDEP}]
 	php? (
 		dev-lang/php[bcmath,curl,crypt,simplexml]
 		media-video/rtmpdump
@@ -42,12 +46,5 @@ RDEPEND="${DEPEND}
 	virtual/ffmpeg[encode]
 "
 
-src_prepare() {
-	python_fix_shebang .
-
-	sed -i 's|/usr/local|/usr|g' Makefile
-	sed -i 's|/usr/local/share/yle-dl/AdobeHDS.php|/usr/share/yle-dl/AdobeHDS.php|g' yle-dl
-
-	default
-}
+DOCS=( COPYING ChangeLog README.fi README.md )
 
