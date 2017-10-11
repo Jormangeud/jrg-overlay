@@ -1,0 +1,1 @@
+../../deadbeef-overlay/eclass/deadbeef-plugins.eclass
