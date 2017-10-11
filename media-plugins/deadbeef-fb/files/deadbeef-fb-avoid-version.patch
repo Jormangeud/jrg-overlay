@@ -1,0 +1,18 @@
+--- a/Makefile.am	2017-02-14 18:32:20.033289488 +0200
++++ b/Makefile.am	2017-10-10 18:56:07.865016155 +0300
+@@ -46,13 +46,13 @@
+ 
+ if HAVE_GTK2
+ ddb_misc_filebrowser_GTK2_la_SOURCES = $(filebrowser_SOURCES)
+-ddb_misc_filebrowser_GTK2_la_LDFLAGS = -module
++ddb_misc_filebrowser_GTK2_la_LDFLAGS = -module -avoid-version
+ ddb_misc_filebrowser_GTK2_la_LIBADD  = $(LDADD) $(GTK2_DEPS_LIBS)
+ ddb_misc_filebrowser_GTK2_la_CFLAGS  = -pipe -std=c99 $(GTK2_DEPS_CFLAGS) $(EXTRA_FLAGS) $(VERSION_FLAGS)
+ endif
+ if HAVE_GTK3
+ ddb_misc_filebrowser_GTK3_la_SOURCES = $(filebrowser_SOURCES)
+-ddb_misc_filebrowser_GTK3_la_LDFLAGS = -module
++ddb_misc_filebrowser_GTK3_la_LDFLAGS = -module -avoid-version
+ ddb_misc_filebrowser_GTK3_la_LIBADD  = $(LDADD) $(GTK3_DEPS_LIBS)
+ ddb_misc_filebrowser_GTK3_la_CFLAGS  = -pipe -std=c99 $(GTK3_DEPS_CFLAGS) $(EXTRA_FLAGS) $(VERSION_FLAGS)
+ endif
