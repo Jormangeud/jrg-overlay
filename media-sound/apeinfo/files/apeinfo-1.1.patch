@@ -1,0 +1,18 @@
+--- a/apeinfo.cpp	2009-05-14 04:03:29.000000000 +0300
++++ b/apeinfo.cpp	2017-10-06 18:58:44.605188339 +0300
+@@ -18,10 +18,11 @@
+ 
+ // Setup environment
+ #include <stdio.h>
+-#include "All.h"
+-#include "MACLib.h"
+-#include "CharacterHelper.h"
+-#include "APETag.h"
++#include <getopt.h>
++#include <mac/All.h>
++#include <mac/MACLib.h>
++#include <mac/CharacterHelper.h>
++#include <mac/APETag.h>
+ 
+ // Display usage information
+ void warning(char *prog, int retVal) {
