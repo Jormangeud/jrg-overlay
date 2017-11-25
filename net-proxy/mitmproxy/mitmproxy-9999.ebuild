@@ -28,13 +28,9 @@ RDEPEND="
 	>=dev-python/brotlipy-0.5.1[${PYTHON_USEDEP}]
 	>=dev-python/certifi-2015.11.20.1[${PYTHON_USEDEP}]
 	>=dev-python/click-6.2[${PYTHON_USEDEP}]
-	>=dev-python/cryptography-1.3[${PYTHON_USEDEP}]
-	>=dev-python/cssutils-1.0.1[${PYTHON_USEDEP}]
+	>=dev-python/cryptography-2.0[${PYTHON_USEDEP}]
         >=dev-python/h2-3.0[${PYTHON_USEDEP}]
-        >=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
         >=dev-python/hyperframe-5.0[${PYTHON_USEDEP}]
-	=dev-python/idna-2.5[${PYTHON_USEDEP}]
-	>=dev-python/jsbeautifier-1.6.3[${PYTHON_USEDEP}]
 	>=dev-python/kaitaistruct-0.7[${PYTHON_USEDEP}]
 	>=dev-python/ldap3-2.2.0[${PYTHON_USEDEP}]
         >=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
@@ -48,7 +44,7 @@ RDEPEND="
         >=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
         >=www-servers/tornado-4.3[${PYTHON_USEDEP}]
         examples? (
-		>=dev-python/pillow-3.2[${PYTHON_USEDEP}]
+		>=dev-python/pillow-4.3[${PYTHON_USEDEP}]
 		>=dev-python/beautifulsoup-4.4.1[${PYTHON_USEDEP}]
 	)
 "
