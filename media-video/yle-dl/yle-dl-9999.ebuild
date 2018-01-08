@@ -35,7 +35,6 @@ DEPEND="
 
 RDEPEND="${DEPEND}
 	dev-python/lxml[${PYTHON_USEDEP}]
-	dev-python/pyamf[${PYTHON_USEDEP}]
 	dev-python/pycrypto[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	php? (
@@ -45,6 +44,8 @@ RDEPEND="${DEPEND}
 	youtube-dl? ( net-misc/youtube-dl[${PYTHON_USEDEP}] )
 	virtual/ffmpeg[encode]
 	net-misc/wget
+	$(python_gen_cond_dep 'dev-python/pyamf[${PYTHON_USEDEP}]' 'python2*' )
+	$(python_gen_cond_dep 'dev-python/py3amf[${PYTHON_USEDEP}]' 'python3*' )
 "
 
 DOCS=( COPYING ChangeLog README.fi README.md )
