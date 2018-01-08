@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=(python{2_7,3_5,3_6})
 
 inherit distutils-r1
 
@@ -42,7 +42,7 @@ RDEPEND="${DEPEND}
 		dev-lang/php[bcmath,curl,crypt,simplexml]
 		media-video/rtmpdump
 	)
-	youtube-dl? ( net-misc/youtube-dl[python_targets_python2_7] )
+	youtube-dl? ( net-misc/youtube-dl[${PYTHON_USEDEP}] )
 	virtual/ffmpeg[encode]
 	net-misc/wget
 "
