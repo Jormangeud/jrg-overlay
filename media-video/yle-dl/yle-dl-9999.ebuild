@@ -34,6 +34,7 @@ DEPEND="
 "
 
 RDEPEND="${DEPEND}
+	dev-python/future[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/pycrypto[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
