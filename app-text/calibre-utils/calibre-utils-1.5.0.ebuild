@@ -31,7 +31,13 @@ RDEPEND="${DEPEND}
 
 S="${WORKDIR}/mekk.calibre-${PV}"
 
-src_install() {
-	distutils-r1_src_install
+python_install() {
+	cat > "${S}"/${MODNAME}/__init__.py <<-EOF || die
+		__import__('pkg_resources').declare_namespace(__name__)
+	EOF
+	python_foreach_impl python_domodule ${MODNAME}
+
+	distutils-r1_python_install --single-version-externally-managed
+	find "${ED}" -name '*.pth' -delete || die
 	dodoc README.txt
 }
