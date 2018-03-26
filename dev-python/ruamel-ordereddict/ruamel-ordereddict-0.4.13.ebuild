@@ -1,6 +1,5 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI=5
 
@@ -21,8 +20,7 @@ KEYWORDS="~amd64"
 IUSE="test"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-RDEPEND="${PYTHON_DEPS}
-	dev-python/ruamel-base[${PYTHON_USEDEP}]"
+RDEPEND="${PYTHON_DEPS}"
 DEPEND="${RDEPED}
 	test? ( dev-python/pytest[${PYTHON_USEDEP}] )"
 
