@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-sports/speed-dreams/speed-dreams-1.4.0.ebuild,v 1.8 2012/03/16 20:04:54 tupone Exp $
 
-EAPI=3
+EAPI=5
 inherit autotools eutils versionator games cmake-utils
 
 DESCRIPTION="A fork of the famous open racing car simulator TORCS"
