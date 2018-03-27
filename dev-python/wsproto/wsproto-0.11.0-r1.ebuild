@@ -19,3 +19,11 @@ DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
 	>=dev-python/h11-0.7.0[${PYTHON_USEDEP}]
 	$(python_gen_cond_dep '>=dev-python/enum34-1.0.4[${PYTHON_USEDEP}]' 'python2_7' )
 "
+
+python_prepare_all() {
+
+	# Allow newer h11
+	sed -i -e "s/h11 ~/h11 >/" setup.py || die
+
+	distutils-r1_python_prepare_all
+}
