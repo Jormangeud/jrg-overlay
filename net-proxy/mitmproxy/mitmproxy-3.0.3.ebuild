@@ -54,7 +54,7 @@ DEPEND=">=dev-python/setuptools-11.3[${PYTHON_USEDEP}]
 python_prepare_all() {
 
 	# remove limits for package versions in setup and define them in RDEPEND
-	sed -i -e "s/, [<=>]\+[0-9\.]\+//" setup.py || die
+	sed -i -e "s/,[ ]\?[<=>!]\+[0-9\.]\+//" setup.py || die
 
 	distutils-r1_python_prepare_all
 }
