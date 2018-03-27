@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -34,24 +34,24 @@ RDEPEND="
 	>=dev-python/configargparse-0.10[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-1.3[${PYTHON_USEDEP}]
 	>=dev-python/cssutils-1.0.1[${PYTHON_USEDEP}]
-        >=dev-python/flask-0.10.1[${PYTHON_USEDEP}]
-        >=dev-python/h2-2.4.1[${PYTHON_USEDEP}]
-        >=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
-        >=dev-python/hyperframe-4.0.1[${PYTHON_USEDEP}]
+	>=dev-python/flask-0.10.1[${PYTHON_USEDEP}]
+	>=dev-python/hyper-h2-2.4.1[${PYTHON_USEDEP}]
+	>=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
+	>=dev-python/hyperframe-4.0.1[${PYTHON_USEDEP}]
 	>=dev-python/jsbeautifier-1.6.3[${PYTHON_USEDEP}]
 	>=dev-python/lxml-3.5.0[${PYTHON_USEDEP}]
-        >=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
-        >=dev-python/pillow-3.2[${PYTHON_USEDEP}]
-        >=dev-python/pyasn1-0.1.9[${PYTHON_USEDEP}]
+	>=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
+	>=dev-python/pillow-3.2[${PYTHON_USEDEP}]
+	>=dev-python/pyasn1-0.1.9[${PYTHON_USEDEP}]
 	>=dev-python/construct-2.5.2[${PYTHON_USEDEP}]
 	>=dev-python/pyopenssl-0.16[${PYTHON_USEDEP}]
-        >=dev-python/pyparsing-2.1.3[${PYTHON_USEDEP}]
-        >=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
-        >=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
-        >=dev-python/six-1.10[${PYTHON_USEDEP}]
-        >=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
-        >=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
-        >=www-servers/tornado-4.3[${PYTHON_USEDEP}]
+	>=dev-python/pyparsing-2.1.3[${PYTHON_USEDEP}]
+	>=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
+	>=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
+	>=dev-python/six-1.10[${PYTHON_USEDEP}]
+	>=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
+	>=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
+	>=www-servers/tornado-4.3[${PYTHON_USEDEP}]
 	$(python_gen_cond_dep '>=dev-python/enum34-1.0.4[${PYTHON_USEDEP}]' 'python2*')
 	$(python_gen_cond_dep '>=dev-python/ipaddress-1.0.15[${PYTHON_USEDEP}]' 'python2*')
 	$(python_gen_cond_dep '=dev-python/typing-3.5.2.2[${PYTHON_USEDEP}]' 'python2*')
@@ -63,7 +63,7 @@ DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
 python_prepare_all() {
 
 	# remove limits for package versions in setup and define them in RDEPEND
-	sed -i -e "s/, [<=>]\+[0-9\.]\+//" setup.py || die
+	sed -i -e "s/,[ ]\?[<=>!]\+[0-9\.]\+//" setup.py || die
 
 	distutils-r1_python_prepare_all
 

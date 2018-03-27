@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 
@@ -32,23 +32,23 @@ RDEPEND="
 	>=dev-python/construct-2.8[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-1.3[${PYTHON_USEDEP}]
 	>=dev-python/cssutils-1.0.1[${PYTHON_USEDEP}]
-        >=dev-python/h2-2.5.1[${PYTHON_USEDEP}]
-        >=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
-        >=dev-python/hyperframe-4.0.1[${PYTHON_USEDEP}]
+	>=dev-python/hyper-h2-2.5.1[${PYTHON_USEDEP}]
+	>=dev-python/html2text-2016.1.8[${PYTHON_USEDEP}]
+	>=dev-python/hyperframe-4.0.1[${PYTHON_USEDEP}]
 	>=dev-python/jsbeautifier-1.6.3[${PYTHON_USEDEP}]
 	>=dev-python/kaitaistruct-0.6[${PYTHON_USEDEP}]
-        >=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
-        >=dev-python/pillow-3.2[${PYTHON_USEDEP}]
-        >=dev-python/pyasn1-0.1.9[${PYTHON_USEDEP}]
+	>=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
+	>=dev-python/pillow-3.2[${PYTHON_USEDEP}]
+	>=dev-python/pyasn1-0.1.9[${PYTHON_USEDEP}]
 	>=dev-python/pyopenssl-16.0[${PYTHON_USEDEP}]
-        >=dev-python/pyparsing-2.1.3[${PYTHON_USEDEP}]
-        >=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
-        >=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
-        >=dev-python/ruamel-yaml-0.13.2[${PYTHON_USEDEP}]
+	>=dev-python/pyparsing-2.1.3[${PYTHON_USEDEP}]
+	>=dev-python/pyperclip-1.5.22[${PYTHON_USEDEP}]
+	>=dev-python/requests-2.9.1[${PYTHON_USEDEP}]
+	>=dev-python/ruamel-yaml-0.13.2[${PYTHON_USEDEP}]
 	>=dev-python/sortedcontainers-1.5.4[${PYTHON_USEDEP}]
-        >=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
-        >=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
-        >=www-servers/tornado-4.3[${PYTHON_USEDEP}]
+	>=dev-python/urwid-1.3.1[${PYTHON_USEDEP}]
+	>=dev-python/watchdog-0.8.3[${PYTHON_USEDEP}]
+	>=www-servers/tornado-4.3[${PYTHON_USEDEP}]
 "
 DEPEND=">=dev-python/setuptools-11.3[${PYTHON_USEDEP}]
 	${RDEPEND}
