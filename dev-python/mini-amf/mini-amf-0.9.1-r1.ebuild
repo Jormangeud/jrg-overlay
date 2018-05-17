@@ -27,4 +27,6 @@ SLOT="0"
 IUSE=""
 
 DEPEND="dev-python/setuptools"
-
+RDEPEND="${DEPEND}
+	dev-python/defusedxml
+"
