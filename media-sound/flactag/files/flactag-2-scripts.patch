@@ -1,0 +1,41 @@
+--- checkflac	2012-06-19 15:40:34.000000000 +0300
++++ checkflac	2009-03-25 02:54:22.000000000 +0200
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-CDROM=/dev/hdc
++CDROM=/dev/cdrom
+ 
+ if [ $# = "1" ]
+ then
+@@ -26,5 +26,3 @@
+ else
+ 	echo "Usage: $0 flacfile"
+ fi
+-
+-
+--- ripflac.in	2012-06-19 15:40:34.000000000 +0300
++++ ripflac.in	2012-09-03 00:00:00.000000000 +0300
+@@ -1,5 +1,13 @@
+ #!/bin/sh
+ 
++SED_SCRIPT="/^FILE/{
++	N
++	/\n.*^START/p
++	/\n.*START/! {
++		s/\(.*\)\n\(.*\)/\1\nSTART 00:00:00\n\2/
++	}
++}"
++
+ CDROM=/dev/cdrom
+ 
+ if [ "$#" -eq "1" -o "$#" -eq "2" ]
+@@ -14,7 +22,7 @@
+ 	CDID=`discid $CDROM`
+ 	if cdrdao read-cd --device $CDROM --driver generic-mmc --datafile $FILENAME.bin $FILENAME.toc
+ 	then
+-		sed -f INSTALLPATH/tocfix.sed $FILENAME.toc > ${FILENAME}-fixed.toc
++		sed -e $SED_SCRIPT $FILENAME.toc > ${FILENAME}-fixed.toc
+ 		cueconvert ${FILENAME}-fixed.toc $FILENAME.cue
+ 		if nice flac -8 --replay-gain --endian=big --sign=signed --channels=2 --bps=16 --sample-rate=44100 --cuesheet=$FILENAME.cue $FILENAME.bin
+ 		then
