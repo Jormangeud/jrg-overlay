@@ -1,28 +1,24 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header:
 
 EAPI=6
-if [ "${PV#9999}" != "${PV}" ] ; then
-	SCM=subversion
-	ESVN_REPO_URI="svn://svn.gna.org/svn/vbrfix/trunk/vbrfix"
-fi
 
-inherit eutils qmake-utils ${SCM}
+inherit eutils qmake-utils
+
+if [[ ${PV} = *9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/fidget77/${PN}.git"
+	KEYWORDS=""
+else
+	SRC_URI="http://download.gna.org/vbrfix/${P}.tar.bz2"
+	KEYWORDS="~amd64 ~x86"
+fi
 
 DESCRIPTION="VBRFix fixes MP3s and re-constructs VBR headers. It can also be used to remove unrecognised data from the mp3 and spot other problems."
 HOMEPAGE="http://home.gna.org/vbrfix/"
-if [ "${PV#9999}" != "${PV}" ] ; then
-	SRC_URI=""
-elif [ "${PV%_p*}" != "${PV}" ] ; then # Snapshot
-	SRC_URI="mirror://gentoo/${P}.tar.bz2"
-else # Release
-	SRC_URI="http://download.gna.org/vbrfix/${P}.tar.bz2"
-fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="X +cli"
 
 RDEPEND="cli? ( dev-qt/qtcore:4 )
