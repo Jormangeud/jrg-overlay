@@ -1,8 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
-EAPI="4"
-inherit eutils
+
+EAPI=6
+inherit eutils autotools
 
 DESCRIPTION="A utility for tagging single album FLAC files with embedded CUE sheets using data from the MusicBrainz service."
 HOMEPAGE="http://software.gently.org.uk/flactag"
@@ -29,10 +29,14 @@ RDEPEND="${DEPEND}
         media-sound/cdparanoia
     )"
 
+
 src_prepare() {
 	if use scripts; then
 		epatch ${FILESDIR}/${PN}-2-scripts.patch
 	fi
+
+	eapply_user
+	eautoreconf
 }
 
 src_compile() {
