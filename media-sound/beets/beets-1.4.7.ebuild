@@ -4,7 +4,7 @@
 EAPI=6
 PYTHON_COMPAT=( python2_7 python3_{5,6} )
 PYTHON_REQ_USE="sqlite"
-inherit distutils-r1 eutils
+inherit distutils-r1 eutils bash-completion-r1
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -21,7 +21,7 @@ HOMEPAGE="http://beets.io/ https://pypi.python.org/pypi/beets"
 
 SLOT="0"
 LICENSE="MIT"
-IUSE="badfiles bpd bs1770gain chroma convert doc discogs flac gmusic gstreamer lastgenre lastimport mpdstats opus replaygain test thumbnails web"
+IUSE="badfiles bpd bs1770gain chroma convert doc discogs flac gmusic gstreamer lastgenre lastimport metasync mpdstats opus rar replaygain test thumbnails web"
 REQUIRED_USE="
 	replaygain? ( || ( gstreamer bs1770gain ) )
 	bpd? ( gstreamer )
@@ -40,7 +40,7 @@ RDEPEND="
 	badfiles? ( media-sound/mp3val media-libs/flac )
 	chroma? ( dev-python/pyacoustid[${PYTHON_USEDEP}] )
 	convert? ( media-video/ffmpeg:0[encode] )
-	discogs? ( dev-python/discogs-client[${PYTHON_USEDEP}] )
+	discogs? ( >=dev-python/discogs-client-2.2.1[${PYTHON_USEDEP}] )
 	doc? ( dev-python/sphinx[${PYTHON_USEDEP}] )
 	mpdstats? ( dev-python/python-mpd[${PYTHON_USEDEP}] )
 	lastgenre? ( dev-python/pylast[${PYTHON_USEDEP}] )
@@ -53,6 +53,8 @@ RDEPEND="
 		flac? ( media-plugins/gst-plugins-flac:1.0 )
 		opus? ( media-plugins/gst-plugins-opus:1.0 )
 	)
+	metasync? ( dev-python/dbus-python[${PYTHON_USEDEP}] )
+	rar? ( dev-python/rarfile )
 	thumbnails? (
 		dev-python/pyxdg[${PYTHON_USEDEP}]
 		dev-python/pathlib2[${PYTHON_USEDEP}]
@@ -104,4 +106,8 @@ python_install_all() {
 	use doc && dohtml -r docs/_build/html/
 
 	distutils-r1_python_install_all
+
+	cd "${D}${PYTHON_SITEDIR}"
+	"${EPYTHON}" -m beets completion > ${S}/bashcomp
+	newbashcomp "${S}/bashcomp" beet
 }
