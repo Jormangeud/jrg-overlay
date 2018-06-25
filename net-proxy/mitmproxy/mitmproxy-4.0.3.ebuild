@@ -61,7 +61,7 @@ python_prepare_all() {
 
 
 python_install_all() {
-	local DOCS=( CHANGELOG CONTRIBUTORS )
+	local DOCS=( CHANGELOG )
 	use doc && local HTML_DOCS=( doc/. )
 	use examples && local EXAMPLES=( examples/. )
 
