@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>jormangeud@gmail.com</email>
+	<description>Primary maintainer</description>
+</maintainer>
+<longdescription>
+squishyball is a simple command-line utility for performing
+double-blind A/B, A/B/X or X/X/Y (A/B/X with additional sample order
+randomisation) testing of audio samples on the command line.
+
+The user specifies two input files to be compared and uses the
+keyboard during playback to flip between the randomized samples to
+perform on-the-fly comparisons.  After a predetermined number of
+trials, squishyball prints the trial results to stdout and exits.
+
+squishyball can be used to help establish what lossy audio codec
+settings are optimal for a particular combination of user and
+audio equipment.
+</longdescription>
+</pkgmetadata>
