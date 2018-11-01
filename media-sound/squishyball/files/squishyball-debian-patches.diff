@@ -1,0 +1,78 @@
+Description: don't define mandir in Makefile
+Author: Jonathan Dowland <jmtd@debian.org>
+
+--- squishyball-0.1~svn18790.orig/Makefile.am
++++ squishyball-0.1~svn18790/Makefile.am
+@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = foreign 1.11
+ EXTRA_DIST = COPYING autogen.sh
+ 
+ bin_PROGRAMS = squishyball
+-mandir = @MANDIR@
++##mandir = @MANDIR@
+ man_MANS = squishyball.1
+ 
+ squishyball_SOURCES = audio.c loader.c main.c mincurses.c tty.c main.h mincurses.h
+
+Description: define PATH_MAX if undefined
+ We're (ab)using PATH_MAX as an upper-bound on a string buffer size,
+ but it isn't defined on all platforms (notably HURD). For those
+ platforms just defined a reasonably high number.
+Forwarded: via email (ignored)
+Author: Jonathan Dowland <jmtd@debian.org>
+Last-Update: 2014-05-22
+
+diff --git a/tty.c b/tty.c
+index ac9ed44..1b83016 100644
+--- a/tty.c
++++ b/tty.c
+@@ -35,6 +35,10 @@
+ #include "main.h"
+ #include "mincurses.h"
+ 
++#ifndef PATH_MAX
++#  define PATH_MAX 4096
++#endif
++
+ static int force=0;
+ static int p_tm,p_ch,p_b,p_r,p_fm,p_rm,pcm_n,p_tr,p_tmax,p_pau,p_pl,p_tn,p_g;
+ static double p_st,p_cur,p_end,p_len;
+
+Description: Fix X/X/Y test logic
+Forwarded: via email (ignored)
+Bug-Debian: http://bugs.debian.org/753776
+Author: Thibaut Girka <thib@sitedethib.com>
+Reviewed-By: Jonathan Dowland <jmtd@debian.org>
+
+--- a/main.c
++++ b/main.c
+@@ -222,7 +222,7 @@
+       r[1] = 1-r[1];
+       r[2] = 1-r[2];
+     }
+-    *cchoice = (r[0]==r[1] ? 2 : (r[1]==r[2] ? 0 : 1));
++    *cchoice = r[(r[0]==r[1] ? 2 : (r[1]==r[2] ? 0 : 1))];
+     break;
+   }
+ }
+
+Description: define NCURSES_INTERNALS in mincurses.c
+ The mincurses component of squishyball depends upon ncurses internal
+ definitions which were exposed in older versions of ncurses but are
+ no longer since at least 20170318. Defining NCURSES_INTERNALS (for now)
+ causes ncurses to expose the necessary structure.
+Author: Jonathan Dowland <jmtd@debian.org>
+Bug-Debian: https://bugs.debian.org/860334
+Last-Update: 2017-07-10
+
+--- squishyball-0.1~svn19085.orig/mincurses.c
++++ squishyball-0.1~svn19085/mincurses.c
+@@ -34,6 +34,9 @@
+ # define _REENTRANT
+ #endif
+ 
++/* https://bugs.debian.org/860334 */
++#define NCURSES_INTERNALS
++
+ #include <ncurses.h>
+ #include <curses.h>
+ #include <term.h>
