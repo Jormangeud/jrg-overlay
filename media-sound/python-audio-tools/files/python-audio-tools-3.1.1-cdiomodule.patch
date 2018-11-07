@@ -1,0 +1,13 @@
+--- a/src/cdiomodule.h	2015-10-31 16:22:49.000000000 +0200
++++ b/src/cdiomodule.h	2018-11-07 15:22:53.775884010 +0200
+@@ -3,8 +3,8 @@
+ #include <cdio/cdda.h>
+ #include <cdio/paranoia.h>
+ #else
+-#include <cdio/cdparanoia/cdda.h>
+-#include <cdio/cdparanoia/paranoia.h>
++#include <cdio/paranoia/cdda.h>
++#include <cdio/paranoia/paranoia.h>
+ #endif
+ 
+ /********************************************************
