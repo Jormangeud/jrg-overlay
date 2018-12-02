@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit gnome2-utils xdg-utils
+inherit gnome2-utils xdg-utils autotools
 
 DESCRIPTION="A graphical hardware temperature monitor"
 HOMEPAGE="http://wpitchoune.net/psensor"
@@ -43,6 +43,12 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	sys-apps/help2man
 	app-text/asciidoc"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-json-c.patch
+   	eapply_user
+   	eautoreconf
+}
 
 src_configure() {
 	local econfargs=(
