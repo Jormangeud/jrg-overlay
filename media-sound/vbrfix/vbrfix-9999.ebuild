@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -21,8 +21,8 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE="X +cli"
 
-RDEPEND="cli? ( dev-qt/qtcore:4 )
-	X? ( dev-qt/qtgui:4 media-libs/libpng )"
+RDEPEND="cli? ( dev-qt/qtcore:5 )
+	X? ( dev-qt/qtwidgets:5 media-libs/libpng )"
 DEPEND="${RDEPEND}"
 MAKEOPTS="${MAKEOPTS} -j1" # has to set as fails otherwise
 CXXFLAGS="${CXXFLAGS} -std=c++11"
@@ -34,6 +34,7 @@ pkg_setup() {
 	fi
 }
 src_prepare() {
+	epatch "${FILESDIR}/${P}-qt4toqt5.patch"
 	default
 }
 src_configure() {
@@ -43,7 +44,7 @@ src_configure() {
 	if ! use cli ; then
 		sed -i '/ConsoleFixer/d' vbrfix.pro || die 'sed failed'
 	fi
-	eqmake4 vbrfix.pro || die "eqmake4 failed."
+	eqmake5 vbrfix.pro || die "eqmake failed."
 }
 
 src_install() {

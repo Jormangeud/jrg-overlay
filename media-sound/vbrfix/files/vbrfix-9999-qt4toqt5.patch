@@ -1,0 +1,107 @@
+diff -ur QtFixer.orig/Mp3FileListItem.h QtFixer/Mp3FileListItem.h
+--- QtFixer.orig/Mp3FileListItem.h	2018-12-13 02:48:47.673796674 +0200
++++ QtFixer/Mp3FileListItem.h	2018-12-13 03:07:02.054887053 +0200
+@@ -22,7 +22,7 @@
+ #ifndef MP3FILELISTITEM_H
+ #define MP3FILELISTITEM_H
+ 
+-#include <QtGui>
++#include <QtWidgets>
+ #include "VbrfixMain.h"
+ 
+ class Mp3FileListItem : public QTreeWidgetItem
+diff -ur QtFixer.orig/Options.h QtFixer/Options.h
+--- QtFixer.orig/Options.h	2018-12-13 02:48:47.673796674 +0200
++++ QtFixer/Options.h	2018-12-13 03:07:11.595870650 +0200
+@@ -23,7 +23,7 @@
+ #define OPTIONS_H
+ 
+ #include "FixerSettings.h"
+-#include <QtGui>
++#include <QtWidgets>
+ 
+ class QWidget;
+ 
+diff -ur QtFixer.orig/QtFixer.pro QtFixer/QtFixer.pro
+--- QtFixer.orig/QtFixer.pro	2018-12-13 09:15:40.103612254 +0200
++++ QtFixer/QtFixer.pro	2018-12-13 09:17:06.561445877 +0200
+@@ -3,6 +3,7 @@
+ # Subdir relative project main directory: ./QtFixer
+ # Target is an application:  VbrfixGui
+ 
++QT += widgets
+ FORMS += settings.ui \
+          vbrfixui.ui \
+          about.ui \
+diff -ur QtFixer.orig/VbrfixAbout.h QtFixer/VbrfixAbout.h
+--- QtFixer.orig/VbrfixAbout.h	2018-12-13 02:48:47.673796674 +0200
++++ QtFixer/VbrfixAbout.h	2018-12-13 03:07:28.618841396 +0200
+@@ -22,7 +22,7 @@
+ #ifndef VBRFIXABOUT_H
+ #define VBRFIXABOUT_H
+ 
+-#include <QtGui>
++#include <QtWidgets>
+ #include "ui_about.h"
+ 
+ class VbrfixAbout: public QDialog, public Ui_AboutDialog
+diff -ur QtFixer.orig/VbrfixGetHeaderInfo.h QtFixer/VbrfixGetHeaderInfo.h
+--- QtFixer.orig/VbrfixGetHeaderInfo.h	2018-12-13 02:48:47.673796674 +0200
++++ QtFixer/VbrfixGetHeaderInfo.h	2018-12-13 03:07:38.788823925 +0200
+@@ -22,7 +22,7 @@
+ #ifndef VBRFIXGETHEADERINFO_H
+ #define VBRFIXGETHEADERINFO_H
+ 
+-#include <QtGui>
++#include <QtWidgets>
+ #include "ui_mp3headerInfo.h"
+ 
+ class VbrfixGetHeaderInfo: public QDialog, public Ui_GetMp3HeaderInfo
+diff -ur QtFixer.orig/VbrfixMain.cpp QtFixer/VbrfixMain.cpp
+--- QtFixer.orig/VbrfixMain.cpp	2018-12-13 02:48:47.674796672 +0200
++++ QtFixer/VbrfixMain.cpp	2018-12-13 03:31:59.793170260 +0200
+@@ -120,7 +120,7 @@
+ 			m_pFixThread = NULL;
+ 		}
+ 		m_pFixThread = new VbrfixThread(m_Options, fixItem->getFileName());
+-		bool bOK = connect(m_pFixThread, SIGNAL(guiEvent(int)), this, SLOT(threadGuiEvent(int)));
++		bool bOK = connect(m_pFixThread, &VbrfixThread::guiEvent, this, &VbrfixMain::threadGuiEvent);
+ 		assert(bOK); // something has gone wrong with the gui
+ 		
+ 		// select the fixing item 
+diff -ur QtFixer.orig/VbrfixMain.h QtFixer/VbrfixMain.h
+--- QtFixer.orig/VbrfixMain.h	2018-12-13 02:48:47.674796672 +0200
++++ QtFixer/VbrfixMain.h	2018-12-13 03:07:46.175811238 +0200
+@@ -23,7 +23,7 @@
+ #define __VBRFIXMAIN_H
+ 
+ #include "ui_vbrfixui.h"
+-#include <QtGui>
++#include <QtWidgets>
+ 
+ #include "VbrfixThread.h"
+ #include "Options.h"
+diff -ur QtFixer.orig/VbrfixSettings.cpp QtFixer/VbrfixSettings.cpp
+--- QtFixer.orig/VbrfixSettings.cpp	2018-12-13 02:48:47.674796672 +0200
++++ QtFixer/VbrfixSettings.cpp	2018-12-13 03:07:51.028802904 +0200
+@@ -23,7 +23,7 @@
+ #include "VbrfixSettings.h"
+ #include "ComboManager.h"
+ #include "Options.h"
+-#include <QtGui>
++#include <QtWidgets>
+ 
+ VbrfixSettings::VbrfixSettings(QWidget *parent, Options &options)
+ 	: QDialog(parent)
+diff -ur QtFixer.orig/VbrfixThread.h QtFixer/VbrfixThread.h
+--- QtFixer.orig/VbrfixThread.h	2018-12-13 02:48:47.674796672 +0200
++++ QtFixer/VbrfixThread.h	2018-12-13 03:07:59.546788277 +0200
+@@ -22,7 +22,7 @@
+ #ifndef VBRFIXTHREAD_H
+ #define VBRFIXTHREAD_H
+ 
+-#include <QtGui>
++#include <QtWidgets>
+ #include "FeedBackInterface.h"
+ #include "FixerSettings.h"
+ #include "VbrFixer.h"
