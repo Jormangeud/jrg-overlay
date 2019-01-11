@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=(python{2_7,3_5,3_6})
+EAPI=7
+PYTHON_COMPAT=( python2_7 python3_{5..7} )
 
 inherit distutils-r1
 
@@ -23,7 +23,7 @@ HOMEPAGE="http://aajanki.github.io/yle-dl/"
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="+php +youtube-dl"
+IUSE="+php test +youtube-dl"
 
 REQUIRED_USE="
 	|| ( php youtube-dl )
@@ -31,18 +31,20 @@ REQUIRED_USE="
 
 DEPEND="
 	dev-python/setuptools[${PYTHON_USEDEP}]
+	test? ( dev-python/pytest-runner[${PYTHON_USEDEP}] )
 "
 
 RDEPEND="${DEPEND}
 	>=dev-python/attrs-18.1.0[${PYTHON_USEDEP}]
-	>=dev-python/configargparse-0.13.0[${PYTHON_USEDEP}]
+	<dev-python/attrs-18.3.0[${PYTHON_USEDEP}]
+	=dev-python/configargparse-0.13.0[${PYTHON_USEDEP}]
 	dev-python/future[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/mini-amf[${PYTHON_USEDEP}]
 	dev-python/pycryptodomex[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	php? (
-		dev-lang/php[bcmath,curl,simplexml,ssl]
+		dev-lang/php[bcmath,cli,curl,simplexml,ssl]
 		media-video/rtmpdump
 	)
 	youtube-dl? ( net-misc/youtube-dl[${PYTHON_USEDEP}] )
@@ -50,7 +52,7 @@ RDEPEND="${DEPEND}
 	net-misc/wget
 "
 
-DOCS=( COPYING ChangeLog README.fi README.md )
+DOCS=( COPYING ChangeLog README.fi README.md yledl.conf.sample )
 
 python_install_all() {
 

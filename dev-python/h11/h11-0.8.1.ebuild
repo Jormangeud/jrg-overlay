@@ -6,8 +6,8 @@ PYTHON_COMPAT=( python2_7 python3_{4,5,6,7} )
 
 inherit distutils-r1
 
-DESCRIPTION="Kaitai Struct declarative parser generator for binary data: runtime library for Python"
-HOMEPAGE="http://kaitai.io https://pypi.python.org/pypi/${PN}"
+DESCRIPTION="A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+HOMEPAGE="https://github.com/python-hyper/h11/ https://pypi.python.org/pypi/h11"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"

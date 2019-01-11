@@ -2,10 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+PYTHON_COMPAT=( python3_6 )
 
-PYTHON_COMPAT=( python3_{6,7} )
 inherit distutils-r1
-
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -21,7 +20,7 @@ HOMEPAGE="http://mitmproxy.org/"
 
 LICENSE="MIT"
 SLOT="0"
-IUSE="doc examples"
+IUSE="doc examples test"
 
 RDEPEND="
 	>=dev-python/blinker-1.4[${PYTHON_USEDEP}]
@@ -34,7 +33,6 @@ RDEPEND="
 	>=dev-python/kaitaistruct-0.7[${PYTHON_USEDEP}]
 	>=dev-python/ldap3-2.5[${PYTHON_USEDEP}]
 	>=dev-python/passlib-1.6.5[${PYTHON_USEDEP}]
-	>=dev-python/protobuf-python-3.6.0[${PYTHON_USEDEP}]
 	>=dev-python/pyasn1-0.3.1[${PYTHON_USEDEP}]
 	>=dev-python/pyopenssl-17.5[${PYTHON_USEDEP}]
 	>=dev-python/pyparsing-2.1.3[${PYTHON_USEDEP}]
@@ -42,7 +40,7 @@ RDEPEND="
 	>=dev-python/ruamel-yaml-0.13.2[${PYTHON_USEDEP}]
 	>=dev-python/sortedcontainers-1.5.4[${PYTHON_USEDEP}]
 	>=dev-python/urwid-2.0.1[${PYTHON_USEDEP}]
-	>=dev-python/wsproto-0.12.0[${PYTHON_USEDEP}]
+	>=dev-python/wsproto-0.11.0[${PYTHON_USEDEP}]
 	>=www-servers/tornado-4.3[${PYTHON_USEDEP}]
 	examples? (
 		>=dev-python/beautifulsoup-4.4.1[${PYTHON_USEDEP}]
@@ -50,10 +48,6 @@ RDEPEND="
 "
 DEPEND=">=dev-python/setuptools-11.3[${PYTHON_USEDEP}]
 	${RDEPEND}
-	doc? (
-		dev-python/sphinx
-		dev-python/sphinxcontrib-documentedlist
-	)
 "
 
 python_prepare_all() {
@@ -64,13 +58,10 @@ python_prepare_all() {
 	distutils-r1_python_prepare_all
 }
 
-python_compile_all() {
-	use doc && emake -C docs html
-}
 
 python_install_all() {
-	local DOCS=( CHANGELOG README.rst )
-	use doc && local HTML_DOCS=( docs/_build/html/. )
+	local DOCS=( CHANGELOG )
+	use doc && local HTML_DOCS=( doc/. )
 	use examples && local EXAMPLES=( examples/. )
 
 	distutils-r1_python_install_all
