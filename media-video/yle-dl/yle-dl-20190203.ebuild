@@ -62,3 +62,11 @@ python_install_all() {
 
 	distutils-r1_python_install_all
 }
+
+pkg_postinst() {
+	elog
+	elog "FFMPEG will need support for SSL to work, so make sure that the"
+	elog "media-video/ffmpeg or media-video/libav is compiled with one of"
+	elog "the ssl use flags: openssl, libressl, gnutls."
+	elog
+}
