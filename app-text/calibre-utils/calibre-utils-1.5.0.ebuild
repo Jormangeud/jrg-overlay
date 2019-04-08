@@ -1,10 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
+EAPI=7
 
-inherit versionator distutils-r1
+PYTHON_COMPAT=( python2_7 python3_{5,6,7} )
+
+inherit distutils-r1
 
 DESCRIPTION="Helper scripts for Calibre ebook management"
 HOMEPAGE="http://pypi.python.org/pypi/mekk.calibre/"
@@ -31,13 +32,23 @@ RDEPEND="${DEPEND}
 
 S="${WORKDIR}/mekk.calibre-${PV}"
 
-python_install() {
-	cat > "${S}"/${MODNAME}/__init__.py <<-EOF || die
-		__import__('pkg_resources').declare_namespace(__name__)
-	EOF
-	python_foreach_impl python_domodule ${MODNAME}
+src_prepare() {
 
-	distutils-r1_python_install --single-version-externally-managed
+	cat > "${S}"/src/mekk/__init__.py <<-EOF || die "namespace declaring"
+	__import__('pkg_resources').declare_namespace(__name__)
+	EOF
+	default
+}
+
+#python_install() {
+#	python_foreach_impl python_domodule ${MODNAME}
+#
+#	distutils-r1_python_install --single-version-externally-managed
+#	find "${ED}" -name '*.pth' -delete || die "pth deleting"
+#	dodoc README.txt
+#}
+
+python_install_all() {
+	distutils-r1_python_install_all
 	find "${ED}" -name '*.pth' -delete || die
-	dodoc README.txt
 }
