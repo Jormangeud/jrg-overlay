@@ -23,7 +23,7 @@ HOMEPAGE="http://aajanki.github.io/yle-dl/"
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="+php +pycryptodome test +youtube-dl"
+IUSE="+php test +youtube-dl"
 
 REQUIRED_USE="
 	|| ( php youtube-dl )
@@ -41,13 +41,15 @@ RDEPEND="${DEPEND}
 	dev-python/future[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/mini-amf[${PYTHON_USEDEP}]
+	|| (
+		dev-python/pycryptodome[${PYTHON_USEDEP}]
+		dev-python/pycrypto[${PYTHON_USEDEP}]
+	)
 	dev-python/requests[${PYTHON_USEDEP}]
 	php? (
 		dev-lang/php[bcmath,cli,curl,simplexml,ssl]
 		media-video/rtmpdump
 	)
-	pycryptodome? ( dev-python/pycryptodome[${PYTHON_USEDEP}] )
-	!pycryptodome? ( dev-python/pycrypto[${PYTHON_USEDEP}] )
 	youtube-dl? ( net-misc/youtube-dl[${PYTHON_USEDEP}] )
 	virtual/ffmpeg[encode]
 	net-misc/wget
@@ -56,11 +58,7 @@ RDEPEND="${DEPEND}
 DOCS=( COPYING ChangeLog README.fi README.md yledl.conf.sample )
 
 src_prepare() {
-	if use pycryptodome ; then
-		sed -i -e "s|pycryptodomex|pycryptodome|g" setup.py || die 'sed failed'
-	else
-		sed -i -e "s|pycryptodomex|pycrypto|g" setup.py || die 'sed failed'
-	fi
+	sed -i -e "s|pycryptodomex|pycryptodome|g" setup.py || die 'sed failed'
 	default
 }
 
