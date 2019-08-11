@@ -1,0 +1,54 @@
+From 66bcc0ca838254bd8cf86e48157e22baa7d52116 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Sat, 10 Aug 2019 21:15:54 +0300
+Subject: [PATCH] init with 2 min channels
+
+allow building with 5.1.2
+
+https://sourceforge.net/p/sixfireusb/discussion/1341785/thread/3867863a8e/#db35
+https://sourceforge.net/p/sixfireusb/discussion/1341785/thread/3867863a8e/db35/attachment/sixfireusb-dkms.zip
+---
+ pcm.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/pcm.c b/pcm.c
+index 02c778e..f6f455c 100644
+--- a/pcm.c
++++ b/pcm.c
+@@ -86,6 +86,7 @@ static int usb6fire_pcm_open(struct snd_pcm_substream *alsa_sub)
+ 	alsa_rt->hw.rate_max = desc.rate_max;
+ 	alsa_rt->hw.rates = desc.rate_bits;
+ 	alsa_rt->hw.formats = desc.formats;
++	alsa_rt->hw.channels_min = 2;
+ 	if (urbs_rt->rate) {
+ 		if (urbs_rt->rate < desc.rate_min || urbs_rt->rate > desc.rate_max)
+ 			return -EBUSY;
+@@ -202,7 +203,6 @@ int usb6fire_pcm_init(struct sfire_chip *chip)
+ {
+ 	struct pcm_runtime *rt = kzalloc(sizeof(struct pcm_runtime), GFP_KERNEL);
+ 	struct substream_runtime *sub_rt = chip->substream;
+-	int ret;
+ 	int i;
+ 	
+ 	if (!rt)
+@@ -216,16 +216,10 @@ int usb6fire_pcm_init(struct sfire_chip *chip)
+ 		sub_rt->devices[i]->private_data = chip;
+ 		snd_pcm_set_ops(sub_rt->devices[i], SNDRV_PCM_STREAM_PLAYBACK, &pcm_ops);
+ 		snd_pcm_set_ops(sub_rt->devices[i], SNDRV_PCM_STREAM_CAPTURE, &pcm_ops);
+-		ret = snd_pcm_lib_preallocate_pages_for_all(sub_rt->devices[i],
++		snd_pcm_lib_preallocate_pages_for_all(sub_rt->devices[i],
+ 				SNDRV_DMA_TYPE_CONTINUOUS,
+ 				snd_dma_continuous_data(GFP_KERNEL),
+ 				MAX_BUFSIZE, MAX_BUFSIZE);
+-		if (ret) {
+-			kfree(rt);
+-			snd_printk(KERN_ERR PREFIX
+-					"error preallocating pcm buffers.\n");
+-			return ret;
+-		}
+ 	}
+ 
+ 	chip->pcm = rt;
+-- 
+2.21.0
+

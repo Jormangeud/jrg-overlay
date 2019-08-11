@@ -1,11 +1,12 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=7
 
 DESCRIPTION="Terratec DMX 6Fire USB firmware"
 HOMEPAGE="https://www.terratec.de/"
-SRC_URI="http://terratec.ultron.info/Audio/DMX_6fire_USB/Updates/win10_drv.zip -> ${P}.zip"
+MY_PN="DMX_6fire_USB"
+SRC_URI="http://terratec.ultron.info/Audio/${MY_PN}/Updates/win10_drv.zip -> ${P}.zip"
 LICENSE=""
 SLOT="0"
 KEYWORDS="" # These firmware files do not work with the in kernel module as of 5.2.6
