@@ -8,10 +8,9 @@ HOMEPAGE="https://www.terratec.de/"
 
 MY_PN="DMX_6fire_USB"
 SRC_URI="http://terratec.ultron.info/Audio/${MY_PN}/Updates/History/Windows/${MY_PN}_Setup_${PV}_XP_Vista_7.exe -> ${P}.exe"
-
 LICENSE=""
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 
 DEPEND="app-arch/p7zip"
 
@@ -25,8 +24,8 @@ src_unpack() {
 			|| die "failed to unpack ${exe}"
 	done
 
-	declare -A FW=( [fa80973cb8c02097712933bd1d1c23b2]=dmx6firel2.ihx
-					[7497b6b80d43e68f13b6929934ab60f4]=dmx6fireap.ihx
+	declare -A FW=( [c609e31bf28253f4c5f61e5e2ee2e81b]=dmx6firel2.ihx
+					[bd3801d850776b6083d88a2915896566]=dmx6fireap.ihx
 					[a65eecc11adc87af7307f5266ad31d65]=dmx6firecf.bin )
 	for i in "${WORKDIR}"/tmp/* ; do
 		s=$(md5sum ${i} | awk '{ print $1 }')
