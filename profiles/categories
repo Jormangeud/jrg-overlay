@@ -1,10 +1,10 @@
 app-accessibility
-app-crypt
+app-arch
+app-emulation
+app-i18n
 app-misc
-app-mobilephone
-app-office
-app-portage
 app-text
+dev-libs
 dev-python
 dev-util
 games-action
@@ -13,6 +13,8 @@ games-board
 games-rpg
 games-sports
 games-util
+media-fonts
+media-libs
 media-plugins
 media-sound
 media-video
@@ -27,6 +29,9 @@ net-print
 net-proxy
 sci-calculators
 sys-apps
+sys-auth
+sys-block
+sys-firmware
 www-client
 x11-misc
 x11-plugins
