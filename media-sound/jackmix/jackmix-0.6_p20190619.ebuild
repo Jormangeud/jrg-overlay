@@ -1,11 +1,13 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit scons-utils toolchain-funcs vcs-snapshot
+PYTHON_COMPAT=( python2_7 python3_{6,7} )
 
-TAG="bc11af8ce3771f502be93f6e19c0931db3d434bb"
+inherit python-any-r1 scons-utils toolchain-funcs vcs-snapshot
+
+TAG="14bc1d9f47a493a77abe44886931a4244af91527"
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
