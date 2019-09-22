@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 python3_{6,7} )
+PYTHON_COMPAT=( python2_7 )
 
 inherit python-any-r1 scons-utils toolchain-funcs vcs-snapshot
 
@@ -46,14 +46,12 @@ DEPEND="${RDEPEND}
 PATCHES=( "${FILESDIR}/${PN}-0.6-scons-env.patch" )
 
 src_configure() {
-	MYSCONS=(
-		CC="$(tc-getCC)"
-		CXX="$(tc-getCXX)"
-		CXXFLAGS="${CXXFLAGS} -fPIC"
-		LDFLAGS="${LDFLAGS} -fPIC"
-	)
+	CXXFLAGS="${CXXFLAGS} -fPIC -std=c++11"
+	LDFLAGS="${LDFLAGS} -fPIC -std=c++11"
+	tc-export CXX
+	export CXXFLAGS
+	export LDFLAGS
 }
-
 
 src_compile() {
 	escons "${MYSCONS[@]}"
