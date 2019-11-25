@@ -31,6 +31,7 @@ DEPEND="dev-libs/chmlib
 	"
 src_prepare() {
 	echo "${PV}" > RELEASE-VERSION
+	default
 }
 
 src_install() {
