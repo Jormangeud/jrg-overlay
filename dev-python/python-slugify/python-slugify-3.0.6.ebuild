@@ -16,6 +16,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
-	>=dev-python/unidecode-1.0.23[${PYTHON_USEDEP}]
+	>=dev-python/unidecode-1.3[${PYTHON_USEDEP}]
 "
 RDEPEND="${DEPEND}"
