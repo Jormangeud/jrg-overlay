@@ -32,6 +32,7 @@ sys-apps
 sys-auth
 sys-block
 sys-firmware
+sys-fs
 www-client
 x11-misc
 x11-plugins
