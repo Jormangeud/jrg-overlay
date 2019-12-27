@@ -36,7 +36,8 @@ DEPEND="
 
 RDEPEND="${DEPEND}
 	>=dev-python/attrs-18.1.0[${PYTHON_USEDEP}]
-	>=dev-python/configargparse-0.13.0[${PYTHON_USEDEP}]
+	<dev-python/attrs-19.3.0[${PYTHON_USEDEP}]
+	=dev-python/configargparse-0.13.0[${PYTHON_USEDEP}]
 	dev-python/future[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/mini-amf[${PYTHON_USEDEP}]
