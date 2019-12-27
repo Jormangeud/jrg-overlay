@@ -21,11 +21,19 @@ DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
 RDEPEND="
 	>=dev-python/requests-2.19.1[${PYTHON_USEDEP}]
 	<dev-python/requests-3.0.0[${PYTHON_USEDEP}]
-	=dev-python/six-1.11.0[${PYTHON_USEDEP}]
-	>=dev-python/python-slugify-1.2.6[${PYTHON_USEDEP}]
-	<dev-python/urllib3-1.24[${PYTHON_USEDEP}]
+	>dev-python/six-1.11.0[${PYTHON_USEDEP}]
+	dev-python/python-slugify[${PYTHON_USEDEP}]
+	dev-python/urllib3[${PYTHON_USEDEP}]
 "
 
 python_test() {
 	esetup.py test
+}
+
+python_prepare_all() {
+
+	# remove limits for package versions in setup and define them in RDEPEND
+	sed -i -e 's/\(,\?[ ]\?[<=>!]\+[0-9\.]\+\)\+//' requirements.txt || die
+
+	distutils-r1_python_prepare_all
 }
