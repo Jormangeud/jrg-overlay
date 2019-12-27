@@ -1,0 +1,35 @@
+From 87374a0df6a191f248347dee3ba806981fb6233c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Sun, 22 Dec 2019 12:03:05 +0200
+Subject: [PATCH] Fix differing meta/mod name.
+
+The value for name from meta.cpp gets overridden by value from mod.cpp,
+and same values from different mods cause problems with symlinking and
+make it hard to figure the right mod from the list view.
+---
+ Mod.cpp | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Mod.cpp b/Mod.cpp
+index 985e406..2dafc4a 100644
+--- a/Mod.cpp
++++ b/Mod.cpp
+@@ -99,7 +99,14 @@ void Mod::ParseCPP(string meta, string mod, string path,string workshopId)
+             auto const key = Utils::Replace(Utils::Trim(keyValue.first), "\"", "");
+             auto const value = Utils::Replace(Utils::Trim(keyValue.second), "\"", "");
+             if (key == "name")
+-                this->Name = value;
++            {
++                if (value == "")
++                    continue;
++                if (this->Name == "")
++                    this->Name = value;
++                else if (this->Name != value)
++                    this->Name = this->Name + " [" + value + "]";
++            }
+             else if (key ==  "picture")
+                 this->Picture = value;
+             else if (key ==  "logoSmall")
+-- 
+2.23.1
+
