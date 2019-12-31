@@ -1,0 +1,21 @@
+--- a/meson.build	2019-08-02 07:26:24.000000000 +0300
++++ b/meson.build	2019-12-30 23:55:07.937477345 +0200
+@@ -12,8 +12,6 @@
+ 
+ 
+ # Dependencies
+-dependency('python3', required: true)
+-dependency('pygobject-3.0', required: true)
+ ratbagd = find_program('ratbagd', required: false)
+ ratbagd_required_version='0.10'
+ 
+@@ -72,6 +70,9 @@
+     py3 = pymod.find_installation()
+     python_dir = py3.get_install_dir()
+ endif
++
++py3.dependency('pygobject-3.0', required: true)
++
+ install_subdir('piper',
+                install_dir: python_dir,
+                exclude_directories: '__pycache__')

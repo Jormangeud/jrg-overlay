@@ -1,0 +1,11 @@
+--- a/meson.build	2019-12-30 19:47:51.534552136 +0200
++++ b/meson.build	2019-12-30 19:48:09.529553258 +0200
+@@ -604,7 +604,7 @@
+ # From python 3.8 we neeed python3-embed
+ dep_python3 = dependency('python3-embed', required: false)
+ if not dep_python3.found()
+-	dep_python3 = dependency('python3')
++	dep_python3 = py3.dependency()
+ endif
+ 
+ wrapper_deps = [
