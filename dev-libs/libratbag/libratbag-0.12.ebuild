@@ -4,7 +4,7 @@
 EAPI=7
 PYTHON_COMPAT=( python3_{6,7} )
 
-inherit meson udev systemd python-r1
+inherit linux-info meson udev systemd python-r1
 
 
 if [[ ${PV} = *9999* ]]; then
@@ -43,6 +43,13 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=( ${FILESDIR}/python3-config.patch )
+
+pkg_setup() {
+	linux-info_pkg_setup
+
+	CONFIG_CHECK="~HIDRAW"
+	check_extra_config
+}
 
 src_prepare() {
 	default
