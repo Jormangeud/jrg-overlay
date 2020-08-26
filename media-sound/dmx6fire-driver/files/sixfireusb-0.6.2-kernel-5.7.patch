@@ -1,0 +1,29 @@
+diff -Naurd sixfireusb-0.6.2/pcm.c sixfireusb-0.6.2_5.7/pcm.c
+--- a/pcm.c	2013-02-04 03:17:43.000000000 +0100
++++ b/pcm.c	2019-06-03 08:43:50.668438334 +0200
+@@ -202,7 +202,6 @@
+ {
+ 	struct pcm_runtime *rt = kzalloc(sizeof(struct pcm_runtime), GFP_KERNEL);
+ 	struct substream_runtime *sub_rt = chip->substream;
+-	int ret;
+ 	int i;
+ 	
+ 	if (!rt)
+@@ -216,16 +215,10 @@
+ 		sub_rt->devices[i]->private_data = chip;
+ 		snd_pcm_set_ops(sub_rt->devices[i], SNDRV_PCM_STREAM_PLAYBACK, &pcm_ops);
+ 		snd_pcm_set_ops(sub_rt->devices[i], SNDRV_PCM_STREAM_CAPTURE, &pcm_ops);
+-		ret = snd_pcm_lib_preallocate_pages_for_all(sub_rt->devices[i],
++		snd_pcm_lib_preallocate_pages_for_all(sub_rt->devices[i],
+ 				SNDRV_DMA_TYPE_CONTINUOUS,
+ 				snd_dma_continuous_data(GFP_KERNEL),
+ 				MAX_BUFSIZE, MAX_BUFSIZE);
+-		if (ret) {
+-			kfree(rt);
+-			snd_printk(KERN_ERR PREFIX
+-					"error preallocating pcm buffers.\n");
+-			return ret;
+-		}
+ 	}
+ 
+ 	chip->pcm = rt;

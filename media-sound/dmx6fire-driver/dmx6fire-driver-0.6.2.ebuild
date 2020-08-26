@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -28,7 +28,13 @@ BUILD_TARGETS="modules"
 
 src_prepare() {
 	sed -i -e "s:\$(KERNELRELEASE):${KV_FULL}:" Makefile || die "sed failed!"
-	eapply "${FILESDIR}/${MY_P}-kernel-5.1.patch" || die "patch failed!"
+
+	PATCH_KV=7
+	if [ "${KV_MINOR}" -lt 7 ]; then
+		PATCH_KV=1
+	fi
+
+	eapply "${FILESDIR}/${MY_P}-kernel-${KV_MAJOR}.${PATCH_KV}.patch" || die "patch failed!"
 	eapply_user
 }
 
