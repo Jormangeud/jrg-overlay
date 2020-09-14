@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -11,12 +11,11 @@ SRC_URI="http://rtorrent.net/downloads/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
+KEYWORDS="amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
 IUSE="daemon debug pyroscope selinux test xmlrpc"
 REQUIRED_USE="pyroscope? ( xmlrpc )"
-
-COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
-	>=dev-libs/libsigc++-2.2.2:2
+RESTRICT="!test? ( test )"
+COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}[pyroscope?]
 	>=net-misc/curl-7.61.0
 	sys-libs/ncurses:0=
 	xmlrpc? ( dev-libs/xmlrpc-c )"
@@ -25,18 +24,23 @@ RDEPEND="${COMMON_DEPEND}
 	selinux? ( sec-policy/selinux-rtorrent )
 "
 DEPEND="${COMMON_DEPEND}
-	dev-util/cppunit
+	dev-util/cppunit"
+BDEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig"
 
 DOCS=( doc/rtorrent.rc )
-PATCHES=(
-	"${FILESDIR}/${PN}-0.9.7-tinfo.patch"
-	"${FILESDIR}/${PN}-0.9.7-execinfo-configure.patch"
-)
+
+pkg_setup() {
+	if ! linux_config_exists || ! linux_chkconfig_present IPV6; then
+		ewarn "rtorrent will not start without IPv6 support in your kernel"
+		ewarn "without further configuration. Please set bind=0.0.0.0 or"
+		ewarn "similar in your rtorrent.rc"
+		ewarn "Upstream bug: https://github.com/rakshasa/rtorrent/issues/732"
+	fi
+}
 
 src_prepare() {
 	default
-
 	# https://github.com/rakshasa/rtorrent/issues/332
 	cp "${FILESDIR}"/rtorrent.1 "${S}"/doc/ || die
 
@@ -44,20 +48,20 @@ src_prepare() {
         einfo "using pyro"
 		cp "${FILESDIR}"/ps/{command_pyroscope.cc,ui_pyroscope.cc,ui_pyroscope.h} "${S}"/src
 
-		EPATCH_SOURCE="${FILESDIR}/ps/all" EPATCH_SUFFIX="patch" EPATCH_FORCE="yes" eapply || die
-		EPATCH_SOURCE="${FILESDIR}/ps/${PV}" EPATCH_SUFFIX="patch" EPATCH_FORCE="yes" eapply || die
+		eapply "${FILESDIR}/ps/all" || die
+		eapply "${FILESDIR}/ps/${PV}" || die
 
+		# define RT_HEX_VERSION as it is used in #ifdefs
 		RT_HEX_VERSION=0x0$(replace_all_version_separators '0')
 		sed -i -e "s:\\(AC_DEFINE(HAVE_CONFIG_H.*\\):\1\nAC_DEFINE(RT_HEX_VERSION, $RT_HEX_VERSION, for CPP if checks):" configure.ac
 
 	fi
-
+	eapply_user
 	eautoreconf
 }
 
 src_configure() {
 	default
-
 	# configure needs bash or script bombs out on some null shift, bug #291229
 	CONFIG_SHELL=${BASH} econf \
 		$(use_enable debug) \
