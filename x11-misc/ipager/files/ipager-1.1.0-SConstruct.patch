@@ -1,5 +1,5 @@
---- SConstruct.old	2012-02-15 13:26:44.000000000 +0200
-+++ SConstruct	2012-02-15 19:41:35.800519323 +0200
+--- ./SConstruct.ori	2015-08-01 03:47:54.506016655 +0200
++++ ./SConstruct	2015-08-01 03:42:10.003017365 +0200
 @@ -7,15 +7,15 @@
  ###############################################
  # options
@@ -21,3 +21,5 @@
 +    PathVariable('PREFIX', 'install-path base', '/usr/local'),
 +    PathVariable('DESTDIR', 'install to $DESTDIR/$PREFIX', '/')
  )
+ 
+ 

@@ -1,0 +1,17 @@
+--- a/pager.cpp.ori	2013-12-31 18:33:19.635906108 +0100
++++ b/pager.cpp	2013-12-31 18:29:54.181984586 +0100
+@@ -293,9 +293,11 @@
+ 
+              /* don't blend the image onto the drawable - slower */
+              imlib_context_set_blend(1);
+-             imlib_context_set_image(m_buffer_icons);
+-             /* render the image at 0, 0 */
+-             imlib_render_image_on_drawable(up_x, up_y);
++             if (NULL != m_buffer_icons){
++               imlib_context_set_image(m_buffer_icons);
++               /* render the image at 0, 0 */
++               imlib_render_image_on_drawable(up_x, up_y);
++             }
+ 
+           }
+          /* if we had updates - free them */
