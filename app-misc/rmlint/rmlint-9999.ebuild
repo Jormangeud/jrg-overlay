@@ -1,12 +1,12 @@
-# Copyright 1999-2020 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 DISTUTILS_OPTIONAL=1
-PYTHON_COMPAT=( python3_{4,5,6,7} )
+PYTHON_COMPAT=( python3_{6..9} )
 
 
-inherit multilib scons-utils toolchain-funcs eutils distutils-r1 gnome2-utils
+inherit multilib toolchain-funcs eutils python-single-r1 scons-utils gnome2-utils
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
@@ -23,6 +23,8 @@ HOMEPAGE="https://github.com/sahib/rmlint/ http://rmlint.readthedocs.org/"
 X86_CPU_FEATURES=( cpu_flags_x86_sse4_2 )
 IUSE="doc gui nls ${X86_CPU_FEATURES[@]}"
 
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
 RDEPEND="
 	sys-libs/glibc
 	>=dev-libs/glib-2.32
@@ -31,9 +33,11 @@ RDEPEND="
 	dev-libs/elfutils
 	gui? (
 		${PYTHON_DEPS}
-		x11-libs/gtk+:3
-		dev-python/pygobject:3
+		$(python_gen_cond_dep '
+			dev-python/pygobject:3[${PYTHON_USEDEP}]
+		')
 		gnome-base/librsvg
+		x11-libs/gtk+:3
 		x11-libs/gtksourceview:3.0
 	)
 "
@@ -46,10 +50,14 @@ REQUIRED_USE="gui? ( ${PYTHON_REQUIRED_USE} )"
 SLOT="0"
 LICENSE="GPL-3"
 
+pkg_setup() {
+	python-single-r1_pkg_setup
+}
+
 src_prepare() {
 
 	# Prevent installing /usr/share/glib-2.0/schemas/gschemas.compiled, gnome2-utils updates it
-	epatch "${FILESDIR}/${PN}-gui-dont-compile-schemas.patch"
+	eapply "${FILESDIR}/${PN}-gui-dont-compile-schemas.patch"
 
 	if ! use doc ; then
 		sed -i -e "/SConscript('docs\/SConscript')/d" SConstruct || die "couldn't disable docs"
