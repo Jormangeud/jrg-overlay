@@ -1,0 +1,56 @@
+--- a/atoms.cpp	2016-09-06 18:54:19.155678152 +0200
++++ b/atoms.cpp	2016-09-06 18:15:14.681866975 +0200
+@@ -124,6 +124,8 @@
+     net_wm_window_type_dock   = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
+     net_wm_window_type_menu   = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_MENU", False);
+ 
++    net_wm_window_opacity     = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
++
+     ipager_notifier = XInternAtom(dpy, "_IPAGER_NOTIFIER", False);
+ 
+ };
+--- a/atoms.h	2016-09-06 18:14:40.928876984 +0200
++++ b/atoms.h	2016-09-06 18:19:53.646254491 +0200
+@@ -101,6 +101,8 @@
+     Atom    net_wm_window_type_dock,
+             net_wm_window_type_menu;
+ 
++    Atom    net_wm_window_opacity;
++
+     Atom    ipager_notifier;
+ 
+ 
+@@ -188,6 +190,8 @@
+     const Atom &netWmWindowTypeMenu(void) const
+         { return net_wm_window_type_menu; };
+ 
++    const Atom &netWmWindowOpacity(void) const
++        { return net_wm_window_opacity; };
+ 
+     /*    */
+     const Atom &ipagerNotifier(void) const
+--- a/pager.cpp	2016-09-06 18:11:38.766724841 +0200
++++ b/pager.cpp	2016-09-06 18:48:25.493738917 +0200
+@@ -23,6 +23,7 @@
+  *                                                                         *
+  ***************************************************************************/
+ 
++#include <stdint.h>
+ 
+ #include "pager.h"
+ 
+@@ -708,6 +709,14 @@
+         1
+     );
+ 
++	unsigned int opacity = 0xc0000000;
++
++	XChangeProperty(m_dpy, m_win,
++	  	Atoms::Instance()->netWmWindowOpacity(),
++		XA_CARDINAL, 32, PropModeReplace,
++	  	(unsigned char *) &opacity,
++		1
++	);
+ 
+     XMapWindow(m_dpy, m_win);
+     XFlush(m_dpy);

@@ -1,0 +1,24 @@
+--- ./pager.cpp.ori	2015-08-01 03:43:27.968264647 +0200
++++ ./pager.cpp	2015-08-01 03:42:10.005017243 +0200
+@@ -293,11 +293,10 @@
+ 
+              /* don't blend the image onto the drawable - slower */
+              imlib_context_set_blend(1);
+-             if (NULL != m_buffer_icons){
+                imlib_context_set_image(m_buffer_icons);
+                /* render the image at 0, 0 */
++             if (m_buffer_icons)
+                imlib_render_image_on_drawable(up_x, up_y);
+-             }
+ 
+           }
+          /* if we had updates - free them */
+@@ -946,6 +945,7 @@
+         image = imlib_create_image(p.width, p.height);
+ 
+     imlib_context_set_image(image);
++    if (image)
+     imlib_image_set_has_alpha(1);
+ 
+     // draw background
+
