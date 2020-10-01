@@ -1,24 +1,22 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
-
-GIT_ACCOUNT="MTG"
+EAPI=7
+PYTHON_COMPAT=( python3_{6..9} )
 
 inherit distutils-r1
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/${GIT_ACCOUNT}/${PN}.git"
+	EGIT_REPO_URI="https://github.com/MTG/acousticbrainz-client.git"
 	KEYWORDS=""
 else
-	SRC_URI="https://github.com/${GIT_ACCOUNT}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/MTG/acousticbrainz-client/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
 DESCRIPTION="Submission client for AcousticBrainz project."
-HOMEPAGE="http://acousticbrainz.org https://github.com/${GIT_ACCOUNT}/${PN}"
+HOMEPAGE="http://acousticbrainz.org https://github.com/MTG/acousticbrainz-client"
 LICENSE="GPL-3"
 SLOT="0"
 IUSE=""
