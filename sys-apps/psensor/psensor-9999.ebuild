@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,10 +9,10 @@ DESCRIPTION="A graphical hardware temperature monitor"
 HOMEPAGE="http://wpitchoune.net/psensor"
 
 if [[ ${PV} == *9999 ]] ; then
-	EGIT_REPO_URI="https://gitlab.com/jeanfi/${PN}.git"
+	EGIT_REPO_URI="https://gitlab.com/jeanfi/psensor.git"
 	inherit git-r3
 else
-	SRC_URI="http://wpitchoune.net/${PN}/files/${PN}-${PV}.tar.gz"
+	SRC_URI="http://wpitchoune.net/psensor/files/psensor-${PV}.tar.gz"
 	KEYWORDS="amd64 ~x86"
 fi
 
@@ -45,7 +45,6 @@ DEPEND="${RDEPEND}
 	app-text/asciidoc"
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-json-c.patch
    	eapply_user
    	eautoreconf
 }
