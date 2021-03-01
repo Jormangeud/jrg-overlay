@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit eutils qmake-utils
 
@@ -34,7 +34,7 @@ pkg_setup() {
 	fi
 }
 src_prepare() {
-	epatch "${FILESDIR}/${P}-qt4toqt5.patch"
+	eapply "${FILESDIR}/${P}-qt4toqt5.patch"
 	default
 }
 src_configure() {
@@ -44,7 +44,7 @@ src_configure() {
 	if ! use cli ; then
 		sed -i '/ConsoleFixer/d' vbrfix.pro || die 'sed failed'
 	fi
-	eqmake5 vbrfix.pro || die "eqmake failed."
+	eqmake5 || die "eqmake failed."
 }
 
 src_install() {
