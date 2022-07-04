@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{6..9} )
+PYTHON_COMPAT=( python3_{6..11} )
 
 inherit distutils-r1
 
@@ -29,8 +29,6 @@ IUSE=""
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
 
 python_prepare_all() {
-	# Disable test
-	sed -i -e "/setup_requires=\['nose>=1.0'\],/d" setup.py || die
 
 	distutils-r1_python_prepare_all
 }
