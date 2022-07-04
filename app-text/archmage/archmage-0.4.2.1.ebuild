@@ -27,7 +27,7 @@ IUSE=""
 
 DEPEND="dev-libs/chmlib
 	dev-python/pychm[${PYTHON_USEDEP}]
-	dev-python/beautifulsoup[${PYTHON_USEDEP}]
+	dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 	"
 src_prepare() {
 	echo "${PV}" > RELEASE-VERSION
