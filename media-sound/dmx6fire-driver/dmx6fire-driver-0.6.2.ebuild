@@ -29,15 +29,19 @@ BUILD_TARGETS="modules"
 src_prepare() {
 	sed -i -e "s:\$(KERNELRELEASE):${KV_FULL}:" Makefile || die "sed failed!"
 
-	PATCH_KV=7
-	if [ "${KV_MINOR}" -lt 7 ]; then
-		PATCH_KV=1
-	fi
-	if [ "${KV_MINOR}" -ge 9 ]; then
-		PATCH_KV=9
-	fi
-	if [ "${KV_MINOR}" -ge 12 ]; then
-		PATCH_KV=12
+	PATCH_KV=1
+	if [ "${KV_MAJOR}" -eq 5 ]; then
+		PATCH_KV=7
+
+		if [ "${KV_MINOR}" -lt 7 ]; then
+			PATCH_KV=1
+		fi
+		if [ "${KV_MINOR}" -ge 9 ]; then
+			PATCH_KV=9
+		fi
+		if [ "${KV_MINOR}" -ge 12 ]; then
+			PATCH_KV=12
+		fi
 	fi
 
 	eapply "${FILESDIR}/${MY_P}-kernel-${KV_MAJOR}.${PATCH_KV}.patch" || die "patch failed!"
