@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6..9} )
+PYTHON_COMPAT=( python3_{6..11} )
 
 inherit eutils python-any-r1 scons-utils
 
@@ -19,8 +19,10 @@ IUSE="xinerama debug"
 RDEPEND="media-libs/imlib2[X]
 	x11-libs/libXmu
 	xinerama? ( x11-libs/libXinerama )"
-DEPEND="${RDEPEND}
-	dev-util/scons[python_targets_python3_7(-),python_single_target_python3_7(+)]"
+
+DEPEND="${RDEPEND}"
+BDEPEND="${PYTHON_DEPS}
+	dev-util/scons"
 
 S="${WORKDIR}/${PN}-${P}"
 
