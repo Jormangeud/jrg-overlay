@@ -1,18 +1,16 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{5,6,7} )
+PYTHON_COMPAT=( python3_{5..11} )
 
 inherit distutils-r1
 
-MY_PN=Py3AMF
-MY_P=${MY_PN}-${PV}
-
 DESCRIPTION="Action Message Format (AMF) support for Python 3"
 HOMEPAGE="https://github.com/StdCarrot/Py3AMF https://pypi.python.org/pypi/Py3AMF"
-SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
+SRC_URI="https://github.com/StdCarrot/Py3AMF/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+
 
 LICENSE="MIT"
 SLOT="0"
