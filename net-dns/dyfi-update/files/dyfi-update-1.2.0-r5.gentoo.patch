@@ -1,0 +1,138 @@
+diff -u dyfi-update-1.2.0/Makefile dyfi-update-1.2.0-r3/Makefile
+--- dyfi-update-1.2.0/Makefile	2004-11-10 01:51:08.000000000 +0200
++++ dyfi-update-1.2.0-r4/Makefile	2006-03-08 18:14:00.548507435 +0200
+@@ -4,9 +4,9 @@
+ 
+ # For BSD install: Which install to use and where to put the files
+ INSTALL = install
+-PREFIX  = /usr/local
++PREFIX  = $(DESTDIR)/usr
+ BIN_DIR = $(PREFIX)/bin
+-ETC_DIR = $(PREFIX)/etc
++ETC_DIR = $(DESTDIR)/etc
+ MAN_DIR = $(PREFIX)/man
+ 
+ clean:
+@@ -27,7 +27,8 @@
+ 	@echo ""
+ 
+ installboot:
+-	$(INSTALL) -m 755 -o root -g root dyfi-update /etc/init.d
++	$(INSTALL) -d -o root -g root -m 755 $(ETC_DIR)/init.d
++	$(INSTALL) -m 755 -o root -g root dyfi-update $(ETC_DIR)/init.d
+ 
+ installboot0: installboot
+ 	@if [ ! -e /etc/rc0.d/K01dyfi-update ]; then cd /etc/rc0.d; ln -s ../init.d/dyfi-update K01dyfi-update; fi
+@@ -63,7 +64,7 @@
+ 	else \
+ 		echo "Installing config in $(ETC_DIR)."; \
+ 		echo "Remember to edit dyfi-update.conf afterwards!"; \
+-		$(INSTALL) -m 644 -o root -g root dyfi-update.conf $(ETC_DIR); \
++		$(INSTALL) -m 640 -o root -g dyfi dyfi-update.conf $(ETC_DIR); \
+ 	fi
+ 		
+ forceinstallconf:
+diff -u dyfi-update-1.2.0/dyfi-update dyfi-update-1.2.0-r3/dyfi-update
+--- dyfi-update-1.2.0/dyfi-update	2004-11-10 01:37:23.000000000 +0200
++++ dyfi-update-1.2.0-r4/dyfi-update	2006-03-08 18:27:35.368149189 +0200
+@@ -1,44 +1,34 @@
+-#!/bin/sh
+-#
+-#	dyfi-update SysV init script for starting and stopping
+-#	dyfi-update.pl - A perl client for updating dy.fi
+-#	hostnames automatically
+-#
+-#	by dy.fi admins, admin at dy dot fi
+-#
+-
+-# Specify the location of the pid file here
+-# (this must be the same as in dyfi-update.conf!)
+-PIDFILE=/var/run/dyfi-update.pid
+-# Specify the location of the configuration file:
+-CFGFILE=/usr/local/etc/dyfi-update.conf
+-
+-PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
+-
+-# See how we were called.
+-case "$1" in
+-  start)
+-	echo "Starting dy.fi updating daemon..."
+-	dyfi-update.pl -f $CFGFILE &
+-	[ $? -eq 0 ] && [ -d /var/lock/subsys ] && touch /var/lock/subsys/dyfi-update
+-        ;;
+-  stop)
+-  	if [ -f $PIDFILE ]; then
+-		echo "Stopping dy.fi updating daemon..."
+-		kill `cat $PIDFILE`
+-		if [ $? -eq 0 ]; then
+-			rm $PIDFILE
+-			[ -d /var/lock/subsys ] && rm /var/lock/subsys/dyfi-update
+-		fi
+-	else
+-		echo "dy.fi updating daemon is not running (no pid file)"
+-	fi
+-  	
+-	;;
+-  *)
+-        echo "Usage: dyfi-update {start|stop}"
+-        exit 1
+-esac
++#! /sbin/openrc-run
+ 
+-exit 0
++CFGFILE="/etc/dyfi-update.conf"
++
++depend() {
++        need localmount
++        need net
++        use dns
++}
++
++checkconfig() {
++        if [ ! -f $CFGFILE ]
++        then
++                einfo "Configfile $CFGFILE not found"
++                return 1
++        fi
++}
++
++start() {
++        checkconfig || return 1
++        ebegin "Starting dy.fi update daemon..."
++
++        start-stop-daemon --user nobody --group dyfi --start --pidfile /run/dyfi-update.pid --exec /usr/bin/dyfi-update.pl \
++        --make-pidfile --background -- -f $CFGFILE
++
++        eend $? "dy.fi did not start, error code $?"
++}
++
++stop() {
++        ebegin "Stopping dy.fi update daemon"
++        start-stop-daemon --stop --quiet --pidfile /run/dyfi-update.pid
++        eend $?
++}
+ 
+diff -u dyfi-update-1.2.0/dyfi-update.pl dyfi-update-1.2.0-r3/dyfi-update.pl
+--- dyfi-update-1.2.0/dyfi-update.pl	2004-11-10 11:55:01.000000000 +0200
++++ dyfi-update-1.2.0-r4/dyfi-update.pl	2006-03-08 19:40:08.387478775 +0200
+@@ -433,13 +433,13 @@
+ #
+ 
+ sub writepid {
+-	my($f) = @_;
+-	open(PF, ">>$f") || crash("Could not open $f for writing pid: $!");
+-	my $ofh = select(PF); $| = 1; select($ofh); # autoflush
+-	flock(PF, LOCK_EX|LOCK_NB) || crash("Could not flock pid file (other copy already running?): $!");
+-	truncate(PF, 0) || crash("Could not truncate pid file: $!");
+-	seek(PF, 0, 0) || crash("Could not seek to beginning of pid file: $!");
+-	print PF "$$\n" || crash("Could not write pid to $f: $!");
++#	my($f) = @_;
++#	open(PF, ">>$f") || crash("Could not open $f for writing pid: $!");
++#	my $ofh = select(PF); $| = 1; select($ofh); # autoflush
++#	flock(PF, LOCK_EX|LOCK_NB) || crash("Could not flock pid file (other copy already running?): $!");
++#	truncate(PF, 0) || crash("Could not truncate pid file: $!");
++#	seek(PF, 0, 0) || crash("Could not seek to beginning of pid file: $!");
++#	print PF "$$\n" || crash("Could not write pid to $f: $!");
+ }
+ 
+ #
