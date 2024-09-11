@@ -1,0 +1,92 @@
+From c0ea3b740209a62e035d86b823266a86a5da656e Mon Sep 17 00:00:00 2001
+From: Sergei Trofimovich <slyich@gmail.com>
+Date: Tue, 25 Jan 2022 22:55:30 +0000
+Subject: [PATCH] mincurses.c: use ncurses API to enter raw() mode (ncurses-6.3
+ compatibility)
+
+Before the change buld on `ncurses-6.3` was failing as:
+
+    mincurses.c: In function 'setup_term_customize':
+    mincurses.c:345:20: error: 'TERMINAL' {aka 'struct term'} has no member named 'Nttyb'
+      345 |     term = cur_term->Nttyb;
+          |                    ^~
+
+ncurses-6.3 removed from public API Nttyb and friends in
+https://github.com/mirror/ncurses/commit/493e2f7b3fc309879f561a094fdfc15e5304b3d6
+effectively breaking the workaround of ce3fabff.
+
+This change drops most of fine tunning over termios and uses ncurses
+`initscr()` / `raw()` pair of initializers to get to the mode closest
+to what `squishyball` manually installs.
+
+The result seems to handle <Enter>, <Ctrl-C>, <Ctrl-?>, other
+keys and application exit correctly.
+
+Tested on `ncurses-6.2` and `ncurses-6.3`.
+---
+ mincurses.c | 33 ++++-----------------------------
+ 1 file changed, 4 insertions(+), 29 deletions(-)
+
+diff --git a/mincurses.c b/mincurses.c
+index 6cbfa02..ea0034e 100644
+--- a/mincurses.c
++++ b/mincurses.c
+@@ -265,7 +260,6 @@ int min_getch(int nonblock){
+ /***************************** OUTPUT SIDE ******************************/
+ 
+ TTY orig;
+-TTY term;
+ 
+ static int outfd;
+ static int initted=0;
+@@ -345,27 +339,6 @@ void min_mvcur(int x, int y){
+   if(column_address)min_putp(tparm(column_address,x));
+ }
+ 
+-static void setup_term_customize(void){
+-  if (cur_term != 0) {
+-    term = cur_term->Nttyb;
+-#ifdef TERMIOS
+-    term.c_lflag &= ~ICANON;
+-    term.c_iflag &= ~ICRNL;
+-    term.c_lflag &= ~(ECHO | ECHONL);
+-    term.c_iflag &= ~(ICRNL | INLCR | IGNCR);
+-    term.c_oflag &= ~(ONLCR);
+-    term.c_lflag &= ~(ISIG);
+-    term.c_cc[VMIN] = 1;
+-    term.c_cc[VTIME] = 0;
+-#else
+-    term.sg_flags |= RAW;
+-    term.sg_flags &= ~(ECHO | CRMOD);
+-#endif
+-    SET_TTY(outfd,&term);
+-    cur_term->Nttyb = term;
+-  }
+-}
+-
+ extern void _nc_init_acs(void);
+ int min_panel_init(int pl){
+   int i,ret = OK;
+@@ -382,8 +355,9 @@ int min_panel_init(int pl){
+     /* low level terminfo setup with defaults and no error return */
+     setupterm(0,outfd,0);
+ 
+-    /* terminal settings now in a known state; further configure */
+-    setup_term_customize();
++    /* set terminal in raw mode to handle keys in application */
++    initscr();
++    raw();
+ 
+     /* enable graphics character set */
+     //if(ena_acs)min_putp(ena_acs);
+@@ -463,6 +437,7 @@ void min_panel_remove(){
+     min_unset();
+     min_showcur();
+     min_flush();
++    endwin();
+     SET_TTY(outfd,&orig);
+     initted=0;
+   }
+-- 
+2.34.1
+

@@ -1,0 +1,27 @@
+--- a/configure.ac	2023-01-25 18:14:47.365209306 +0200
++++ b/configure.ac	2023-01-25 18:14:32.971208926 +0200
+@@ -18,7 +18,6 @@
+ PKG_CHECK_MODULES([FLAC], [flac >= 0.8.0])
+ PKG_CHECK_MODULES([ao], [ao > 1.0.0])
+-AC_CHECK_LIB([ncurses], [initscr],,[AC_MSG_ERROR([ncurses required!])])
+-AC_CHECK_LIB([ncurses], [_nc_tinfo_fkeysf], USE_FKEYSF=1, USE_FKEYSF=0)
++PKG_CHECK_MODULES([NCURSES], [ncurses], USE_FKEYSF=0, USE_FKEYSF=0)
+ AC_CHECK_LIB([m], [cos])
+ AC_CHECK_LIB([pthread], [pthread_create])
+ 
+--- a/configure.ac	2023-01-27 15:31:00.552116608 +0200
++++ b/configure.ac	2023-01-27 15:30:48.725116295 +0200
+@@ -75,11 +75,11 @@
+         esac
+ fi
+ 
+-COMMON_FLAGS="$cflags_save $vorbisfile_CFLAGS $opusfile_CFLAGS $ao_CFLAGS $FLAC_CFLAGS -DUSE_FKEYSF=$USE_FKEYSF"
++COMMON_FLAGS="$cflags_save $vorbisfile_CFLAGS $opusfile_CFLAGS $ao_CFLAGS $FLAC_CFLAGS -DUSE_FKEYSF=$USE_FKEYSF $NCURSES_CFLAGS"
+ CFLAGS="$CFLAGS -DVERSION='\"$VERSION\"' $COMMON_FLAGS"
+ DEBUG="$DEBUG -DVERSION='\\\"$VERSION\\\"' $COMMON_FLAGS"
+ PROFILE="$PROFILE -DVERSION='\\\"$VERSION\\\"' $COMMON_FLAGS"
+-LIBS="$LIBS $vorbisfile_LIBS $opusfile_LIBS $ao_LIBS $FLAC_LIBS"
++LIBS="$LIBS $vorbisfile_LIBS $opusfile_LIBS $ao_LIBS $FLAC_LIBS $NCURSES_LIBS"
+ AC_SUBST(DEBUG)
+ AC_SUBST(PROFILE)
+ 

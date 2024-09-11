@@ -1,16 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
-inherit autotools versionator vcs-snapshot
+inherit autotools vcs-snapshot
 
 if [[ ${PV} = *9999* ]]; then
 	inherit subversion
-	ESVN_REPO_URI="svn+https://svn.xiph.org/trunk/${PN}/"
+	ESVN_REPO_URI="https://svn.xiph.org/trunk/${PN}/"
 	KEYWORDS=""
 else
-	MY_PV=$(replace_version_separator 2 '~svn')
+	MY_PV=$(ver_rs 2 '~svn')
 	SRC_URI="http://http.debian.net/debian/pool/main/s/${PN}/${PN}_${MY_PV}.orig.tar.xz -> ${P}.tar.xz"
 	KEYWORDS="~amd64 ~x86"
 fi
@@ -31,6 +31,8 @@ RDEPEND="${DEPEND}"
 
 src_prepare() {
 	eapply "${FILESDIR}/${PN}-debian-patches.diff"
+	eapply "${FILESDIR}/0001-mincurses.c-use-ncurses-API-to-enter-raw-mode-ncurse.patch"
+	eapply "${FILESDIR}/configure.ac.diff"
 	eapply_user
 	eautoreconf
 }

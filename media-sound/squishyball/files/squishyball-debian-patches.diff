@@ -1,18 +1,3 @@
-Description: don't define mandir in Makefile
-Author: Jonathan Dowland <jmtd@debian.org>
-
---- squishyball-0.1~svn18790.orig/Makefile.am
-+++ squishyball-0.1~svn18790/Makefile.am
-@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = foreign 1.11
- EXTRA_DIST = COPYING autogen.sh
- 
- bin_PROGRAMS = squishyball
--mandir = @MANDIR@
-+##mandir = @MANDIR@
- man_MANS = squishyball.1
- 
- squishyball_SOURCES = audio.c loader.c main.c mincurses.c tty.c main.h mincurses.h
-
 Description: define PATH_MAX if undefined
  We're (ab)using PATH_MAX as an upper-bound on a string buffer size,
  but it isn't defined on all platforms (notably HURD). For those
@@ -54,25 +39,3 @@ Reviewed-By: Jonathan Dowland <jmtd@debian.org>
      break;
    }
  }
-
-Description: define NCURSES_INTERNALS in mincurses.c
- The mincurses component of squishyball depends upon ncurses internal
- definitions which were exposed in older versions of ncurses but are
- no longer since at least 20170318. Defining NCURSES_INTERNALS (for now)
- causes ncurses to expose the necessary structure.
-Author: Jonathan Dowland <jmtd@debian.org>
-Bug-Debian: https://bugs.debian.org/860334
-Last-Update: 2017-07-10
-
---- squishyball-0.1~svn19085.orig/mincurses.c
-+++ squishyball-0.1~svn19085/mincurses.c
-@@ -34,6 +34,9 @@
- # define _REENTRANT
- #endif
- 
-+/* https://bugs.debian.org/860334 */
-+#define NCURSES_INTERNALS
-+
- #include <ncurses.h>
- #include <curses.h>
- #include <term.h>
