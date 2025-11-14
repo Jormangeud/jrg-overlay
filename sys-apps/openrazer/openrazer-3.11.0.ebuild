@@ -1,21 +1,30 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{11..13} )
 
-inherit readme.gentoo-r1 systemd udev xdg-utils distutils-r1 linux-mod
+inherit readme.gentoo-r1 systemd udev xdg-utils distutils-r1 linux-mod-r1
 
 DESCRIPTION="Drivers and user-space daemon to control Razer devices on GNU/Linux"
 HOMEPAGE="https://openrazer.github.io/
 	https://github.com/openrazer/openrazer/"
-SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz
-	-> ${P}.tar.gz"
+
+if [[ "${PV}" == *9999* ]] ; then
+	inherit git-r3
+
+	EGIT_REPO_URI="https://github.com/${PN}/${PN}"
+else
+	SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz
+		-> ${P}.gh.tar.gz"
+
+	KEYWORDS="~amd64 ~x86"
+fi
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="amd64 ~x86"
 
 IUSE="+client +daemon"
 REQUIRED_USE="
@@ -53,91 +62,98 @@ To automatically start up the OpenRazer daemon on session login copy
 /usr/share/openrazer/openrazer-daemon.desktop file into Your user's
 ~/.config/autostart/ directory."
 
-BUILD_TARGETS="clean driver"
-BUILD_PARAMS="-C ${S} SUBDIRS=${S}/driver KERNELDIR=${KERNEL_DIR}"
-MODULE_NAMES="
-	razeraccessory(hid:${S}/driver)
-	razerkbd(hid:${S}/driver)
-	razerkraken(hid:${S}/driver)
-	razermouse(hid:${S}/driver)
-"
-
 distutils_enable_tests unittest
 
 python_compile() {
-	if use daemon ; then
-		( cd "${S}"/daemon || die ; distutils-r1_python_compile )
-	fi
+	cd "${S}/daemon" || die
+
+	distutils_pep517_install "${BUILD_DIR}/install"
+
 	if use client ; then
-		( cd "${S}"/pylib || die ; distutils-r1_python_compile )
+		cd "${S}/pylib" || die
+
+		distutils_pep517_install "${BUILD_DIR}/install"
 	fi
 }
 
 python_install() {
-	if use daemon ; then
-		( cd "${S}"/daemon || die ; distutils-r1_python_install )
-		python_scriptinto /usr/bin
-		python_newscript "${S}"/daemon/run_openrazer_daemon.py ${PN}-daemon
-	fi
-	if use client ; then
-		( cd "${S}"/pylib || die ; distutils-r1_python_install )
-	fi
+	distutils-r1_python_install
+
+	python_scriptinto /usr/bin
+	python_newscript daemon/run_openrazer_daemon.py "${PN}-daemon"
 }
 
 src_prepare() {
 	xdg_environment_reset
-	distutils-r1_src_prepare
+
+	if use daemon ; then
+		distutils-r1_src_prepare
+	else
+		default
+	fi
 
 	# Remove bad tests.
-	rm "${S}"/daemon/tests/test_effect_sync.py || die
+	rm daemon/tests/test_effect_sync.py || die
 }
 
 src_compile() {
-	linux-mod_src_compile
-	distutils-r1_src_compile
+	local -a modargs=(
+		SUBDIRS="${S}/driver"
+		KERNELDIR="${KERNEL_DIR}"
+	)
+	local -a modlist=(
+		{razeraccessory,razerkbd,razerkraken,razermouse}="hid:${S}:driver"
+	)
+	linux-mod-r1_src_compile
 
 	if use daemon ; then
-		emake -C "${S}"/daemon PREFIX=/usr service
+		distutils-r1_src_compile
+
+		emake -C "${S}/daemon" PREFIX=/usr service
 	fi
 
 }
 
 src_test() {
-	( cd "${S}"/daemon/tests || die ; distutils-r1_src_test )
+	cd daemon/tests || die
+
+	distutils-r1_src_test
 }
 
 src_install() {
-	linux-mod_src_install
-	distutils-r1_src_install
+	linux-mod-r1_src_install
 
-	udev_dorules "${S}"/install_files/udev/99-razer.rules
+	udev_dorules install_files/udev/99-razer.rules
 	exeinto "$(get_udevdir)"
-	doexe "${S}"/install_files/udev/razer_mount
+	doexe install_files/udev/razer_mount
 
 	# Install configuration example so that the daemon does not complain.
 	insinto /usr/share/${PN}
-	newins "${S}"/daemon/resources/razer.conf razer.conf.example
+	newins daemon/resources/razer.conf razer.conf.example
 
 	if use daemon ; then
+		# Python libraries/scripts, "client" also requires USE="daemon"
+		distutils-r1_src_install
+
 		# dbus service
 		insinto /usr/share/dbus-1/services
-		doins "${S}"/daemon/org.razer.service
+		doins daemon/org.razer.service
 
 		# systemd unit
-		systemd_douserunit "${S}"/daemon/${PN}-daemon.service
+		systemd_douserunit "daemon/${PN}-daemon.service"
 
 		# xdg autostart example file
 		insinto /usr/share/${PN}
-		doins "${S}"/install_files/desktop/openrazer-daemon.desktop
+		doins install_files/desktop/openrazer-daemon.desktop
 
 		# Manpages
-		doman "${S}"/daemon/resources/man/${PN}-daemon.8
-		doman "${S}"/daemon/resources/man/razer.conf.5
+		doman daemon/resources/man/${PN}-daemon.8
+		doman daemon/resources/man/razer.conf.5
 	fi
 }
 
 pkg_postinst() {
-	linux-mod_pkg_postinst
+	linux-mod-r1_pkg_postinst
 	udev_reload
 
 	if use daemon ; then
@@ -148,7 +164,6 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	linux-mod_pkg_postrm
 	udev_reload
 
 	if use daemon ; then
