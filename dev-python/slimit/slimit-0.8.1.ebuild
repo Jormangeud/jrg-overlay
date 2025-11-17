@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-
-PYTHON_COMPAT=( python{2_7,3_{5..11}} )
+EAPI=8
+PYTHON_COMPAT=( python{2_7,3_{5..14}} )
+DISTUTILS_USE_PEP517=setuptools
 
 inherit distutils-r1
 
@@ -21,6 +21,7 @@ PATCHES=(
 	"${FILESDIR}/${P}-pull-71.patch"
 	"${FILESDIR}/${P}-pull-79.patch"
 	"${FILESDIR}/${P}-pull-83.patch"
+	"${FILESDIR}/${P}-remove-deprecated-deps.patch"
 	 )
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
