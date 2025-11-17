@@ -1,0 +1,54 @@
+--- a/mylvmbackup	2014-11-21 10:55:10.000000000 +0200
++++ b/mylvmbackup	2018-08-24 02:05:29.448404732 +0300
+@@ -111,6 +111,7 @@
+ my $use_thin_snapshots;
+ my $zbackup;
+ my $zbackuparg;
++my $rsync_no_tmpdir;
+ 
+ # Load defaults into variables
+ load_defaults();
+@@ -419,6 +420,7 @@
+   $keep_mount=$cfg->val ('misc', 'keep_mount', $keep_mount);
+   $quiet=$cfg->val ('misc', 'quiet', $quiet);
+   $use_thin_snapshots=$cfg->val ('misc', 'thin', $use_thin_snapshots);
++  $rsync_no_tmpdir=$cfg->val ('misc', 'rsync_no_tmpdir', $rsync_no_tmpdir);
+ 
+   $mountdir=$cfg->val ('fs', 'mountdir', $mountdir);
+   $backupdir=$cfg->val ('fs', 'backupdir', $backupdir);
+@@ -506,6 +508,8 @@
+     "keep_mount" => \&keep_mount,
+     "thin" => \&use_thin_snapshots,
+     "quiet" => \&quiet,
++    "rsync_no_tmpdir" => \&rsync_no_tmpdir,
++
+ 
+ # fs
+     "mountdir=s" => \$mountdir,
+@@ -590,6 +594,7 @@
+   $quiet=0;
+   $use_thin_snapshots=0;
+   $errorstate=0;
++  $rsync_no_tmpdir=0;
+ 
+ # fs
+   $mountdir='/var/tmp/mylvmbackup/mnt/';
+@@ -788,7 +793,7 @@
+   my $destdir = $archivename;
+   # Do not use a temporary directory for remote backups
+   my $destdirtmp = $destdir;
+-  unless ($destdir =~ /^[^\/].*:.*/) {
++  if (($rsync_no_tmpdir==0) and ($destdir !~ /^[^\/].*:.*/)) {
+     $destdirtmp = sprintf('%s.INCOMPLETE-%07d',$destdir,int(rand(2**16)));
+   }
+   log_msg ("Taking actual backup...", LOG_INFO);
+--- a/mylvmbackup.conf	2014-11-21 10:48:39.000000000 +0200
++++ b/mylvmbackup.conf	2018-08-24 02:03:42.845734930 +0300
+@@ -106,6 +106,7 @@
+ keep_mount=0
+ thin=0
+ quiet=0
++rsync_no_tmpdir=0
+ 
+ #
+ # Logging options. The Sys::Syslog module is required for syslog option
