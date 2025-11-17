@@ -1,0 +1,29 @@
+--- a/src/providers/ad/ad_gpo_ndr.c	2020-04-03 20:53:10.466347329 -0400
++++ b/src/providers/ad/ad_gpo_ndr.c	2020-04-03 20:52:53.639449244 -0400
+@@ -105,7 +105,7 @@ ndr_pull_security_ace_object_type(struct
+                                   union security_ace_object_type *r)
+ {
+     uint32_t level;
+-    level = ndr_pull_get_switch_value(ndr, r);
++    NDR_CHECK(ndr_pull_steal_switch_value(ndr, r, &level));
+     NDR_PULL_CHECK_FLAGS(ndr, ndr_flags);
+     if (ndr_flags & NDR_SCALARS) {
+         NDR_CHECK(ndr_pull_union_align(ndr, 4));
+@@ -135,7 +135,7 @@ ndr_pull_security_ace_object_inherited_t
+                                             union security_ace_object_inherited_type *r)
+ {
+     uint32_t level;
+-    level = ndr_pull_get_switch_value(ndr, r);
++    NDR_CHECK(ndr_pull_steal_switch_value(ndr, r, &level));
+     NDR_PULL_CHECK_FLAGS(ndr, ndr_flags);
+     if (ndr_flags & NDR_SCALARS) {
+         NDR_CHECK(ndr_pull_union_align(ndr, 4));
+@@ -198,7 +198,7 @@ ndr_pull_security_ace_object_ctr(struct
+                                  union security_ace_object_ctr *r)
+ {
+     uint32_t level;
+-    level = ndr_pull_get_switch_value(ndr, r);
++    NDR_CHECK(ndr_pull_steal_switch_value(ndr, r, &level));
+     NDR_PULL_CHECK_FLAGS(ndr, ndr_flags);
+     if (ndr_flags & NDR_SCALARS) {
+         NDR_CHECK(ndr_pull_union_align(ndr, 4));

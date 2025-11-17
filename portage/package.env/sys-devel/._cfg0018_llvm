@@ -1,0 +1,2 @@
+# move sys-devel/llvm llvm-core/llvm
+llvm-core/llvm	cflags-plain.conf	no-tmpfs.conf

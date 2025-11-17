@@ -1,0 +1,9 @@
+dev-qt/qtdeclarative:6
+dev-qt/qtimageformats:6
+dev-qt/qtshadertools:6
+dev-qt/qtsvg:6
+dev-qt/qttools:6
+dev-qt/qttranslations:6
+dev-qt/qtwayland:6
+dev-qt/qtwebchannel:6
+dev-qt/qtwebengine:6

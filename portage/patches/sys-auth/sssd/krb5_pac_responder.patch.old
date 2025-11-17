@@ -1,0 +1,12 @@
+--- a/src/external/pac_responder.m4	2020-04-02 14:15:34.758956142 -0400
++++ b/src/external/pac_responder.m4	2020-04-02 14:15:46.556884706 -0400
+@@ -19,7 +19,8 @@ then
+         Kerberos\ 5\ release\ 1.14* | \
+         Kerberos\ 5\ release\ 1.15* | \
+         Kerberos\ 5\ release\ 1.16* | \
+-        Kerberos\ 5\ release\ 1.17*)
++        Kerberos\ 5\ release\ 1.17* | \
++        Kerberos\ 5\ release\ 1.18*)
+             krb5_version_ok=yes
+             AC_MSG_RESULT([yes])
+             ;;

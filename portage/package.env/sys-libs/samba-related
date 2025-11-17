@@ -1,0 +1,4 @@
+sys-libs/ldb	no-ccache.conf no-distcc.conf
+sys-libs/talloc	no-ccache.conf no-distcc.conf
+sys-libs/tdb	no-ccache.conf no-distcc.conf
+sys-libs/tevent	no-ccache.conf no-distcc.conf

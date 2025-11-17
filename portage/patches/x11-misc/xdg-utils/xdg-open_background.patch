@@ -1,0 +1,13 @@
+Run program on background when using generic.
+---
+--- a/scripts/xdg-open.in	2024-02-06 03:55:07.000000000 +0200
++++ b/scripts/xdg-open.in	2025-02-12 18:21:08.472062593 +0200
+@@ -378,7 +378,7 @@
+                 args=$(( args - 1 ))
+             done
+             [ $replaced -eq 1 ] || set -- "$@" "${target:-$target_uri}"
+-            env "$command" "$@"
++            env "$command" "$@" &
+             exit_success
+         fi
+     fi

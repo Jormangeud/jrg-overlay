@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+#post_src_unpack() {
+#    if [[ $(type -t epatch_user) == function ]]; then
+#        if pushd -- "$S" 2>&3; then
+#            epatch_user
+#            popd 2>&3
+#        else
+#            epatch_user
+#        fi 3>/dev/null
+#    fi
+#}
+
+if [[ ${FEATURES} == *ccache* ]]; then
+    case "${EBUILD_PHASE_FUNC}" in
+        src_* );&
+        *src_install )
+            if [[ ${CCACHE_DIR} == /var/cache/ccache ]]; then
+                export SANDBOX_WRITE="${SANDBOX_WRITE}:/var/cache/ccache/${CATEGORY}"
+                export CCACHE_DIR=/var/cache/ccache/${CATEGORY}
+                mkdir -p "${CCACHE_DIR}" || die
+            fi
+        ;;
+    esac
+fi
+
+#if [[ ${FEATURES} == *ccache* && ${EBUILD_PHASE_FUNC} == src_* ]]; then
+#    if [[ ${CCACHE_DIR} == /var/cache/ccache ]]; then
+##       export CCACHE_DIR=/var/cache/ccache/${CATEGORY}/${PN}:${SLOT}
+#       export CCACHE_DIR=/var/cache/ccache/${CATEGORY}
+#       mkdir -p "${CCACHE_DIR}" || die
+#    fi
+#fi
+
+pre_src_prepare() {
+
+    if [[ "$LOCALPATCH_PRE_SRC_PREPARE" != "true" ]]; then
+        return
+    fi
+
+    if ! type epatch_user > /dev/null 2>&1; then
+        local names="epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
+        source <(awk "/^# @FUNCTION: / { p = 0 } /^# @FUNCTION: (${names// /|})\$/ { p = 1; } p { print  }" /usr/portage/eclass/eutils.eclass)
+    fi
+
+    epatch_user || die
+
+    for name in $names; do
+        unset $name
+    done
+}
+
+post_src_prepare() {
+
+    if [[ "$LOCALPATCH_POST_SRC_PREPARE" != "true" ]]; then
+        return
+    fi
+
+    if ! type epatch_user > /dev/null 2>&1; then
+        local names="epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
+        source <(awk "/^# @FUNCTION: / { p = 0 } /^# @FUNCTION: (${names// /|})\$/ { p = 1; } p { print  }" /usr/portage/eclass/eutils.eclass)
+    fi
+
+    epatch_user || die
+
+    for name in $names; do
+        unset $name
+    done
+}
+
+post_src_unpack() {
+
+    if [[ "$LOCALPATCH_POST_SRC_UNPACK" != "true" ]]; then
+        return
+    fi
+
+    if ! type epatch_user > /dev/null 2>&1; then
+        local names="epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
+        source <(awk "/^# @FUNCTION: / { p = 0 } /^# @FUNCTION: (${names// /|})\$/ { p = 1; } p { print  }" /usr/portage/eclass/eutils.eclass)
+    fi
+
+    epatch_user || die
+
+    for name in $names; do
+        unset $name
+    done
+}

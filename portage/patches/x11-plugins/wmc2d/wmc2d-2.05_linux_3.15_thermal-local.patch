@@ -1,0 +1,13 @@
+--- wmc2d.c.orig	2011-04-29 18:14:12.000000000 +0300
++++ wmc2d.c	2014-12-17 10:30:41.840184219 +0200
+@@ -107,8 +107,8 @@
+ 
+     /// thermal zone names
+ static const char *ThermlZoneNames[] = {
+-    "/sys/class/thermal/thermal_zone0/temp",
+-    "/sys/class/thermal/thermal_zone1/temp",
++    "/sys/class/hwmon/hwmon0/temp1_input",
++    "/sys/class/hwmon/hwmon0/temp2_input",
+ };
+ 
+ extern void Timeout(void);		///< called from event loop

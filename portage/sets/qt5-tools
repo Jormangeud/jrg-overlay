@@ -1,0 +1,12 @@
+dev-qt/assistant
+dev-qt/designer:5
+dev-qt/linguist
+dev-qt/linguist-tools:5
+dev-qt/pixeltool
+dev-qt/qdbus
+dev-qt/qdbusviewer
+dev-qt/qdoc:5
+dev-qt/qtdiag:5
+dev-qt/qthelp:5
+dev-qt/qtpaths:5
+dev-qt/qtplugininfo:5

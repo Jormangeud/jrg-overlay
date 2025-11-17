@@ -1,0 +1,16 @@
+sys-auth/fprintd	no-clean.conf
+sys-auth/libfprint	no-clean.conf
+app-text/epr		no-clean.conf no-tmpfs.conf
+sys-kernel/genkernel	no-clean.conf
+net-fs/samba		no-clean.conf
+app-misc/rmlint		no-clean.conf
+
+sys-apps/psensor	no-clean.conf
+sys-auth/sssd		no-clean.conf
+media-sound/dmx6fire-driver	no-clean.conf
+media-sound/vbrfix	no-clean.conf
+media-sound/squishyball	no-clean.conf
+
+#dev-python/slimit no-clean.conf
+
+media-sound/abx no-clean.conf

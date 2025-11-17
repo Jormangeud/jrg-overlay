@@ -1,0 +1,11 @@
+--- a/whipper/image/toc.py	2023-10-12 22:11:05.828131766 +0300
++++ b/whipper/image/toc.py	2023-10-12 22:30:32.931495711 +0300
+@@ -199,7 +199,7 @@
+         # the first track's INDEX 1 can only be gotten from the .toc
+         # file once the first pregap is calculated; so we add INDEX 1
+         # at the end of each parsed  TRACK record
+-        with open(self._path) as f:
++        with open(self._path, encoding="ISO-8859-1") as f:
+             content = f.readlines()
+         for number, line in enumerate(content):
+             line = line.rstrip()

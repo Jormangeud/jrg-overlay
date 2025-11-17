@@ -1,0 +1,13 @@
+https://bugs.gentoo.org/692800
+---
+--- a/src/external/samba.m4	2019-06-13 23:22:59.000000000 +0300
++++ b/src/external/samba.m4	2019-09-21 13:31:14.009718574 +0300
+@@ -60,7 +60,7 @@
+         SAVE_CFLAGS=$CFLAGS
+         SAVE_LIBS=$LIBS
+         CFLAGS="$CFLAGS $SMBCLIENT_CFLAGS $NDR_NBT_CFLAGS $NDR_KRB5PAC_CFLAGS"
+-        LIBS="$LIBS -L${sambalibdir} -lidmap-samba4 -Wl,-rpath ${sambalibdir}"
++        LIBS="$LIBS -L${sambalibdir} -Wl,--no-as-needed -lidmap-samba4 -lreplace-samba4 -lsmbd-shim-samba4 -Wl,-rpath ${sambalibdir}"
+         AC_RUN_IFELSE(
+             [AC_LANG_SOURCE([
+ #include <stdlib.h>

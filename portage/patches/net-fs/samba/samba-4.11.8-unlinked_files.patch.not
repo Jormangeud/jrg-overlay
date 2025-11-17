@@ -1,0 +1,45 @@
+diff -ruN samba-4.11.8.orig/lib/util/wscript_build samba-4.11.8/lib/util/wscript_build                         [14/9084]
+--- samba-4.11.8.orig/lib/util/wscript_build    2020-05-25 04:38:53.418458704 -0700
++++ samba-4.11.8/lib/util/wscript_build 2020-05-25 04:39:17.999365214 -0700
+@@ -170,7 +170,7 @@
+
+     bld.SAMBA_LIBRARY('samba-modules',
+                       source='modules.c',
+-                      deps='samba-errors samba-util',
++                      deps='samba-errors samba-util samba-debug',
+                       local_include=False,
+                       private_library=True)
+
+diff -ruN samba-4.11.8.orig/nsswitch/wscript_build samba-4.11.8/nsswitch/wscript_build
+--- samba-4.11.8.orig/nsswitch/wscript_build    2020-05-25 04:40:26.691104424 -0700
++++ samba-4.11.8/nsswitch/wscript_build 2020-05-25 04:40:41.912046715 -0700
+@@ -108,7 +108,7 @@
+ if bld.CONFIG_SET('HAVE_KRB5_LOCATE_PLUGIN_H'):
+     bld.SAMBA_LIBRARY('winbind_krb5_locator',
+                       source='krb5_plugin/winbind_krb5_locator.c',
+-                      deps='wbclient krb5 com_err',
++                      deps='wbclient krb5 com_err replace',
+                       realname='winbind_krb5_locator.so',
+                       install_path='${MODULESDIR}/krb5')
+
+diff -ruN samba-4.11.8.orig/source3/wscript_build samba-4.11.8/source3/wscript_build
+--- samba-4.11.8.orig/source3/wscript_build     2020-05-25 04:35:20.930280265 -0700
++++ samba-4.11.8/source3/wscript_build  2020-05-25 04:36:19.294046850 -0700
+@@ -267,7 +267,7 @@
+
+ bld.SAMBA3_LIBRARY('popt_samba3',
+                    source='lib/popt_common.c',
+-                   deps='popt samba-util smbconf',
++                   deps='popt samba-util smbconf samba-debug',
+                    private_library=True)
+
+ bld.SAMBA3_LIBRARY('popt_samba3_cmdline',
+@@ -508,7 +508,7 @@
+
+ bld.SAMBA3_LIBRARY('smbldap',
+                     source='lib/smbldap.c',
+-                    deps='ldap lber samba-util smbconf',
++                    deps='ldap lber samba-util smbconf samba-debug replace smbd_shim samba-security',
+                     enabled=bld.CONFIG_SET("HAVE_LDAP"),
+                     private_library=False,
+                     abi_directory='lib/ABI',

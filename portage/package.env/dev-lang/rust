@@ -1,0 +1,2 @@
+dev-lang/rust	no-tmpfs.conf
+dev-lang/rust-bin	no-tmpfs.conf

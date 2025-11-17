@@ -1,0 +1,31 @@
+--- wmc2d.orig	2014-12-17 10:07:49.000000000 +0200
++++ wmc2d.c	2014-12-17 10:12:11.675403908 +0200
+@@ -798,12 +798,12 @@
+ {
+     int n;
+     int i;
+-    static char temp[] = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp2_input";
++    static char temp[] = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input";
+ 
+     switch (Cpus) {
+ 	case 4:
+ 	    for (i = 0; i < 4; ++i) {
+-		temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++		temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp")] =
+ 		    '2' + StartCpu + (i << JoinCpusTemp);
+ 		n = ReadNumber(temp);
+ 		DrawLcdNumber(n / 100, 2 + 2, 2 + i * 12 + 2);
+@@ -827,11 +827,11 @@
+ 
+ 	case 2:
+ 	default:
+-	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp")] =
+ 		'2' + StartCpu + 0;
+ 	    n = ReadNumber(temp);
+ 	    DrawLcdNumber(n / 100, 3 + 29 + 2, 3 + 2);
+-	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp")] =
++	    temp[strlen("/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp")] =
+ 		'2' + StartCpu + 1;
+ 	    n = ReadNumber(temp);
+ 	    DrawLcdNumber(n / 100, 3 + 29 + 2, 3 + 15 + 2);
