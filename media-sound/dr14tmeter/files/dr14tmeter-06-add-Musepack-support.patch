@@ -1,0 +1,55 @@
+From c41c6e51ede9d838fe3cac89c06681ec4b9a252b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Fri, 12 Sep 2025 19:51:25 +0300
+Subject: [PATCH 6/6] Add Musepack support
+
+---
+ dr14tmeter/audio_decoder.py | 1 +
+ dr14tmeter/tagger.py        | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/dr14tmeter/audio_decoder.py b/dr14tmeter/audio_decoder.py
+index 5d98077..2b6190b 100644
+--- a/dr14tmeter/audio_decoder.py
++++ b/dr14tmeter/audio_decoder.py
+@@ -34,6 +34,7 @@ supported_file_formats = {
+     'wma':  { "identifier": 10, "reader": FFmpegFileReader },
+     'dsf':  { "identifier": 11, "reader": FFmpegFileReader },
+     'dff':  { "identifier": 12, "reader": FFmpegFileReader },
++    'mpc':  { "identifier": 13, "reader": FFmpegFileReader },
+ }
+ 
+ 
+diff --git a/dr14tmeter/tagger.py b/dr14tmeter/tagger.py
+index 17cff4c..392e3b7 100644
+--- a/dr14tmeter/tagger.py
++++ b/dr14tmeter/tagger.py
+@@ -21,6 +21,7 @@ from mutagen.flac import FLAC
+ from mutagen.oggvorbis import OggVorbis
+ from mutagen.oggopus import OggOpus
+ from mutagen.monkeysaudio import MonkeysAudio
++from mutagen.musepack import Musepack
+ from mutagen.mp4 import MP4
+ from mutagen.id3 import ID3, TXXX
+ from mutagen.dsf import DSF
+@@ -32,7 +33,7 @@ class Tagger:
+ 
+     def __init__(self):
+         self.formats = ['.flac', '.mp3', '.ogg', '.opus', '.mp4',
+-                        '.m4a', '.wav', '.ape', '.ac3', '.wma', '.dsf', '.wv']
++                        '.m4a', '.wav', '.ape', '.ac3', '.wma', '.dsf', '.wv', '.mpc']
+         self.dir_name = ''
+         self._ext = -1
+ 
+@@ -84,6 +85,8 @@ class Tagger:
+             audio.add_tags
+         elif ext == '.wv':
+             audio = WavPack(filename)
++        elif ext == '.mpc':
++            audio = Musepack(filename)
+         else:
+             return False
+ 
+-- 
+2.49.1
+

@@ -1,0 +1,99 @@
+From a1456ceb1f2d6bbbac21616fac45b068c7643a00 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Fri, 12 Sep 2025 19:30:05 +0300
+Subject: [PATCH 4/6] audio_decoder.py: simplify filetype selection, use the
+ common file reader class
+
+---
+ dr14tmeter/audio_decoder.py | 59 +++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 36 deletions(-)
+
+diff --git a/dr14tmeter/audio_decoder.py b/dr14tmeter/audio_decoder.py
+index 71ef296..5d98077 100644
+--- a/dr14tmeter/audio_decoder.py
++++ b/dr14tmeter/audio_decoder.py
+@@ -18,14 +18,28 @@ import os
+ from dr14tmeter.audio_file_reader import *
+ 
+ 
++# Attention!!! do not modify the order of this list!!!!
++# It is used for computing the sha1 of the track
++supported_file_formats = {
++    'flac': { "identifier": 0,  "reader": FFmpegFileReader },
++    'mp3':  { "identifier": 1,  "reader": Mp3FileReader },
++    'ogg':  { "identifier": 2,  "reader": OggFileReader },
++    'opus': { "identifier": 3,  "reader": FFmpegFileReader },
++    'mp4':  { "identifier": 4,  "reader": FFmpegFileReader },
++    'm4a':  { "identifier": 5,  "reader": FFmpegFileReader },
++    'wav':  { "identifier": 6,  "reader": WavFileReader },
++    'wv':   { "identifier": 7,  "reader": WavpackFileReader },
++    'ape':  { "identifier": 8,  "reader": FFmpegFileReader },
++    'ac3':  { "identifier": 9,  "reader": FFmpegFileReader },
++    'wma':  { "identifier": 10, "reader": FFmpegFileReader },
++    'dsf':  { "identifier": 11, "reader": FFmpegFileReader },
++    'dff':  { "identifier": 12, "reader": FFmpegFileReader },
++}
++
++
+ class AudioDecoder:
+ 
+     def __init__(self):
+-        # Attention!!! do not modify the order of this list!!!!
+-        # It is used for computing the sha1 of the track
+-        self.formats = ['.flac', '.mp3', '.ogg', '.opus', '.mp4',
+-                        '.m4a', '.wav', '.wv', '.ape', '.ac3', '.wma', '.dsf', '.dff']
+-
+         self._ext = -1
+ 
+     def get_file_ext_code(self):
+@@ -34,43 +48,16 @@ class AudioDecoder:
+     def read_track_new(self, file_name, target):
+ 
+         (f, ext) = os.path.splitext(file_name)
+-        ext = ext.lower()
++        ext = ext[1:].lower()
+ 
+-        if ext not in self.formats:
++        if ext not in supported_file_formats.keys():
+             return False
+ 
+-        af = AudioFileReader()
+-
+-        if ext == '.mp3':
+-            af = Mp3FileReader()
+-        elif ext == '.flac':
+-            af = FlacFileReader()
+-        elif ext == '.ogg':
+-            af = OggFileReader()
+-        elif ext == '.opus':
+-            af = OpusFileReader()
+-        elif ext in ['.mp4', '.m4a']:
+-            af = Mp4FileReader()
+-        elif ext == '.wav':
+-            af = WavFileReader()
+-        elif ext == '.wv':
+-            af = WavPackFileReader()
+-        elif ext == '.ape':
+-            af = ApeFileReader()
+-        elif ext == '.ac3':
+-            af = Ac3FileReader()
+-        elif ext == '.wma':
+-            af = WmaFileReader()
+-        elif ext == '.dsf':
+-            af = DsfFileReader()
+-        elif ext == '.dff':
+-            af = DffFileReader()
+-        else:
+-            return False
++        af = supported_file_formats[ext]["reader"]()
+ 
+         #af = PipeFileReader()
+ 
+-        self._ext = self.formats.index(ext)
++        self._ext = supported_file_formats[ext]["identifier"]
+         ret_f = af.read_audio_file_new(file_name, target)
+ 
+         return ret_f
+-- 
+2.49.1
+

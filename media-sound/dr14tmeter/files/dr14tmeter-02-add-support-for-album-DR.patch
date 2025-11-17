@@ -1,0 +1,44 @@
+From 2e479a344eebf6bf18b8c9e90be6ac54bf1c58a2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Fri, 12 Sep 2025 17:07:01 +0300
+Subject: [PATCH 2/6] tagger.py: add support for album DR
+
+---
+ dr14tmeter/tagger.py | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/dr14tmeter/tagger.py b/dr14tmeter/tagger.py
+index 6655e9f..9a40a42 100644
+--- a/dr14tmeter/tagger.py
++++ b/dr14tmeter/tagger.py
+@@ -42,12 +42,12 @@ class Tagger:
+         self.dir_name = dr.dir_name
+         
+         for item in dr.res_list:
+-            self.read_track_new(item)
++            self.read_track_new(item, dr)
+ 
+     def get_file_ext_code(self):
+         return self._ext
+ 
+-    def read_track_new(self, item):
++    def read_track_new(self, item, dr):
+ 
+         (f, ext) = os.path.splitext(item['file_name'])
+         ext = ext.lower()
+@@ -82,9 +82,11 @@ class Tagger:
+ 
+         if isinstance(audio, MP3):
+             audio.tags.add(TXXX(encoding=3, desc=u"DR", text=[str(item["dr14"])]))
++            audio.tags.add(TXXX(encoding=3, desc=u"ALBUM_DR", text=[str(dr.dr14)]))
+         else:
+             audio["DR"] = [str(item["dr14"])]
+-        
++            audio["ALBUM_DR"] = [str(dr.dr14)]
++
+         audio.save()
+         
+         self._ext = self.formats.index(ext)
+-- 
+2.49.1
+

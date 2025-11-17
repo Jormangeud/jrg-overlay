@@ -6,9 +6,9 @@ EAPI=8
 inherit autotools vcs-snapshot
 
 if [[ ${PV} = *9999* ]]; then
-	inherit subversion
-	ESVN_REPO_URI="https://svn.xiph.org/trunk/${PN}/"
 	KEYWORDS=""
+	inherit git-r3
+	EGIT_REPO_URI="https://gitlab.xiph.org/xiph/squishyball.git"
 else
 	MY_PV=$(ver_rs 2 '~svn')
 	SRC_URI="http://http.debian.net/debian/pool/main/s/${PN}/${PN}_${MY_PV}.orig.tar.xz -> ${P}.tar.xz"

@@ -1,8 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit eutils autotools
+EAPI=8
+PYTHON_COMPAT=( python3_{6..13} )
+DISTUTILS_USE_PEP517=setuptools
+
+inherit autotools
 
 DESCRIPTION="A utility for tagging single album FLAC files with embedded CUE sheets using data from the MusicBrainz service."
 HOMEPAGE="http://software.gently.org.uk/flactag"

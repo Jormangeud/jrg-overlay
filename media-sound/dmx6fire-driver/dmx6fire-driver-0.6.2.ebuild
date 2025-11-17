@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit linux-info linux-mod eutils
+inherit linux-info linux-mod
 
 DESCRIPTION="ALSA Kernel module for the TerraTec DMX 6Fire USB soundcard"
 HOMEPAGE="http://sourceforge.net/projects/sixfireusb"

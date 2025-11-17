@@ -1,0 +1,74 @@
+From f75e42680c705e77241cf9ff2b03280301469bce Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Fri, 12 Sep 2025 19:47:14 +0300
+Subject: [PATCH 5/6] tagger.py: add DSF and Wavpack support
+
+---
+ dr14tmeter/tagger.py | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/dr14tmeter/tagger.py b/dr14tmeter/tagger.py
+index 9a40a42..17cff4c 100644
+--- a/dr14tmeter/tagger.py
++++ b/dr14tmeter/tagger.py
+@@ -23,6 +23,8 @@ from mutagen.oggopus import OggOpus
+ from mutagen.monkeysaudio import MonkeysAudio
+ from mutagen.mp4 import MP4
+ from mutagen.id3 import ID3, TXXX
++from mutagen.dsf import DSF
++from mutagen.wavpack import WavPack
+ from dr14tmeter.audio_file_reader import *
+ 
+ 
+@@ -30,17 +32,17 @@ class Tagger:
+ 
+     def __init__(self):
+         self.formats = ['.flac', '.mp3', '.ogg', '.opus', '.mp4',
+-                        '.m4a', '.wav', '.ape', '.ac3', '.wma']
++                        '.m4a', '.wav', '.ape', '.ac3', '.wma', '.dsf', '.wv']
+         self.dir_name = ''
+         self._ext = -1
+-    
++
+     def write_dr_tags(self, dr):
+ 
+         if not dr14_global.test_mutagen("Tagging"):
+             sys.exit(1)
+ 
+         self.dir_name = dr.dir_name
+-        
++
+         for item in dr.res_list:
+             self.read_track_new(item, dr)
+ 
+@@ -77,10 +79,15 @@ class Tagger:
+             raise Exception("Tagging .ac3 files not supported")
+         elif ext == '.wma':
+             raise Exception("Tagging .wma files not supported")
++        elif ext == '.dsf':
++            audio = DSF(filename)
++            audio.add_tags
++        elif ext == '.wv':
++            audio = WavPack(filename)
+         else:
+             return False
+ 
+-        if isinstance(audio, MP3):
++        if type(audio) in (MP3, DSF):
+             audio.tags.add(TXXX(encoding=3, desc=u"DR", text=[str(item["dr14"])]))
+             audio.tags.add(TXXX(encoding=3, desc=u"ALBUM_DR", text=[str(dr.dr14)]))
+         else:
+@@ -88,7 +95,7 @@ class Tagger:
+             audio["ALBUM_DR"] = [str(dr.dr14)]
+ 
+         audio.save()
+-        
++
+         self._ext = self.formats.index(ext)
+ 
+-        return True
+\ No newline at end of file
++        return True
+-- 
+2.49.1
+

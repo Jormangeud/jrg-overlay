@@ -1,0 +1,148 @@
+From fc19387ab5456c3a140744898f02c21f9191597d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jaakko=20Perttil=C3=A4?= <jormangeud@gmail.com>
+Date: Fri, 12 Sep 2025 17:11:35 +0300
+Subject: [PATCH 3/6] audio_file_reader.py: move duplicated functionality to
+ same class
+
+---
+ dr14tmeter/audio_file_reader.py | 86 +++++++++++----------------------
+ 1 file changed, 29 insertions(+), 57 deletions(-)
+
+diff --git a/dr14tmeter/audio_file_reader.py b/dr14tmeter/audio_file_reader.py
+index 2d1faf6..1a61402 100644
+--- a/dr14tmeter/audio_file_reader.py
++++ b/dr14tmeter/audio_file_reader.py
+@@ -171,26 +171,6 @@ class Mp3FileReader(AudioFileReader):
+         return "--silent " + "--decode " + "\"" + file_name + "\"" + " \"%s\" " % tmp_file
+ 
+ 
+-class FlacFileReader(AudioFileReader):
+-
+-    def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
+-
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
+-        # return " -s " + "-d " + "\"" + file_name + "\"" + " -o \"%s\" " %
+-        # tmp_file
+-
+-
+-class Mp4FileReader(AudioFileReader):
+-
+-    def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
+-
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
+-
+-
+ class OggFileReader(AudioFileReader):
+ 
+     def get_cmd(self):
+@@ -199,33 +179,32 @@ class OggFileReader(AudioFileReader):
+     def get_cmd_options(self, file_name, tmp_file):
+         return "--quiet " + "\"" + file_name + "\"" + " --output \"%s\"  " % tmp_file
+ 
+-class OpusFileReader(AudioFileReader):
+-
+-    def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
+ 
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
++class WavFileReader(AudioFileReader):
+ 
+-class ApeFileReader(AudioFileReader):
++    def read_audio_file_new(self, file_name, target):
++        return self.read_wav(file_name, target)
+ 
+     def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
++        return ""
+ 
+     def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
++        return ""
+ 
+ 
+-class Ac3FileReader(AudioFileReader):
++class WavpackFileReader(AudioFileReader):
++
++    def read_audio_file_new(self, file_name, target):
++        return self.read_wavpack(file_name, target)
+ 
+     def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
++        return ""
+ 
+     def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
++        return ""
+ 
+ 
+-class WmaFileReader(AudioFileReader):
++class FFmpegFileReader(AudioFileReader):
+ 
+     def get_cmd(self):
+         return self.get_ffmpeg_cmd()
+@@ -234,40 +213,33 @@ class WmaFileReader(AudioFileReader):
+         return self.get_generic_ffmpeg_options(file_name, tmp_file)
+ 
+ 
+-class WavFileReader(AudioFileReader):
++class Ac3FileReader(AudioFileReader):
++    pass
+ 
+-    def read_audio_file_new(self, file_name, target):
+-        return self.read_wav(file_name, target)
+ 
+-    def get_cmd(self):
+-        return ""
++class ApeFileReader(AudioFileReader):
++    pass
+ 
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return ""
+ 
+-class WavpackFileReader(AudioFileReader):
++class DffFileReader(AudioFileReader):
++    pass
+ 
+-    def read_audio_file_new(self, file_name, target):
+-        return self.read_wavpack(file_name, target)
+ 
+-    def get_cmd(self):
+-        return ""
++class DsfFileReader(AudioFileReader):
++    pass
+ 
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return ""
+ 
+-class DsfFileReader(AudioFileReader):
++class FlacFileReader(AudioFileReader):
++    pass
+ 
+-    def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
+ 
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
++class Mp4FileReader(AudioFileReader):
++    pass
+ 
+-class DffFileReader(AudioFileReader):
+ 
+-    def get_cmd(self):
+-        return self.get_ffmpeg_cmd()
++class OpusFileReader(AudioFileReader):
++    pass
+ 
+-    def get_cmd_options(self, file_name, tmp_file):
+-        return self.get_generic_ffmpeg_options(file_name, tmp_file)
++
++class WmaFileReader(AudioFileReader):
++    pass
+-- 
+2.49.1
+
