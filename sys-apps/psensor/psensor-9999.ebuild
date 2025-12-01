@@ -1,7 +1,7 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
 inherit gnome2-utils xdg-utils autotools
 
@@ -12,7 +12,7 @@ if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://gitlab.com/jeanfi/psensor.git"
 	inherit git-r3
 else
-	SRC_URI="http://wpitchoune.net/psensor/files/psensor-${PV}.tar.gz"
+	SRC_URI="https://gitlab.com/jeanfi/psensor/-/archive/${PV}/psensor-${PV}.tar.gz"
 	KEYWORDS="amd64 ~x86"
 fi
 
@@ -45,8 +45,8 @@ DEPEND="${RDEPEND}
 	app-text/asciidoc"
 
 src_prepare() {
-   	eapply_user
-   	eautoreconf
+	eapply_user
+	eautoreconf
 }
 
 src_configure() {
